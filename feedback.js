@@ -183,7 +183,7 @@
   function updateHomepageCopy() {
     const heroSubtitle = $('#home .hero-subtitle');
     if (heroSubtitle) {
-      heroSubtitle.textContent = 'Paste the listing. We’ll explain the price, battery, real-world range, MOT history and estimated insurance cost.';
+      heroSubtitle.innerHTML = 'Paste the listing. We’ll explain the price, battery, real-world range,<br>MOT history and estimated insurance cost.';
     }
 
     const cards = $$('#how-it-works .info-card');
