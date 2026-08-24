@@ -1,4 +1,4 @@
-name: Validate frontend
+name: Validate EV Scan
 
 on:
   push:
@@ -17,9 +17,18 @@ jobs:
         with:
           node-version: '22'
       - name: Check JavaScript syntax
-        run: node --check app.js
+        run: |
+          node --check app.js
+          node --check worker.js
       - name: Check required files
         run: |
           test -f index.html
           test -f styles.css
           test -f app.js
+          test -f worker.js
+          test -f wrangler.jsonc
+          test -f .assetsignore
+      - name: Validate Wrangler JSONC basics
+        run: |
+          grep -q '"main": "./worker.js"' wrangler.jsonc
+          grep -q '"/api/\*"' wrangler.jsonc
