@@ -1,6 +1,7 @@
 import { autotraderConfigured, searchPublicEvListings } from './autotrader.js';
 import { renderGuide, renderGuideHub, renderGuide404, renderRobots, renderSitemap } from './seo-guides.js';
 import { renderHomeHead, renderHomeFaq } from './home-seo.js';
+import { renderModel, renderModelHub, renderModel404, modelSitemapEntries } from './seo-models.js';
 
 const JSON_HEADERS = {
   'content-type': 'application/json; charset=utf-8',
@@ -24,6 +25,13 @@ function seoResponse(body, status = 200) {
       'x-content-type-options': 'nosniff'
     }
   });
+}
+
+function modelResponse(body, status = 200) {
+  const enhanced = String(body || '').includes('/seo-models.css')
+    ? String(body || '')
+    : String(body || '').replace('</head>', '<link rel="stylesheet" href="/seo-models.css"></head>');
+  return seoResponse(enhanced, status);
 }
 
 function cleanRegistration(value = '') {
@@ -375,7 +383,8 @@ export default {
       return new Response(renderRobots(), { headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=3600' } });
     }
     if (url.pathname === '/sitemap.xml') {
-      return new Response(renderSitemap(), { headers: { 'content-type': 'application/xml; charset=utf-8', 'cache-control': 'public, max-age=3600' } });
+      const sitemap = renderSitemap().replace('</urlset>', `${modelSitemapEntries()}</urlset>`);
+      return new Response(sitemap, { headers: { 'content-type': 'application/xml; charset=utf-8', 'cache-control': 'public, max-age=3600' } });
     }
     if (url.pathname === '/ev-guides' || url.pathname === '/ev-guides/') {
       return seoResponse(renderGuideHub());
@@ -388,8 +397,19 @@ export default {
       response.headers.set('x-robots-tag', 'noindex,follow');
       return response;
     }
+    if (url.pathname === '/cars' || url.pathname === '/cars/') {
+      return modelResponse(renderModelHub());
+    }
+    if (url.pathname.startsWith('/cars/')) {
+      const slug = decodeURIComponent(url.pathname.slice('/cars/'.length).replace(/\/$/, ''));
+      const page = renderModel(slug);
+      if (page) return modelResponse(page);
+      const response = modelResponse(renderModel404(), 404);
+      response.headers.set('x-robots-tag', 'noindex,follow');
+      return response;
+    }
 
-    if (url.pathname === '/api/health') return json({ ok: true, service: 'EV Scan API', version: '0.4.2', liveMotConfigured: configured(env), autoTraderConfigured: autotraderConfigured(env), capabilities: { staticFrontend: true, motByRegistration: true, autoTraderPublicSearchAdapter: true, listingUrlIngestion: false, marketPricing: false, liveRecommendations: autotraderConfigured(env), gracefulFallbacks: true, seoGuides: true, homepageFaq: true } });
+    if (url.pathname === '/api/health') return json({ ok: true, service: 'EV Scan API', version: '0.5.0', liveMotConfigured: configured(env), autoTraderConfigured: autotraderConfigured(env), capabilities: { staticFrontend: true, motByRegistration: true, autoTraderPublicSearchAdapter: true, listingUrlIngestion: false, marketPricing: false, liveRecommendations: autotraderConfigured(env), gracefulFallbacks: true, seoGuides: true, seoModelGuides: true, homepageFaq: true } });
     if (url.pathname === '/api/scoring-preview' && request.method === 'POST') {
       try { const body = await request.json(); return json({ ok: true, ...scoreDeal(body) }); }
       catch { return json({ ok: false, code: 'INVALID_JSON', message: 'Could not read the scoring input.' }, 400); }
