@@ -35,6 +35,7 @@
       padding-top:52px!important;
       padding-bottom:52px!important;
     }
+    .trust-section{display:none!important}
     .section-heading{margin-bottom:26px!important}
     .steps-grid{gap:14px!important}
     .finder-card{padding:34px!important}
