@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="A beginner-friendly used EV buying assistant. Paste a listing and get a clear, visual buying report." />
+  <title>EV Scan — Understand the EV before you buy it</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="site-header">
+      <a class="brand" href="#home" aria-label="EV Scan home">
+        <span class="brand-mark" aria-hidden="true">⚡</span>
+        <span>EV Scan</span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#how-it-works">How it works</a>
+        <a href="#find-my-ev">Find my EV</a>
+        <a href="#report-demo">Example report</a>
+      </nav>
+      <button class="ghost-button compact" data-scroll-home>Scan a car</button>
+    </header>
+
+    <main>
+      <section id="home" class="hero section-pad">
+        <div class="hero-copy">
+          <div class="eyebrow">Free used-EV buying assistant</div>
+          <h1>Thinking of buying <span>this EV?</span></h1>
+          <p class="hero-subtitle">Paste the listing. We’ll explain the price, battery, range, MOT history and the things worth asking before you go anywhere near the seller.</p>
+
+          <form id="scan-form" class="scan-form" novalidate>
+            <label class="sr-only" for="listing-url">Paste a vehicle listing link</label>
+            <div class="input-wrap">
+              <span class="input-icon" aria-hidden="true">↗</span>
+              <input id="listing-url" name="listing-url" type="url" inputmode="url" placeholder="Paste an EV listing link…" autocomplete="url" />
+              <button class="primary-button scan-button" type="submit">Scan car</button>
+            </div>
+            <div class="input-help" id="url-help">Demo mode is on for now — any valid-looking link will open the example report.</div>
+          </form>
+
+          <div class="hero-meta" aria-label="Checks included">
+            <span>Price</span><span>Battery</span><span>MOT</span><span>Range</span><span>Known issues</span><span>Seller questions</span>
+          </div>
+
+          <div class="secondary-path">
+            <span>Haven’t found one yet?</span>
+            <button class="text-button" data-open-finder>Find my EV →</button>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="glow"></div>
+          <div class="car-stage">
+            <svg class="car-svg" viewBox="0 0 780 360" role="img" aria-label="Stylised electric car">
+              <defs>
+                <linearGradient id="bodyGrad" x1="0" x2="1">
+                  <stop offset="0" stop-color="#f6f8fb"/>
+                  <stop offset="0.6" stop-color="#b9c2ce"/>
+                  <stop offset="1" stop-color="#626d7a"/>
+                </linearGradient>
+                <linearGradient id="glassGrad" x1="0" x2="1">
+                  <stop offset="0" stop-color="#20283a"/>
+                  <stop offset="1" stop-color="#0b1020"/>
+                </linearGradient>
+              </defs>
+              <path d="M126 230c20-72 57-111 115-138 68-32 211-38 300 1 36 16 64 48 97 83l65 26c27 11 41 27 45 50H102c5-10 13-17 24-22z" fill="url(#bodyGrad)"/>
+              <path d="M263 103c64-25 197-24 261 3 26 11 49 34 75 62H207c17-33 30-50 56-65z" fill="url(#glassGrad)"/>
+              <path d="M440 107l10 61" stroke="#8b95a7" stroke-width="5" opacity=".55"/>
+              <path d="M180 219c116 7 343 8 495-3" stroke="#f50f5d" stroke-width="7" stroke-linecap="round" opacity=".96"/>
+              <circle cx="236" cy="258" r="61" fill="#101525" stroke="#2c3448" stroke-width="8"/>
+              <circle cx="236" cy="258" r="31" fill="#6d7787"/>
+              <circle cx="611" cy="258" r="61" fill="#101525" stroke="#2c3448" stroke-width="8"/>
+              <circle cx="611" cy="258" r="31" fill="#6d7787"/>
+            </svg>
+            <div class="scan-beam"></div>
+          </div>
+          <div class="floating-score glass-card">
+            <span class="mini-label">Example deal score</span>
+            <strong>87<span>/100</span></strong>
+            <em>Very good candidate</em>
+          </div>
+          <div class="floating-chip chip-one">Battery confidence <b>High</b></div>
+          <div class="floating-chip chip-two">£1,120 below market</div>
+        </div>
+      </section>
+
+      <section id="how-it-works" class="content-section section-pad">
+        <div class="section-heading centered">
+          <div class="eyebrow">Simple by design</div>
+          <h2>You don’t need to know anything about EVs.</h2>
+          <p>Tell us which car you’re looking at. We’ll handle the jargon and explain what actually matters.</p>
+        </div>
+        <div class="steps-grid">
+          <article class="info-card">
+            <span class="step-no">01</span>
+            <h3>Paste the listing</h3>
+            <p>Drop in the link to the EV you’re considering. No account, no paywall, no long setup.</p>
+          </article>
+          <article class="info-card">
+            <span class="step-no">02</span>
+            <h3>We check the important bits</h3>
+            <p>Price, battery confidence, realistic range, MOT patterns, model-specific risks and missing seller information.</p>
+          </article>
+          <article class="info-card">
+            <span class="step-no">03</span>
+            <h3>You get a clear next step</h3>
+            <p>We explain what looks good, what to check, what to ask and whether there may be a better EV for your money.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="report-demo" class="report-preview section-pad">
+        <div class="section-heading split-heading">
+          <div>
+            <div class="eyebrow">Built for normal buyers</div>
+            <h2>A report you can understand in 30 seconds.</h2>
+          </div>
+          <button class="primary-button" data-demo-scan>Open full demo report</button>
+        </div>
+
+        <div class="preview-dashboard">
+          <article class="preview-car-card">
+            <div class="car-photo-fallback">
+              <span>2022</span>
+              <strong>Hyundai Ioniq 5</strong>
+              <small>Ultimate RWD · Demo vehicle</small>
+            </div>
+            <div class="preview-main-score">
+              <div>
+                <span class="mini-label">Deal score</span>
+                <strong>87<span>/100</span></strong>
+                <em>Very good candidate</em>
+              </div>
+              <div class="confidence-block">
+                <span class="mini-label">Decision confidence</span>
+                <b>72%</b>
+                <small>Good car, a few things still need confirming</small>
+              </div>
+            </div>
+          </article>
+          <div class="metric-grid">
+            <article class="metric-card"><span>Price position</span><strong>£1,120</strong><small class="good">below comparable cars</small></article>
+            <article class="metric-card"><span>Battery confidence</span><strong>High</strong><small>Expected SoH 90–94% · estimated</small></article>
+            <article class="metric-card"><span>Typical UK range</span><strong>238 mi</strong><small>About 205 mi cold motorway</small></article>
+            <article class="metric-card"><span>MOT pattern</span><strong>Clean</strong><small class="good">No repeated advisories detected</small></article>
+          </div>
+        </div>
+      </section>
+
+      <section id="find-my-ev" class="finder-section section-pad">
+        <div class="finder-card">
+          <div class="finder-copy">
+            <div class="eyebrow">Not sure what to buy?</div>
+            <h2>Find the EV that actually fits your life.</h2>
+            <p>We won’t ask what battery size or charging speed you want. Tell us how you drive and we’ll work those bits out behind the scenes.</p>
+            <button class="primary-button" data-open-finder>Start the beginner-friendly finder</button>
+          </div>
+          <div class="finder-example">
+            <div class="question-pill">How far do you normally drive each day?</div>
+            <div class="question-pill">Can you charge at home overnight?</div>
+            <div class="question-pill">What’s the longest trip you make fairly often?</div>
+            <div class="result-pill">We translate this into range, charging and battery requirements.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="trust-section section-pad">
+        <div class="trust-card">
+          <div>
+            <div class="eyebrow">Independent by design</div>
+            <h2>We don’t sell cars. So we don’t care which one you buy.</h2>
+          </div>
+          <p>Advertising and partner links will never change a Deal Score or recommendation. Estimated data is labelled as estimated, seller claims are labelled as seller claims, and unknowns stay unknown until there’s evidence.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="brand"><span class="brand-mark">⚡</span><span>EV Scan</span></div>
+      <p>Demo MVP. Vehicle data shown in this version is illustrative and not a substitute for a physical inspection or full provenance check.</p>
+    </footer>
+  </div>
+
+  <div id="scan-overlay" class="scan-overlay" hidden>
+    <div class="scan-modal" role="dialog" aria-modal="true" aria-labelledby="scan-title">
+      <div class="scan-animation">
+        <div class="scanner-ring"><span>⚡</span></div>
+      </div>
+      <div class="eyebrow">Analysing your car</div>
+      <h2 id="scan-title">Scanning the listing…</h2>
+      <p id="scan-step-copy">Reading the vehicle details and identifying the exact model.</p>
+      <div class="progress-track"><span id="scan-progress"></span></div>
+      <div class="scan-stage-row">
+        <span id="scan-stage-count">1 of 8</span>
+        <span>Demo analysis</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="report-view" class="report-view" hidden>
+    <header class="report-header">
+      <a class="brand" href="#home" data-close-report><span class="brand-mark">⚡</span><span>EV Scan</span></a>
+      <form id="rescan-form" class="mini-scan-form">
+        <input type="url" id="rescan-url" placeholder="Paste another listing…" aria-label="Paste another vehicle listing" />
+        <button class="primary-button compact" type="submit">Scan</button>
+      </form>
+      <button class="ghost-button compact" data-close-report>Back home</button>
+    </header>
+
+    <main class="report-main">
+      <section class="report-hero report-card">
+        <div class="vehicle-gallery">
+          <div class="vehicle-image-demo">
+            <div class="vehicle-tag">DEMO VEHICLE</div>
+            <svg viewBox="0 0 760 330" aria-label="Stylised demo electric car">
+              <defs>
+                <linearGradient id="reportBody" x1="0" x2="1"><stop offset="0" stop-color="#f5f6f8"/><stop offset=".55" stop-color="#c6ccd5"/><stop offset="1" stop-color="#737d8b"/></linearGradient>
+              </defs>
+              <path d="M95 223c25-74 80-118 166-145 105-33 249-24 332 24 32 19 58 47 85 82l49 17c23 8 36 23 40 42H79c2-8 8-15 16-20z" fill="url(#reportBody)"/>
+              <path d="M266 92c102-28 226-15 296 24 19 10 37 30 59 59H205c17-34 32-55 61-83z" fill="#12192a"/>
+              <path d="M175 205c169 12 347 8 499-3" stroke="#f50f5d" stroke-width="7" stroke-linecap="round"/>
+              <circle cx="219" cy="250" r="57" fill="#0e1423" stroke="#353e51" stroke-width="8"/><circle cx="219" cy="250" r="29" fill="#808a98"/>
+              <circle cx="611" cy="250" r="57" fill="#0e1423" stroke="#353e51" stroke-width="8"/><circle cx="611" cy="250" r="29" fill="#808a98"/>
+            </svg>
+          </div>
+          <div class="gallery-thumbs"><span></span><span></span><span></span><span class="more-thumb">+12</span></div>
+        </div>
+
+        <div class="vehicle-summary">
+          <div class="summary-topline">
+            <span class="status-pill good-pill">Scan complete</span>
+            <span class="source-note">Demo / estimated data</span>
+          </div>
+          <div class="vehicle-title-row">
+            <div>
+              <label for="trim-select" class="mini-label">Exact version</label>
+              <select id="trim-select" class="trim-select">
+                <option value="ultimate">2022 Hyundai Ioniq 5 Ultimate RWD</option>
+                <option value="premium">2022 Hyundai Ioniq 5 Premium RWD</option>
+                <option value="awd">2022 Hyundai Ioniq 5 Ultimate AWD</option>
+              </select>
+              <p id="trim-meta" class="vehicle-meta">34,200 miles · Electric · Automatic · 77.4 kWh · RWD</p>
+            </div>
+            <div class="asking-price"><span>Asking price</span><strong>£22,995</strong><small>£1,120 below demo market estimate</small></div>
+          </div>
+
+          <div class="score-band">
+            <div class="big-score">
+              <span class="mini-label">Deal score</span>
+              <strong>87<span>/100</span></strong>
+              <em>Very good candidate</em>
+            </div>
+            <div class="decision-confidence">
+              <div class="confidence-ring" style="--value:72"><span>72%</span></div>
+              <div><span class="mini-label">Decision confidence</span><strong>Good, not complete</strong><small>We still want battery evidence and tyre confirmation.</small></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="quick-verdict report-card">
+        <div>
+          <span class="mini-label">If you only read one thing</span>
+          <h2>This looks like a strong example — we’d put it on the shortlist.</h2>
+          <p>The price looks competitive, the MOT history is clean and the expected battery condition is normal for its age. The biggest unknown is that the advert doesn’t provide measured battery-health evidence.</p>
+        </div>
+        <div class="likes-checks">
+          <div><h3>👍 What we like</h3><ul><li>Good price against comparable cars</li><li>Clean MOT pattern</li><li>Battery warranty still active</li></ul></div>
+          <div><h3>👀 What we’d check</h3><ul><li>Measured battery report</li><li>Tyre condition at viewing</li><li>Both charging cables included</li></ul></div>
+        </div>
+      </section>
+
+      <section class="report-metrics">
+        <article class="report-card metric-rich">
+          <div class="metric-head"><span>Price intelligence</span><span class="data-tag verified">MARKET MODEL</span></div>
+          <strong class="metric-value">£1,120 below</strong>
+          <p>Based on demo comparable vehicles around the same age, trim and mileage.</p>
+          <div class="market-scale"><span>Great value</span><span>Typical</span><span>Expensive</span><i></i></div>
+          <div class="metric-foot"><b>Deal percentile</b><span>Better value than 81% of demo comparables</span></div>
+        </article>
+
+        <article class="report-card metric-rich battery-card">
+          <div class="metric-head"><span>Battery confidence</span><span class="data-tag estimated">ESTIMATED</span></div>
+          <div class="battery-status"><strong>High</strong><span>Expected SoH <b id="battery-soh">90–94%</b></span></div>
+          <div class="battery-visual"><span style="width:92%"></span></div>
+          <p>Nothing here suggests unusual degradation for an EV of this age, but this is not a physical battery test.</p>
+        </article>
+
+        <article class="report-card metric-rich">
+          <div class="metric-head"><span>Real-world range</span><span class="data-tag estimated">ESTIMATED</span></div>
+          <strong class="metric-value" id="range-main">238 miles</strong>
+          <div class="range-bars">
+            <div><span>Summer</span><i><b style="width:91%"></b></i><em id="range-summer">257 mi</em></div>
+            <div><span>Typical UK</span><i><b style="width:84%"></b></i><em id="range-typical">238 mi</em></div>
+            <div><span>Cold motorway</span><i><b style="width:70%"></b></i><em id="range-winter">205 mi</em></div>
+          </div>
+          <p class="plain-explain"><b>What this means:</b> cold weather and motorway speeds reduce range. That’s normal, not necessarily a battery problem.</p>
+        </article>
+
+        <article class="report-card metric-rich">
+          <div class="metric-head"><span>MOT intelligence</span><span class="data-tag verified">VERIFIED-LIKE DEMO</span></div>
+          <div class="timeline">
+            <div class="timeline-item"><i></i><div><b>2026 · Pass</b><span>No advisories</span></div></div>
+            <div class="timeline-item"><i></i><div><b>2025 · Pass</b><span>Rear tyre advisory — not repeated</span></div></div>
+            <div class="timeline-item"><i></i><div><b>2024 · Pass</b><span>No advisories</span></div></div>
+          </div>
+          <p class="plain-explain"><b>Our take:</b> no concerning repeated pattern is visible in this demo history.</p>
+        </article>
+      </section>
+
+      <section class="report-grid-two">
+        <article class="report-card degradation-card">
+          <div class="metric-head"><span>Battery degradation timeline</span><span class="data-tag estimated">ESTIMATED RANGE</span></div>
+          <h3>How the battery is expected to age</h3>
+          <p>The shaded band represents a sensible expected range, not an exact measurement.</p>
+          <div class="chart-wrap">
+            <svg id="degradation-chart" viewBox="0 0 720 270" role="img" aria-label="Estimated battery degradation timeline">
+              <defs><linearGradient id="band" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f50f5d" stop-opacity=".32"/><stop offset="1" stop-color="#f50f5d" stop-opacity=".04"/></linearGradient></defs>
+              <line x1="55" y1="28" x2="55" y2="222" class="chart-axis"/><line x1="55" y1="222" x2="686" y2="222" class="chart-axis"/>
+              <path d="M55 50 C150 63 225 78 310 90 C390 103 470 117 550 131 C610 140 650 148 686 154 L686 189 C620 174 560 165 500 156 C420 144 345 132 270 119 C190 105 120 88 55 72 Z" fill="url(#band)"/>
+              <path d="M55 61 C145 74 225 89 310 101 C400 115 480 128 550 142 C615 151 655 159 686 168" fill="none" stroke="#f50f5d" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="310" cy="101" r="8" fill="#fff" stroke="#f50f5d" stroke-width="4"/>
+              <text x="310" y="82" class="chart-label" text-anchor="middle">YOU ARE HERE</text>
+              <text x="44" y="65" class="chart-small" text-anchor="end">100%</text><text x="44" y="120" class="chart-small" text-anchor="end">90%</text><text x="44" y="176" class="chart-small" text-anchor="end">80%</text>
+              <text x="55" y="246" class="chart-small">2022</text><text x="292" y="246" class="chart-small">2026</text><text x="514" y="246" class="chart-small">2029</text><text x="653" y="246" class="chart-small">2031</text>
+            </svg>
+          </div>
+          <div class="chart-stats"><div><span>Expected today</span><b>90–94%</b></div><div><span>In ~3 years</span><b>86–91%</b></div><div><span>Battery warranty</span><b>to 2030*</b></div></div>
+        </article>
+
+        <article class="report-card trim-card">
+          <div class="metric-head"><span>Trim explorer</span><span class="data-tag model">MODEL DATA</span></div>
+          <h3>Are you looking at the right version?</h3>
+          <p id="trim-explainer">The Ultimate RWD balances range, equipment and performance without paying for the AWD powertrain.</p>
+          <div class="trim-specs">
+            <div><span>Typical range</span><b id="trim-range">238 mi</b></div>
+            <div><span>0–62 mph</span><b id="trim-speed">7.3 sec</b></div>
+            <div><span>Peak DC charging</span><b id="trim-charge">~233 kW</b></div>
+            <div><span>Drive</span><b id="trim-drive">RWD</b></div>
+          </div>
+          <div class="trim-verdict" id="trim-verdict"><b>Our take:</b> for most buyers, this trim avoids paying extra for AWD while keeping the strong long-distance charging experience.</div>
+        </article>
+      </section>
+
+      <section class="report-grid-two">
+        <article class="report-card xray-card">
+          <div class="metric-head"><span>Listing X-Ray</span><span class="data-tag seller">SELLER CLAIMS</span></div>
+          <h3>What the advert tells us — and what it doesn’t.</h3>
+          <div class="xray-list">
+            <div class="xray-row good-row"><span>✓</span><div><b>Service history mentioned</b><small>Seller claims a documented service record.</small></div></div>
+            <div class="xray-row warn-row"><span>?</span><div><b>No measured battery health provided</b><small>This is the biggest uncertainty in the listing.</small></div></div>
+            <div class="xray-row warn-row"><span>?</span><div><b>Charging cables not clearly confirmed</b><small>Worth checking before viewing.</small></div></div>
+            <div class="xray-row good-row"><span>✓</span><div><b>Tyres visible in several photos</b><small>Still inspect tread and sidewalls in person.</small></div></div>
+          </div>
+        </article>
+
+        <article class="report-card seller-card">
+          <div class="metric-head"><span>Message the seller</span><span class="data-tag action">READY TO SEND</span></div>
+          <h3>We’ve turned the unknowns into one friendly message.</h3>
+          <textarea id="seller-message" rows="8">Hi, I’m interested in the Ioniq 5. Before I arrange a viewing, could you please confirm whether you have any battery-health information or report, whether both charging cables are included, and whether there are two keys? If you have the most recent service paperwork as well, that would be really helpful. Thanks!</textarea>
+          <div class="seller-actions"><button id="copy-message" class="primary-button">Copy message</button><span id="copy-status" aria-live="polite"></span></div>
+        </article>
+      </section>
+
+      <section class="report-grid-two">
+        <article class="report-card reply-card">
+          <div class="metric-head"><span>Seller reply checker</span><span class="data-tag action">UNIQUE FEATURE</span></div>
+          <h3>Paste their reply. We’ll check what they actually answered.</h3>
+          <textarea id="seller-reply" rows="6" placeholder="Example: The battery has always been fine and it drives perfectly. We have one charging cable and both keys…"></textarea>
+          <button id="analyse-reply" class="ghost-button">Analyse reply</button>
+          <div id="reply-result" class="reply-result" hidden></div>
+        </article>
+
+        <article class="report-card change-score-card">
+          <div class="metric-head"><span>What could change our verdict?</span><span class="data-tag action">NEXT STEPS</span></div>
+          <div class="score-change-list">
+            <div><span class="plus">+6</span><p><b>Measured battery report above 90%</b><small>Would remove the biggest current uncertainty.</small></p></div>
+            <div><span class="plus">+3</span><p><b>Full service paperwork confirmed</b><small>Improves confidence in how the car has been cared for.</small></p></div>
+            <div><span class="minus">−4</span><p><b>Tyres need replacing soon</b><small>Adds immediate cost and weakens the effective deal.</small></p></div>
+            <div><span class="minus">−2</span><p><b>Seller avoids key questions</b><small>Doesn’t prove a problem, but lowers confidence.</small></p></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="report-card effective-card">
+        <div class="metric-head"><span>Effective purchase price</span><span class="data-tag estimated">ESTIMATED</span></div>
+        <div class="effective-layout">
+          <div><h3>The sticker price isn’t always the real price.</h3><p>We include likely immediate costs so a cheap advert doesn’t automatically look like the best deal.</p></div>
+          <div class="cost-stack"><div><span>Asking price</span><b>£22,995</b></div><div><span>Possible near-term costs</span><b>+ £460</b></div><div class="total-cost"><span>Effective price</span><strong>£23,455</strong></div></div>
+          <div class="cost-notes"><span>Tyre allowance <b>£300</b></span><span>Battery check <b>£100</b></span><span>Small consumables <b>£60</b></span></div>
+        </div>
+      </section>
+
+      <section class="report-card fit-score-card">
+        <div class="fit-intro">
+          <div><span class="mini-label">Optional personal check</span><h2>Is this EV actually right for your life?</h2><p>Answer four normal questions. We’ll translate them into range and charging requirements for you.</p></div>
+          <button id="quick-fit-toggle" class="primary-button">Check my fit</button>
+        </div>
+        <form id="quick-fit-form" class="quick-fit-form" hidden>
+          <label>Typical daily driving<select id="fit-daily"><option value="20">Under 20 miles</option><option value="50">20–50 miles</option><option value="90">50–90 miles</option><option value="130">90+ miles</option></select></label>
+          <label>Longest regular trip<select id="fit-long"><option value="80">Under 80 miles</option><option value="150">80–150 miles</option><option value="230">150–230 miles</option><option value="300">230+ miles</option></select></label>
+          <label>Can you charge at home?<select id="fit-home"><option value="yes">Yes</option><option value="no">No</option></select></label>
+          <label>Long motorway journeys<select id="fit-motorway"><option value="rare">Rarely</option><option value="sometimes">Sometimes</option><option value="often">Often</option></select></label>
+          <button class="ghost-button" type="submit">Calculate fit</button>
+        </form>
+        <div id="fit-result" class="fit-result" hidden></div>
+      </section>
+
+      <section class="recommendations-section">
+        <div class="section-heading split-heading">
+          <div><div class="eyebrow">Don’t stop at the first advert</div><h2>Better options around your budget.</h2><p>Recommendations should eventually use live listings. These cards are demo examples showing the intended experience.</p></div>
+          <div class="budget-control"><label for="budget-range">Budget</label><input id="budget-range" type="range" min="15000" max="30000" step="500" value="23000"/><strong id="budget-value">£23,000</strong></div>
+        </div>
+        <div id="recommendation-grid" class="recommendation-grid"></div>
+      </section>
+
+      <section class="report-card limits-card">
+        <div><span class="mini-label">Trust matters</span><h2>Things this scan still cannot know.</h2></div>
+        <div class="limits-grid"><span>Actual mechanical condition</span><span>Hidden accident repairs</span><span>Measured battery SoH without evidence</span><span>Accuracy of unsupported seller claims</span></div>
+        <p>Before purchasing, we’d still recommend a physical inspection and an appropriate finance/theft/write-off provenance check.</p>
+      </section>
+    </main>
+  </div>
+
+  <div id="finder-modal" class="finder-modal" hidden>
+    <div class="finder-dialog" role="dialog" aria-modal="true" aria-labelledby="finder-title">
+      <button class="modal-close" data-close-finder aria-label="Close finder">×</button>
+      <div class="eyebrow">Find my EV</div>
+      <h2 id="finder-title">Tell us how you actually use your car.</h2>
+      <p>We’ll work out the battery, range and charging jargon for you.</p>
+      <form id="finder-form" class="finder-form">
+        <label>What’s your maximum budget?<input id="finder-budget" type="number" min="5000" max="100000" step="500" value="20000" /></label>
+        <label>How far do you normally drive in a day?<select id="finder-daily"><option value="20">Under 20 miles</option><option value="45">20–45 miles</option><option value="80">45–80 miles</option><option value="120">80+ miles</option></select></label>
+        <label>What’s the longest journey you make fairly regularly?<select id="finder-long"><option value="80">Under 80 miles</option><option value="140">80–140 miles</option><option value="220">140–220 miles</option><option value="300">220+ miles</option></select></label>
+        <label>Can you normally charge at home overnight?<select id="finder-home"><option value="yes">Yes</option><option value="no">No</option></select></label>
+        <label>What matters most?<select id="finder-priority"><option value="value">Keeping costs low</option><option value="range">Long range</option><option value="space">Space and practicality</option><option value="comfort">Comfort and quality</option><option value="performance">Performance</option></select></label>
+        <button class="primary-button" type="submit">Find my EV</button>
+      </form>
+      <div id="finder-results" class="finder-results" hidden></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
