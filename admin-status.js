@@ -1,6 +1,10 @@
 (() => {
   const $ = selector => document.querySelector(selector);
 
+  const style = document.createElement('style');
+  style.textContent = `.login-card .preview-dashboard-button{background:rgba(255,255,255,.035)!important;color:#cbd3df!important;border:1px solid rgba(255,255,255,.09)!important;box-shadow:none!important;margin-top:7px!important}`;
+  document.head.appendChild(style);
+
   function preview() {
     const overlay = $('#login-overlay');
     if (overlay) overlay.hidden = true;
