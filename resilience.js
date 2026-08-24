@@ -57,6 +57,18 @@
     .legal-nav-inline a:hover{color:#fff}
     .image-fallback-safe{width:100%;height:100%;min-height:120px;display:grid;place-items:center;text-align:center;padding:18px;background:linear-gradient(145deg,#202b3e,#0d1421);color:#9da9bc;font-weight:750}
     .service-fallback{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:99999;width:min(620px,calc(100% - 28px));padding:12px 15px;border:1px solid rgba(255,196,90,.28);border-radius:14px;background:rgba(20,20,26,.96);color:#f4d99f;font-size:.78rem;line-height:1.45;box-shadow:0 15px 50px rgba(0,0,0,.35)}
+
+    /* Make the main scan input much easier to tap, especially on phones. */
+    #scan-form .input-wrap{cursor:text;touch-action:manipulation}
+    #scan-form .input-wrap input{min-height:58px;padding:0 10px;touch-action:manipulation}
+    #scan-form .input-icon{pointer-events:none}
+    #scan-form .scan-button{cursor:pointer}
+    @media(max-width:720px){
+      #scan-form .input-wrap{padding:10px;gap:8px;border-radius:22px}
+      #scan-form .input-wrap input{min-height:64px;padding:0 8px;font-size:1.02rem}
+      #scan-form .input-icon{margin-left:9px;font-size:1.45rem}
+      #scan-form .scan-button{min-height:56px}
+    }
   `;
   document.head.appendChild(styles);
 
@@ -78,6 +90,14 @@
     wrap.appendChild(legalNav());
     report.appendChild(wrap);
   }
+
+  /* Tapping the icon or spare white space should focus the field, not do nothing. */
+  document.addEventListener('click', (event) => {
+    const wrap = event.target?.closest?.('#scan-form .input-wrap');
+    if (!wrap) return;
+    if (event.target?.closest?.('button') || event.target?.matches?.('input')) return;
+    wrap.querySelector('input')?.focus();
+  });
 
   document.addEventListener('error', (event) => {
     const target = event.target;
