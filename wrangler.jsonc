@@ -19,6 +19,8 @@
       "/ev-guides/*",
       "/cars",
       "/cars/*",
+      "/compare/*",
+      "/best/*",
       "/robots.txt",
       "/sitemap.xml"
     ]
