@@ -28,6 +28,8 @@ jobs:
           node --check brand-light.js
           node --check worker.js
           node --check autotrader.js
+          node --check seo-guides.js
+          node --check home-seo.js
       - name: Check required files
         run: |
           test -f index.html
@@ -42,6 +44,9 @@ jobs:
           test -f brand-light.js
           test -f worker.js
           test -f autotrader.js
+          test -f seo-guides.js
+          test -f home-seo.js
+          test -f seo.css
           test -f wrangler.jsonc
           test -f .assetsignore
           test -f privacy.html
@@ -55,6 +60,13 @@ jobs:
           grep -q '/cookies.html' resilience.js
           grep -q '/terms.html' resilience.js
           grep -q '/affiliate-disclosure.html' resilience.js
+      - name: Validate SEO routes and crawler files
+        run: |
+          grep -q '/ev-guides' worker.js
+          grep -q '/robots.txt' worker.js
+          grep -q '/sitemap.xml' worker.js
+          grep -q 'OAI-SearchBot' seo-guides.js
+          grep -q 'FAQPage' home-seo.js
       - name: Validate Wrangler JSONC basics
         run: |
           grep -q '"main": "./worker.js"' wrangler.jsonc
