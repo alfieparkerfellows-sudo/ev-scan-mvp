@@ -27,6 +27,12 @@ jobs:
           node --check brand.js
           node --check brand-light.js
           node --check worker.js
+          node --check worker-admin.js
+          node --check worker-entry.js
+          node --check admin-api.js
+          node --check account-api.js
+          node --check account-schema.js
+          node --check account.js
           node --check autotrader.js
           node --check seo-guides.js
           node --check seo-models.js
@@ -45,6 +51,14 @@ jobs:
           test -f brand.js
           test -f brand-light.js
           test -f worker.js
+          test -f worker-admin.js
+          test -f worker-entry.js
+          test -f admin-api.js
+          test -f account-api.js
+          test -f account-schema.js
+          test -f account.js
+          test -f account.css
+          test -f migrations/0001_accounts.sql
           test -f autotrader.js
           test -f seo-guides.js
           test -f seo-models.js
@@ -80,9 +94,20 @@ jobs:
           grep -q 'nissan/leaf' seo-models.js
           grep -q 'hyundai-ioniq-5-vs-kia-ev6' seo-intent.js
           grep -q 'first-used-electric-car' seo-intent.js
+      - name: Validate account layer
+        run: |
+          grep -q 'handleAccountRequest' worker-entry.js
+          grep -q 'ensureAccountSchema' worker-entry.js
+          grep -q 'EVSCAN_DB' worker-entry.js
+          grep -q 'PBKDF2' account-api.js
+          grep -q 'HttpOnly; Secure; SameSite=Lax' account-api.js
+          grep -q 'saved_scans' migrations/0001_accounts.sql
+          grep -q 'garage_vehicles' migrations/0001_accounts.sql
+          grep -q 'Download my data' account.js
+          grep -q 'Delete my account' account.js
       - name: Validate Wrangler JSONC basics
         run: |
-          grep -q '"main": "./worker.js"' wrangler.jsonc
+          grep -q '"main": "./worker-entry.js"' wrangler.jsonc
           grep -q '"/api/\*"' wrangler.jsonc
           grep -q '"/cars/\*"' wrangler.jsonc
           grep -q '"/compare/\*"' wrangler.jsonc
