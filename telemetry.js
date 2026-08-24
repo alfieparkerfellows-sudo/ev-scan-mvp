@@ -61,6 +61,22 @@
     originalFetch('/api/events', { method:'POST', headers:{'content-type':'application/json'}, body, keepalive:true }).catch(()=>{});
   }
 
+  function sendReview(form) {
+    try {
+      const active = form.querySelector('.feedback-star.is-active[aria-checked="true"]') || [...form.querySelectorAll('.feedback-star.is-active')].pop();
+      const rating = Number(active?.dataset?.rating || 0);
+      if (!rating) return;
+      const comment = (form.querySelector('#feedback-comment')?.value || '').trim().slice(0,700);
+      const vehicle = document.querySelector('#trim-select')?.selectedOptions?.[0]?.textContent?.trim().slice(0,160) || 'EV scan';
+      originalFetch('/api/reviews', {
+        method:'POST',
+        headers:{'content-type':'application/json'},
+        body:JSON.stringify({ rating, comment, vehicle, sessionId }),
+        keepalive:true
+      }).catch(()=>{});
+    } catch {}
+  }
+
   window.EVScanTelemetry = { send, sessionId };
   send('page_view');
 
@@ -70,6 +86,7 @@
       const scanMode = /https?:\/\/|\.[a-z]{2,}/i.test(value) ? 'listing' : 'registration';
       send('scan_started', { scanMode });
     }
+    if (event.target?.matches?.('#scan-feedback-form')) sendReview(event.target);
   }, true);
 
   document.addEventListener('click', event => {
