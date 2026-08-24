@@ -28,6 +28,7 @@
     #home .hero-center-actions .hero-meta,
     #home .hero-center-actions .secondary-path{justify-content:center}
     #home .hero-center-actions .input-help{text-align:center}
+    #home .hero-subtitle{max-width:640px!important}
 
     /* Pull homepage sections closer together */
     .trust-preview-section{padding:10px 0 34px!important}
@@ -139,6 +140,7 @@
       #home .hero-center-actions .secondary-path{justify-content:flex-start}
       #home .hero-center-actions .input-help{text-align:left}
       #home .hero-visual{min-height:330px!important}
+      #home .hero-subtitle{max-width:none!important}
       .trust-preview-section{padding:8px 0 22px!important}
       .content-section,.report-preview,.finder-section,.trust-section{padding-top:34px!important;padding-bottom:34px!important}
       .section-heading{margin-bottom:20px!important}
@@ -178,11 +180,16 @@
     hero.appendChild(actions);
   }
 
-  function updateHowItWorksCopy() {
+  function updateHomepageCopy() {
+    const heroSubtitle = $('#home .hero-subtitle');
+    if (heroSubtitle) {
+      heroSubtitle.textContent = 'Paste the listing. We’ll explain the price, battery, real-world range, MOT history and estimated insurance cost.';
+    }
+
     const cards = $$('#how-it-works .info-card');
     const middleCopy = cards[1]?.querySelector('p');
     if (middleCopy) {
-      middleCopy.textContent = 'Price, battery confidence, realistic range, insurance estimate, MOT patterns, model-specific risks and missing seller information.';
+      middleCopy.textContent = 'Price, battery confidence, real-world range, insurance estimate, MOT patterns and model-specific risks.';
     }
   }
 
@@ -280,8 +287,8 @@
   }
 
   function mount() {
+    updateHomepageCopy();
     centreHeroActions();
-    updateHowItWorksCopy();
     mountFeedback();
   }
 
