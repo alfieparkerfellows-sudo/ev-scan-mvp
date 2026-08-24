@@ -8,36 +8,74 @@ A free, beginner-friendly used-EV buying assistant for UK shoppers.
 
 The interface is intentionally simple for people buying an EV for the first time. Technical information should always be translated into plain English and shown visually wherever possible.
 
-## Current MVP
+## Current product
 
-The frontend is live on Cloudflare Workers and includes a server-side DVSA MOT History API integration for registration lookups. Marketplace/listing data remains in demo mode until an approved Auto Trader integration is available.
+The frontend is hosted on Cloudflare Workers/Assets with GitHub as the source of truth. DVSA MOT History integration is prepared for live registration lookups; marketplace/listing data remains limited until approved Auto Trader access is connected.
 
-Included in the MVP:
+Core buying experience:
 
-- Listing-link scan entry point
-- Live UK registration lookup via DVSA MOT History API when credentials are configured
-- Multi-stage scanning animation
-- Visual Deal Score
-- Separate Decision Confidence score
-- Battery Confidence with estimated SoH range
-- Estimated battery degradation timeline
+- Listing-link / registration scan entry points
+- Deal Score + separate Decision Confidence
+- Battery Confidence and estimated SoH ranges without pretending to measure SoH
 - Summer / typical UK / cold motorway range
-- MOT intelligence timeline
+- MOT intelligence
 - Trim explorer
-- 30-second plain-English verdict
-- "What we like" / "What we'd check"
-- Listing X-Ray for missing seller information
-- Auto-generated seller message with copy button
-- "What could change our verdict?"
+- Plain-English verdict
+- Listing X-Ray / missing information
+- Seller-message assistant
 - Effective purchase price
 - Insurance estimator
-- Personal EV Fit Score
+- Personal EV Fit check
 - Beginner-friendly Find My EV questionnaire
 - Similar-budget recommendations
-- Same-car-better-listing / Save Money / Better Fit / Worth Stretching For recommendations
-- Clear trust/limitations section
-- Privacy, cookies, terms and affiliate-disclosure pages
-- Global graceful-fallback layer for missing images, API outages and unexpected browser/runtime errors
+- SEO guide/model/comparison/use-case library
+- Privacy, cookies, terms and affiliate disclosure
+- Graceful fallbacks for missing data, images and provider outages
+
+## My EV Scan — optional accounts
+
+Core scanning remains usable without an account. Accounts exist only to make EV Scan more useful for people who want the service to remember things between visits.
+
+Logged-in features:
+
+- Saved scans
+- Buying shortlist
+- Compare up to four shortlisted scans side by side
+- Reusable Driving Profile
+- My Garage for owned EVs
+- In-app MOT, service, tax/vehicle-duty and battery-warranty reminders
+- Downloadable calendar reminders (`.ics`)
+- Light / dark / system theme
+- Pink / electric-blue / violet account accent
+- Comfortable / compact account layout
+- Reduced-motion option
+- Advanced-data preference
+- Account data export
+- Account deletion
+
+The saved Driving Profile is reused as the starting point for Find My EV and the report-level EV Fit check so users do not have to re-enter the same normal driving information every time.
+
+### Account security
+
+- Passwords are never stored in readable form.
+- Password verification uses PBKDF2-SHA256 with a per-account random salt and a high iteration count.
+- Session tokens are random, stored server-side only as SHA-256 hashes, and delivered to the browser using `HttpOnly; Secure; SameSite=Lax` cookies.
+- Login/register attempts are rate-limited using privacy-minimised hashed attempt keys.
+- Sessions are time-limited.
+- Users can export or delete account data from My EV Scan → Preferences.
+
+### Account database
+
+The account layer reuses the existing Cloudflare D1 binding when `EVSCAN_DB` is available. A separate `ACCOUNTS_DB` binding is also supported if we ever choose to isolate account data.
+
+`worker-entry.js` calls `ensureAccountSchema()` before enabling accounts. Account tables use `CREATE TABLE IF NOT EXISTS`, so an existing EV Scan D1 database can be extended without removing telemetry/review tables.
+
+Schema sources:
+
+- `account-schema.js` — safe runtime initialisation
+- `migrations/0001_accounts.sql` — explicit migration copy for manual/CLI use
+
+If no D1 binding is present, account UI stays hidden and core scanning continues normally.
 
 ## Important trust rules
 
@@ -52,39 +90,38 @@ Never present an estimated battery-health figure as a measured State of Health. 
 
 ## Graceful fallback policy
 
-Missing or malformed data must never be replaced with invented certainty. Every integration and report renderer should follow these rules:
+Missing or malformed data must never be replaced with invented certainty.
 
-- Missing field → show `Unknown`, `Not supplied` or `Not available`.
-- Missing photo → show a neutral vehicle/photo placeholder; never break the gallery.
-- Empty MOT history → keep the report open and explain that no MOT records were returned.
-- Partial vehicle identity → use whichever verified fields are available without failing the whole report.
-- Provider timeout/outage → show a useful retry message while keeping unrelated features available.
-- Malformed provider response → reject that field safely rather than passing broken data into the UI.
-- Missing price/battery data → do not calculate a Deal Score that implies those inputs were known.
+- Missing field → `Unknown`, `Not supplied` or `Not available`.
+- Missing photo → neutral placeholder.
+- Empty MOT history → keep the report open and explain it.
+- Partial identity → use whichever verified fields are available.
+- Provider timeout/outage → useful retry state; unrelated features remain available.
+- Malformed response → reject the field safely.
+- Missing price/battery data → never calculate a misleading Deal Score.
 - External text rendered as HTML must be escaped.
-- API calls should use finite timeouts and return structured errors.
-- Browser storage must be optional; features should continue if localStorage is unavailable.
-- Affiliate/partner failure must never affect scoring or core report availability.
+- API calls use finite timeouts.
+- Browser storage is optional.
+- Affiliate/partner failure never affects scoring or report availability.
+- Missing account database → accounts stay unavailable without affecting scanning.
 
-`resilience.js` provides the browser-level safety net and legal footer links. Provider-specific adapters must still normalise their own data defensively.
+`resilience.js` provides the browser-level safety net; provider adapters and account routes still validate their own inputs defensively.
 
-## Architecture
+## Worker architecture
 
-### Now
+- `worker-entry.js` — outer account-aware entrypoint
+- `worker-admin.js` — admin/data/telemetry layer
+- `worker.js` — core scan/SEO/static application worker
+- `account-api.js` — account authentication, profile, scans and garage API
+- `account-schema.js` — D1 account-table initialisation
+- `admin-api.js` — internal event/review/admin data layer
+- `autotrader.js` — prepared marketplace adapter
 
-- Static HTML/CSS/JavaScript frontend
-- Cloudflare Worker backend
-- GitHub as source of truth
-- Cloudflare Workers/Assets for hosting
-- DVSA MOT History API adapter
-- Defensive Auto Trader adapter prepared for approved access
-- No accounts
-- No database
-- No paywall
+`wrangler.jsonc` points to `worker-entry.js`.
 
-### DVSA production secrets
+## DVSA production secrets
 
-Sensitive DVSA credentials must be stored as encrypted Cloudflare Worker secrets and must never be committed to GitHub.
+Sensitive credentials must be stored as encrypted Cloudflare Worker secrets and never committed to GitHub.
 
 Required secret names:
 
@@ -92,53 +129,42 @@ Required secret names:
 - `DVSA_CLIENT_SECRET`
 - `DVSA_API_KEY`
 
-The non-secret DVSA token URL, scope and API base are declared in `wrangler.jsonc`.
+The non-secret token URL, scope and API base are declared in `wrangler.jsonc`.
 
-The Worker obtains and caches an OAuth access token server-side, then sends the bearer token and API key to DVSA. Browser JavaScript never receives the DVSA credentials.
-
-### Next data layers
+## Next data layers
 
 - Approved Auto Trader Search / Vehicles / Valuations access
-- Vehicle/specification datasets
+- Stronger vehicle/specification datasets
 - Comparable-car market data
-- Optional specialist provenance and battery-test partners
+- Specialist provenance/history provider
+- Battery-data/testing partner
+- Charging-location data
+- Optional email/push reminder delivery after a reliable notification provider is connected
 
 ## Legal / compliance pages
-
-Current prototype pages:
 
 - `/privacy.html`
 - `/cookies.html`
 - `/terms.html`
 - `/affiliate-disclosure.html`
 
-The cookie/privacy wording must be reviewed before enabling analytics, behavioural advertising, conversion tracking, accounts, server-side review storage or other new personal-data processing. A dedicated privacy contact address must also be published before wider public launch.
-
-## Product direction
-
-Two main entry points:
-
-### Scan a car
-For buyers who already found an EV listing.
-
-### Find my EV
-For beginners who do not know what battery size, range or charging speed they need. Ask normal life questions and translate those answers into technical filters behind the scenes.
+Privacy/cookie/terms wording now covers optional accounts, secure session cookies, saved scans and My Garage. A real monitored privacy-contact address remains a pre-public-launch requirement.
 
 ## Monetisation philosophy
 
-Keep the core product free at launch. Monetisation should be useful and non-intrusive:
+Keep the core product free. Monetisation should be contextual and useful:
 
-- Light automotive advertising
 - Clearly labelled affiliate links
 - Vehicle-history checks
 - Independent battery testing
 - Insurance
 - Home charging
 - EV tariffs
-- Tyres / breakdown cover where contextually relevant
+- Amazon EV essentials where genuinely relevant
+- Potential B2B/dealer product later
 
 Commercial relationships must never alter Deal Scores or recommendations.
 
 ## Status
 
-MVP in active development. DVSA-backed vehicle/MOT fields may be marked **VERIFIED** when returned by the live API. Price, battery, listing and marketplace-derived fields remain estimated, unknown or demo-only until their approved data sources are connected.
+MVP in active development. DVSA-backed vehicle/MOT fields may be marked **VERIFIED** when returned by the live API. Price, battery, listing and marketplace-derived fields remain estimated, unknown or demo-only until approved data sources are connected.
