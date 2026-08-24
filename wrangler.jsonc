@@ -21,8 +21,7 @@
       "/cars/*",
       "/compare/*",
       "/best/*",
-      "/robots.txt",
-      "/sitemap.xml"
+      "/robots.txt"
     ]
   },
   "observability": {
