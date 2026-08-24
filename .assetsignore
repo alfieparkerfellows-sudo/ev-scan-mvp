@@ -7,6 +7,7 @@ worker-admin.js
 worker-entry.js
 admin-api.js
 account-api.js
+account-schema.js
 autotrader.js
 schema.sql
 wrangler.jsonc
