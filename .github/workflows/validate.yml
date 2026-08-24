@@ -33,6 +33,7 @@ jobs:
           node --check account-api.js
           node --check account-schema.js
           node --check account.js
+          node --check account-personalisation.js
           node --check autotrader.js
           node --check seo-guides.js
           node --check seo-models.js
@@ -57,6 +58,7 @@ jobs:
           test -f account-api.js
           test -f account-schema.js
           test -f account.js
+          test -f account-personalisation.js
           test -f account.css
           test -f migrations/0001_accounts.sql
           test -f autotrader.js
@@ -99,12 +101,14 @@ jobs:
           grep -q 'handleAccountRequest' worker-entry.js
           grep -q 'ensureAccountSchema' worker-entry.js
           grep -q 'EVSCAN_DB' worker-entry.js
+          grep -q 'account-personalisation.js' worker-entry.js
           grep -q 'PBKDF2' account-api.js
           grep -q 'HttpOnly; Secure; SameSite=Lax' account-api.js
           grep -q 'saved_scans' migrations/0001_accounts.sql
           grep -q 'garage_vehicles' migrations/0001_accounts.sql
           grep -q 'Download my data' account.js
           grep -q 'Delete my account' account.js
+          grep -q 'getDrivingProfile' account-personalisation.js
       - name: Validate Wrangler JSONC basics
         run: |
           grep -q '"main": "./worker-entry.js"' wrangler.jsonc
