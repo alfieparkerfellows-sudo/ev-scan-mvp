@@ -17,6 +17,8 @@
       "/index.html",
       "/ev-guides",
       "/ev-guides/*",
+      "/cars",
+      "/cars/*",
       "/robots.txt",
       "/sitemap.xml"
     ]
