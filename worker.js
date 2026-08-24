@@ -25,6 +25,39 @@ function configured(env) {
   );
 }
 
+function upstreamCodeFrom(text = '') {
+  try {
+    const parsed = JSON.parse(text);
+    return String(parsed.errorCode || parsed.code || parsed.error || '').trim() || null;
+  } catch {
+    return null;
+  }
+}
+
+function dvsaFailureMessage(error) {
+  const stage = error?.stage || 'unknown';
+  const code = error?.upstreamCode || null;
+
+  if (stage === 'authentication') {
+    return `DVSA authentication failed${code ? ` (${code})` : ''}. The token credentials or token URL need checking.`;
+  }
+
+  const messages = {
+    'MOTH-UA-01': 'DVSA rejected the authorisation for this request.',
+    'MOTH-FB-01': 'DVSA says this account does not have permission to use this endpoint.',
+    'MOTH-FB-02': 'The DVSA access token expired before the vehicle request completed.',
+    'MOTH-FB-03': 'DVSA did not recognise the API key.',
+    'MOTH-FB-04': 'DVSA says the access token was missing from the request.',
+    'MOTH-RL-01': 'The DVSA daily API allowance has been reached.',
+    'MOTH-RL-02': 'DVSA is rate-limiting requests. Wait a few minutes and try again.',
+    'MOTH-IV-03': 'DVSA says that registration number is invalid.',
+    'MOTH-NF-01': 'DVSA could not find a vehicle for that registration.',
+    'MOTH-NF-02': 'DVSA could not find the API endpoint requested.'
+  };
+
+  return messages[code] || `DVSA vehicle lookup failed${code ? ` (${code})` : ''}.`;
+}
+
 async function getAccessToken(env) {
   const now = Date.now();
   if (tokenState.token && tokenState.expiresAt > now + 60_000) return tokenState.token;
@@ -44,10 +77,22 @@ async function getAccessToken(env) {
 
   if (!response.ok) {
     const text = await response.text();
-    throw new Error(`DVSA token request failed (${response.status}): ${text.slice(0, 300)}`);
+    const error = new Error('DVSA access-token request failed.');
+    error.stage = 'authentication';
+    error.upstreamStatus = response.status;
+    error.upstreamCode = upstreamCodeFrom(text);
+    throw error;
   }
 
   const data = await response.json();
+  if (!data?.access_token) {
+    const error = new Error('DVSA token response did not contain an access token.');
+    error.stage = 'authentication';
+    error.upstreamStatus = response.status;
+    error.upstreamCode = 'TOKEN_MISSING';
+    throw error;
+  }
+
   const expiresIn = Math.max(300, Number(data.expires_in || 3600));
   tokenState = {
     token: data.access_token,
@@ -72,8 +117,10 @@ async function fetchMotVehicle(env, registration) {
   if (response.status === 404) return null;
   if (!response.ok) {
     const text = await response.text();
-    const error = new Error(`DVSA vehicle request failed (${response.status}): ${text.slice(0, 300)}`);
-    error.status = response.status;
+    const error = new Error('DVSA vehicle request failed.');
+    error.stage = 'vehicle_lookup';
+    error.upstreamStatus = response.status;
+    error.upstreamCode = upstreamCodeFrom(text);
     throw error;
   }
 
@@ -338,13 +385,18 @@ async function handleScan(request, env) {
       ]
     });
   } catch (error) {
-    const status = Number(error.status) || 502;
+    const upstreamStatus = Number(error.upstreamStatus) || null;
+    const message = dvsaFailureMessage(error);
     return json({
       ok: false,
       code: 'DVSA_UPSTREAM_ERROR',
-      message: 'We could not retrieve MOT data from DVSA right now.',
-      detail: String(error.message || error).slice(0, 500)
-    }, status >= 400 && status < 600 ? status : 502);
+      message,
+      diagnostic: {
+        stage: error.stage || 'unknown',
+        upstreamStatus,
+        upstreamCode: error.upstreamCode || null
+      }
+    }, upstreamStatus && upstreamStatus >= 400 && upstreamStatus < 600 ? upstreamStatus : 502);
   }
 }
 
@@ -409,7 +461,7 @@ export default {
       return json({
         ok: true,
         service: 'EV Scan API',
-        version: '0.2.0',
+        version: '0.2.1',
         liveMotConfigured: configured(env),
         autoTraderConfigured: autotraderConfigured(env),
         capabilities: {
