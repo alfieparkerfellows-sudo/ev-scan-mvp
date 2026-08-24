@@ -93,9 +93,9 @@ export function renderHomeFaq() {
       <div>
         <div class="eyebrow">EV Scan FAQ</div>
         <h2>Quick answers about EV Scan.</h2>
-        <p>Need help with electric cars rather than the tool itself? Browse our simple <a href="/ev-guides/">EV buying guides</a>.</p>
+        <p>Researching electric cars? Browse our <a href="/ev-guides/">simple EV buying guides</a> or <a href="/cars/">used EV model guides</a>.</p>
       </div>
-      <a class="home-faq-guides" href="/ev-guides/">Browse EV Guides →</a>
+      <a class="home-faq-guides" href="/cars/">Used EV Guides →</a>
     </div>
     <div class="home-faq-list">
       ${FAQS.map((item, index) => `<details${index === 0 ? ' open' : ''}><summary>${esc(item.q)}<span>+</span></summary><p>${esc(item.a)}</p></details>`).join('')}
