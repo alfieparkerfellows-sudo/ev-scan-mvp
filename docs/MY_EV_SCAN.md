@@ -6,6 +6,8 @@ Accounts are optional. Never block Scan a Car or Find My EV behind login.
 
 The account pitch should be subtle: EV Scan is useful without an account; signing in only allows the service to remember useful information between visits/devices.
 
+The homepage should explain the value of an account without pushing signup. The header `Log in` button is for returning users. The homepage `See what you get` button opens a benefits explainer first; only the CTA at the bottom of that explainer opens registration.
+
 ## Current logged-in features
 
 - Saved scans
@@ -17,13 +19,15 @@ The account pitch should be subtle: EV Scan is useful without an account; signin
 - MOT / service / tax-VED / battery-warranty dates
 - In-app due-soon reminders
 - Calendar `.ics` reminder export
+- Cross-device access to account data
 - Light/dark/system theme
 - Pink/cyan/violet account accent
 - Comfortable/compact account layout
 - Reduced motion
-- Advanced-data preference
 - JSON account-data export
 - Account deletion
+
+Profile-style features that do not make buying or owning an EV easier should not be surfaced. Display-name customisation and the old advanced-data toggle are intentionally hidden from the current UI.
 
 ## Authentication
 
@@ -39,6 +43,7 @@ Security controls:
 - 30-day session expiry
 - Rate-limited sign-in/register attempts
 - Generic invalid-login response
+- Cross-origin account-changing requests blocked at the Worker layer
 
 Future improvement: password reset will require a trustworthy email-delivery provider. Do not pretend password reset exists until that provider is connected.
 
