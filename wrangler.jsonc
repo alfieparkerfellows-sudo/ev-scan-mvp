@@ -21,7 +21,9 @@
       "/cars/*",
       "/compare/*",
       "/best/*",
-      "/robots.txt"
+      "/robots.txt",
+      "/sitemap.xml",
+      "/evscan-sitemap.xml"
     ]
   },
   "observability": {
