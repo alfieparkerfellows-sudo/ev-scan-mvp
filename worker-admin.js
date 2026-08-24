@@ -19,7 +19,13 @@ async function serveAdmin(request, env) {
     });
     const asset = await env.ASSETS.fetch(assetRequest);
     if (!asset.ok) return asset;
-    return new Response(asset.body, { status: asset.status, headers: noIndexHeaders(asset.headers) });
+    const contentType = asset.headers.get('content-type') || '';
+    if (!contentType.includes('text/html')) {
+      return new Response(asset.body, { status: asset.status, headers: noIndexHeaders(asset.headers) });
+    }
+    let html = await asset.text();
+    if (!html.includes('/admin-status.js')) html = html.replace('</body>', '  <script src="/admin-status.js"></script>\n</body>');
+    return new Response(html, { status: asset.status, headers: noIndexHeaders(asset.headers) });
   } catch {
     return new Response('EV Scan Admin is temporarily unavailable.', {
       status: 503,
