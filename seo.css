@@ -63,9 +63,28 @@
 .seo-footer-links a:hover{color:#fff}
 .seo-404-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:24px}
 .seo-404-actions a+ a{background:rgba(255,255,255,.06);border:1px solid var(--border);box-shadow:none}
+
+/* Low-key homepage FAQ: crawlable, useful, deliberately not a hero feature. */
+.home-faq-section{padding-top:38px!important;padding-bottom:56px!important}
+.home-faq-head{display:flex;align-items:flex-end;justify-content:space-between;gap:28px;margin-bottom:18px}
+.home-faq-head>div{max-width:760px}
+.home-faq-head h2{font-size:clamp(1.7rem,3vw,2.6rem);line-height:1.06;letter-spacing:-.045em;margin:7px 0 8px}
+.home-faq-head p{margin:0;color:var(--muted);font-size:.8rem;line-height:1.55}
+.home-faq-head p a{text-decoration:underline;text-underline-offset:3px;color:#dbe2ec}
+.home-faq-guides{flex:0 0 auto;color:var(--pink-2);font-size:.75rem;font-weight:850}
+.home-faq-list{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.home-faq-list details{border:1px solid var(--border);background:rgba(255,255,255,.02);border-radius:15px;padding:0 16px;min-width:0}
+.home-faq-list details[open]{background:linear-gradient(145deg,rgba(245,15,93,.055),rgba(255,255,255,.018));border-color:rgba(245,15,93,.18)}
+.home-faq-list summary{list-style:none;display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer;padding:16px 0;font-size:.82rem;font-weight:800;line-height:1.35}
+.home-faq-list summary::-webkit-details-marker{display:none}
+.home-faq-list summary span{color:var(--pink-2);font-size:1.15rem;line-height:1;transition:transform .16s ease}
+.home-faq-list details[open] summary span{transform:rotate(45deg)}
+.home-faq-list details p{margin:0;padding:0 0 16px;color:var(--muted);font-size:.75rem;line-height:1.62}
+
 @media(max-width:900px){
   .seo-keypoints,.seo-related-grid,.seo-guide-grid{grid-template-columns:1fr 1fr}
   .seo-problem-cta{align-items:flex-start;flex-direction:column}
+  .home-faq-list{grid-template-columns:1fr}
 }
 @media(max-width:680px){
   .seo-header,.seo-footer,.seo-main{width:min(calc(100% - 28px),1120px)}
@@ -82,4 +101,8 @@
   .seo-hub-section{padding:34px 0}
   .seo-footer{display:block}
   .seo-footer-links{justify-content:flex-start;margin-top:20px}
+  .home-faq-section{padding-top:24px!important;padding-bottom:40px!important}
+  .home-faq-head{display:block;margin-bottom:14px}
+  .home-faq-guides{display:inline-block;margin-top:12px}
+  .home-faq-list details{padding-inline:14px}
 }
