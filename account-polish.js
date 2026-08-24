@@ -10,21 +10,21 @@
     overlay.innerHTML = `
       <div class="account-info-dialog" role="dialog" aria-modal="true" aria-labelledby="account-info-title">
         <button class="account-info-close" type="button" data-account-info-close aria-label="Close">×</button>
-        <div class="eyebrow">Free My EV Scan account</div>
-        <h2 id="account-info-title">One place for the EVs you’re considering — and the one you buy.</h2>
-        <p class="account-info-intro">You never need an account to scan a car. A free account simply saves the useful bits so you do not have to start again every time.</p>
+        <div class="eyebrow">Your EV buying dashboard</div>
+        <h2 id="account-info-title">More useful while you shop. Still useful after you buy.</h2>
+        <p class="account-info-intro">Scanning stays free without an account. Create one only if you want EV Scan to become your personal place to shortlist cars, compare real scans, get personalised recommendations and keep on top of the EV you eventually buy.</p>
         <div class="account-info-grid">
-          <article><span>♡</span><div><b>Save scans</b><p>Keep reports you want to revisit and access them again when you come back.</p></div></article>
-          <article><span>⇄</span><div><b>Shortlist + compare</b><p>Keep serious candidates together and compare the actual cars you scanned side by side.</p></div></article>
-          <article><span>⌁</span><div><b>Save your driving profile</b><p>Tell EV Scan how you drive once. We can reuse it in Find My EV and personal EV-fit checks.</p></div></article>
-          <article><span>◷</span><div><b>My Garage after you buy</b><p>Keep MOT, service, tax/VED and battery-warranty dates together, with due-soon warnings and calendar reminders.</p></div></article>
-          <article><span>↗</span><div><b>Pick up on another device</b><p>Your saved cars, shortlist, garage and preferences are tied to your account instead of one browser.</p></div></article>
-          <article><span>◐</span><div><b>A few useful personal touches</b><p>Choose light or dark mode, an accent colour, compact layout and reduced motion. None of these changes your vehicle scores.</p></div></article>
+          <article><span>♡</span><div><b>Build a proper shortlist</b><p>Save the exact EVs you care about, keep their reports together and stop losing track of good listings.</p></div></article>
+          <article><span>⇄</span><div><b>Compare the actual cars</b><p>Put shortlisted scans side by side and compare Deal Score, price, battery, range, MOT and confidence — not just model specs.</p></div></article>
+          <article><span>◎</span><div><b>Get personalised EV matches</b><p>Find My EV and EV Fit can use your real journeys, charging situation and priorities to make recommendations that suit you.</p></div></article>
+          <article><span>◷</span><div><b>Never lose an important date</b><p>Move the car you buy into My Garage and track MOT, service, tax/VED and battery-warranty dates with due-soon warnings and calendar reminders.</p></div></article>
+          <article><span>↗</span><div><b>Take your EV Scan anywhere</b><p>Your scans, shortlist, comparisons and garage follow your account, so you can pick up on another phone or computer.</p></div></article>
+          <article><span>◐</span><div><b>Make EV Scan feel like yours</b><p>Choose light or dark mode, an accent colour, compact layout and reduced motion. Small extras, without changing any vehicle score.</p></div></article>
         </div>
         <div class="account-info-footer">
-          <button class="primary-button" type="button" data-account-info-register>Create free account</button>
+          <button class="primary-button" type="button" data-account-info-register>Create my free account</button>
           <button class="account-info-login" type="button" data-account-info-login>I already have an account</button>
-          <small>Two fields to sign up: email and password. Scanning remains free without an account.</small>
+          <small>Sign up with just an email and password. No account is ever required to scan a car.</small>
         </div>
       </div>`;
     document.body.appendChild(overlay);
@@ -75,17 +75,17 @@
     section.innerHTML = `
       <div class="account-benefits-card ev-account-benefits-v2">
         <div class="account-benefits-main">
-          <div class="eyebrow">Free My EV Scan account</div>
-          <h3>Keep the cars you’re considering in one place.</h3>
-          <p>Save scans, build a shortlist and compare cars while you shop. If you buy one, My Garage keeps its important ownership dates together too.</p>
+          <div class="eyebrow">Unlock more from EV Scan</div>
+          <h3>Build your shortlist. Compare properly. Stay on top after you buy.</h3>
+          <p>A free account turns EV Scan into your personal EV buying dashboard — helping you make the decision now and manage the important stuff later.</p>
         </div>
         <div class="account-benefits-points" aria-label="Free account benefits">
-          <span><b>Save + compare</b><small>Your actual scanned cars</small></span>
-          <span><b>Driving profile</b><small>Less repeating yourself</small></span>
-          <span><b>My Garage</b><small>MOT, service + warranty dates</small></span>
-          <span><b>Across devices</b><small>Pick up where you left off</small></span>
+          <span><i>♡</i><b>Save the cars that matter</b><small>Keep every serious scan in one shortlist</small></span>
+          <span><i>⇄</i><b>Compare exact cars</b><small>Price, battery, range, MOT and scores side by side</small></span>
+          <span><i>◎</i><b>Personalised EV matches</b><small>Recommendations shaped around your real life</small></span>
+          <span><i>◷</i><b>Ownership reminders</b><small>MOT, service, tax/VED and battery warranty in My Garage</small></span>
         </div>
-        <button class="ghost-button account-benefits-more" type="button" data-account-benefits>See what you get</button>
+        <button class="primary-button account-benefits-more" type="button" data-account-benefits>See everything you unlock →</button>
       </div>`;
   }
 
