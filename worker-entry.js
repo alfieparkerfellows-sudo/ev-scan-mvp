@@ -1,10 +1,35 @@
 import baseWorker from './worker-admin.js';
 import { accountsConfigured, handleAccountRequest } from './account-api.js';
+import { ensureAccountSchema } from './account-schema.js';
 
 function withAccountDb(env = {}) {
   if (env.ACCOUNTS_DB) return env;
   if (!env.EVSCAN_DB) return env;
   return Object.assign({}, env, { ACCOUNTS_DB: env.EVSCAN_DB });
+}
+
+function accountUnavailable(status = 503) {
+  return new Response(JSON.stringify({
+    ok: status < 400,
+    configured: false,
+    code: 'ACCOUNTS_NOT_READY',
+    message: 'EV Scan accounts are being connected. Core scanning remains available without an account.'
+  }, null, 2), {
+    status,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store',
+      'x-content-type-options': 'nosniff',
+      'x-robots-tag': 'noindex, nofollow'
+    }
+  });
+}
+
+async function accountReady(env = {}) {
+  const accountEnv = withAccountDb(env);
+  if (!accountsConfigured(accountEnv)) return { ready: false, env: accountEnv };
+  const ready = await ensureAccountSchema(accountEnv.ACCOUNTS_DB);
+  return { ready, env: accountEnv };
 }
 
 async function injectAccountUi(response) {
@@ -21,20 +46,19 @@ async function injectAccountUi(response) {
 
 async function augmentHealth(response, env) {
   try {
-    const accountEnv = withAccountDb(env);
-    const configured = accountsConfigured(accountEnv);
+    const account = await accountReady(env);
     const data = await response.json();
     data.version = '0.7.0';
-    data.accountsConfigured = configured;
+    data.accountsConfigured = account.ready;
     data.capabilities = {
       ...(data.capabilities || {}),
       optionalAccounts: true,
-      savedScans: configured,
-      shortlistAndCompare: configured,
-      drivingProfile: configured,
-      myGarage: configured,
-      inAppOwnershipReminders: configured,
-      accountThemes: configured
+      savedScans: account.ready,
+      shortlistAndCompare: account.ready,
+      drivingProfile: account.ready,
+      myGarage: account.ready,
+      inAppOwnershipReminders: account.ready,
+      accountThemes: account.ready
     };
     const headers = new Headers(response.headers);
     headers.set('content-type', 'application/json; charset=utf-8');
@@ -47,7 +71,12 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname.startsWith('/api/account') || url.pathname.startsWith('/api/auth/')) {
-      return handleAccountRequest(request, withAccountDb(env), url);
+      const account = await accountReady(env);
+      if (!account.ready) {
+        if (url.pathname === '/api/account/status') return accountUnavailable(200);
+        return accountUnavailable(503);
+      }
+      return handleAccountRequest(request, account.env, url);
     }
 
     const response = await baseWorker.fetch(request, env, ctx);
