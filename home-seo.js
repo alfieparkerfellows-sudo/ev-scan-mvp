@@ -75,6 +75,7 @@ export function renderHomeHead() {
   return `
   <link rel="canonical" href="${SITE_URL}/">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+  <meta name="google-site-verification" content="RD0qu1KdeWjd9m3E8SiPbTgRyKq7PSUnldosIdF4FKQ">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="EV Scan">
   <meta property="og:title" content="EV Scan — Check a Used Electric Car Before You Buy">
