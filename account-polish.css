@@ -3,14 +3,17 @@
 .site-header.account-header-polished .account-login-button,.site-header.account-header-polished .account-user-button{min-height:48px;padding:0 20px;border-radius:13px}
 .site-header.account-header-polished .account-user-button .account-user-label{display:inline!important}
 
-.ev-account-benefits-v2{grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) auto!important;gap:24px!important;align-items:center!important}
-.account-benefits-main h3{margin:3px 0 9px;font-size:1.42rem;letter-spacing:-.035em}
-.account-benefits-main p{max-width:610px}
+.ev-account-benefits-v2{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) auto!important;gap:24px!important;align-items:center!important;position:relative;overflow:hidden;border-color:rgba(245,15,93,.2)!important;background:radial-gradient(circle at 94% 0%,rgba(245,15,93,.12),transparent 31%),linear-gradient(155deg,rgba(255,255,255,.055),rgba(255,255,255,.018))!important}
+.ev-account-benefits-v2::before{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:linear-gradient(90deg,transparent,var(--pink),#ff6a97,transparent);opacity:.85}
+.account-benefits-main,.account-benefits-points,.account-benefits-more{position:relative;z-index:1}
+.account-benefits-main h3{margin:3px 0 10px;font-size:1.5rem;line-height:1.08;letter-spacing:-.04em}
+.account-benefits-main p{max-width:610px;line-height:1.58}
 .account-benefits-points{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
-.account-benefits-points>span{display:grid;gap:2px;padding:10px 12px;border:1px solid var(--border);border-radius:13px;background:rgba(255,255,255,.025)}
-.account-benefits-points b{font-size:.78rem;color:var(--text)}
-.account-benefits-points small{font-size:.68rem;color:var(--muted);line-height:1.35}
-.account-benefits-more{white-space:nowrap;min-height:46px}
+.account-benefits-points>span{display:grid;grid-template-columns:34px 1fr;column-gap:10px;row-gap:2px;padding:12px;border:1px solid var(--border);border-radius:14px;background:rgba(255,255,255,.03);min-width:0}
+.account-benefits-points i{grid-row:1/3;width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:var(--pink-soft);color:var(--pink-2);font-style:normal;font-size:1rem;font-weight:900}
+.account-benefits-points b{font-size:.8rem;color:var(--text);line-height:1.25;min-width:0}
+.account-benefits-points small{font-size:.68rem;color:var(--muted);line-height:1.35;min-width:0}
+.account-benefits-more{white-space:nowrap;min-height:50px;box-shadow:0 12px 32px rgba(245,15,93,.2)}
 
 /* Login is intentionally only login/signup. The detailed explanation lives in its own popup. */
 #account-overlay .account-dialog{width:min(480px,100%);display:block;grid-template-columns:1fr}
@@ -43,9 +46,14 @@ html[data-ev-theme="light"] .account-info-dialog{background:#fff}
   .site-header.account-header-polished .account-login-button,.site-header.account-header-polished .account-user-button{min-height:46px;padding:0 16px}
   .site-header.account-header-polished .account-user-button .account-avatar{display:none}
   .site-header.account-header-polished .account-user-button .account-user-label{font-size:.82rem}
-  .ev-account-benefits-v2{padding:22px!important;gap:18px!important}
-  .account-benefits-points{grid-template-columns:1fr 1fr;gap:8px}
-  .account-benefits-points>span{padding:10px}
+  .ev-account-benefits-v2{padding:24px 20px!important;gap:18px!important}
+  .account-benefits-main h3{font-size:1.62rem}
+  .account-benefits-main p{font-size:.9rem}
+  .account-benefits-points{grid-template-columns:1fr;gap:8px}
+  .account-benefits-points>span{padding:12px;grid-template-columns:36px 1fr}
+  .account-benefits-points i{width:36px;height:36px}
+  .account-benefits-points b{font-size:.83rem}
+  .account-benefits-points small{font-size:.72rem}
   #account-overlay .account-dialog-form{padding:27px 20px}
   .account-info-overlay{padding:10px;align-items:end}
   .account-info-dialog{border-radius:24px 24px 14px 14px;padding:26px 18px 20px;max-height:92vh;overflow:auto}
