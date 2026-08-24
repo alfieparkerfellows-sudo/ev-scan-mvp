@@ -10,7 +10,7 @@ The interface is intentionally simple for people buying an EV for the first time
 
 ## Current MVP
 
-The frontend is live on Cloudflare Workers and now includes a server-side DVSA MOT History API integration for registration lookups. Marketplace/listing data remains in demo mode until an approved Auto Trader integration is available.
+The frontend is live on Cloudflare Workers and includes a server-side DVSA MOT History API integration for registration lookups. Marketplace/listing data remains in demo mode until an approved Auto Trader integration is available.
 
 Included in the MVP:
 
@@ -36,10 +36,12 @@ Included in the MVP:
 - Similar-budget recommendations
 - Same-car-better-listing / Save Money / Better Fit / Worth Stretching For recommendations
 - Clear trust/limitations section
+- Privacy, cookies, terms and affiliate-disclosure pages
+- Global graceful-fallback layer for missing images, API outages and unexpected browser/runtime errors
 
 ## Important trust rules
 
-The final product must clearly distinguish:
+The product must clearly distinguish:
 
 1. **Verified** — supported by an authoritative source or supplied evidence.
 2. **Estimated** — modelled from age, mileage, vehicle data or market information.
@@ -47,6 +49,24 @@ The final product must clearly distinguish:
 4. **Unknown** — information we do not have.
 
 Never present an estimated battery-health figure as a measured State of Health. Deal Scores and recommendations must never be affected by advertising or affiliate commission.
+
+## Graceful fallback policy
+
+Missing or malformed data must never be replaced with invented certainty. Every integration and report renderer should follow these rules:
+
+- Missing field → show `Unknown`, `Not supplied` or `Not available`.
+- Missing photo → show a neutral vehicle/photo placeholder; never break the gallery.
+- Empty MOT history → keep the report open and explain that no MOT records were returned.
+- Partial vehicle identity → use whichever verified fields are available without failing the whole report.
+- Provider timeout/outage → show a useful retry message while keeping unrelated features available.
+- Malformed provider response → reject that field safely rather than passing broken data into the UI.
+- Missing price/battery data → do not calculate a Deal Score that implies those inputs were known.
+- External text rendered as HTML must be escaped.
+- API calls should use finite timeouts and return structured errors.
+- Browser storage must be optional; features should continue if localStorage is unavailable.
+- Affiliate/partner failure must never affect scoring or core report availability.
+
+`resilience.js` provides the browser-level safety net and legal footer links. Provider-specific adapters must still normalise their own data defensively.
 
 ## Architecture
 
@@ -57,6 +77,7 @@ Never present an estimated battery-health figure as a measured State of Health. 
 - GitHub as source of truth
 - Cloudflare Workers/Assets for hosting
 - DVSA MOT History API adapter
+- Defensive Auto Trader adapter prepared for approved access
 - No accounts
 - No database
 - No paywall
@@ -81,6 +102,17 @@ The Worker obtains and caches an OAuth access token server-side, then sends the 
 - Vehicle/specification datasets
 - Comparable-car market data
 - Optional specialist provenance and battery-test partners
+
+## Legal / compliance pages
+
+Current prototype pages:
+
+- `/privacy.html`
+- `/cookies.html`
+- `/terms.html`
+- `/affiliate-disclosure.html`
+
+The cookie/privacy wording must be reviewed before enabling analytics, behavioural advertising, conversion tracking, accounts, server-side review storage or other new personal-data processing. A dedicated privacy contact address must also be published before wider public launch.
 
 ## Product direction
 
