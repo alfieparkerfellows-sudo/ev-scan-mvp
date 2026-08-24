@@ -10,6 +10,10 @@ const FAQS = [
     a: 'Yes. The core EV Scan buying tools are intended to be free to use. We may earn commission from clearly labelled partner or affiliate links, but those relationships do not change Deal Scores or recommendations.'
   },
   {
+    q: 'Do I need an account to use EV Scan?',
+    a: 'No. You can scan a car without creating an account. A free account is optional and is only useful if you want EV Scan to remember saved scans, your shortlist, driving profile, comparison choices, My Garage, ownership reminders and appearance preferences.'
+  },
+  {
     q: 'Can EV Scan check MOT history?',
     a: 'EV Scan can use official DVSA MOT information when the live registration service is available. We explain MOT patterns in plain English rather than only showing a list of tests.'
   },
