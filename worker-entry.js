@@ -54,7 +54,9 @@ async function injectAccountUi(response) {
   if (!type.includes('text/html')) return response;
   let html = await response.text();
   if (!html.includes('/account.css')) html = html.replace('</head>', '<link rel="stylesheet" href="/account.css">\n</head>');
+  if (!html.includes('/account-polish.css')) html = html.replace('</head>', '<link rel="stylesheet" href="/account-polish.css">\n</head>');
   if (!html.includes('/account.js')) html = html.replace('</body>', '  <script src="/account.js"></script>\n  <script src="/account-personalisation.js"></script>\n</body>');
+  if (!html.includes('/account-polish.js')) html = html.replace('</body>', '  <script src="/account-polish.js"></script>\n</body>');
   const headers = new Headers(response.headers);
   headers.delete('content-length');
   return new Response(html, { status: response.status, headers });
@@ -64,7 +66,7 @@ async function augmentHealth(response, env) {
   try {
     const account = await accountReady(env);
     const data = await response.json();
-    data.version = '0.7.0';
+    data.version = '0.7.1';
     data.accountsConfigured = account.ready;
     data.capabilities = {
       ...(data.capabilities || {}),
