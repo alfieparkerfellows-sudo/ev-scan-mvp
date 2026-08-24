@@ -1,0 +1,7 @@
+worker.js
+wrangler.jsonc
+README.md
+.github/
+docs/
+.dev.vars*
+*.md
