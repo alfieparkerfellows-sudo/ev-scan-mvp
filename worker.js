@@ -5,7 +5,8 @@ import { renderHomeHead, renderHomeFaq } from './home-seo.js';
 const JSON_HEADERS = {
   'content-type': 'application/json; charset=utf-8',
   'cache-control': 'no-store',
-  'x-content-type-options': 'nosniff'
+  'x-content-type-options': 'nosniff',
+  'x-robots-tag': 'noindex, nofollow'
 };
 
 let tokenState = { token: null, expiresAt: 0 };
@@ -343,6 +344,9 @@ async function serveAsset(request, env, url) {
     const contentType = response.headers.get('content-type') || '';
     if (!contentType.includes('text/html')) return response;
     let html = await response.text();
+    html = html.replace('<html lang="en">', '<html lang="en-GB">');
+    html = html.replace(/<title>[^<]*<\/title>/i, '<title>EV Scan — Check a Used Electric Car Before You Buy</title>');
+    html = html.replace(/<meta name="description" content="[^"]*"\s*\/?>/i, '<meta name="description" content="Free UK used EV buying assistant. Paste an electric-car listing or enter a registration to understand price, battery, real-world range, MOT history, insurance and what to check before buying.">');
     const headMarkup = renderHomeHead();
     if (!html.includes('rel="canonical"')) html = html.replace('</head>', `${headMarkup}\n</head>`);
     const faqMarkup = renderHomeFaq();
@@ -359,7 +363,7 @@ async function serveAsset(request, env, url) {
     headers.delete('content-length'); headers.set('cache-control', 'no-cache');
     return new Response(html, { status: response.status, headers });
   } catch {
-    return new Response('EV Scan is temporarily unavailable. Please refresh in a moment.', { status: 503, headers: { 'content-type': 'text/plain; charset=utf-8', 'retry-after': '30' } });
+    return new Response('EV Scan is temporarily unavailable. Please refresh in a moment.', { status: 503, headers: { 'content-type': 'text/plain; charset=utf-8', 'retry-after': '30', 'x-robots-tag': 'noindex' } });
   }
 }
 
@@ -385,7 +389,7 @@ export default {
       return response;
     }
 
-    if (url.pathname === '/api/health') return json({ ok: true, service: 'EV Scan API', version: '0.4.1', liveMotConfigured: configured(env), autoTraderConfigured: autotraderConfigured(env), capabilities: { staticFrontend: true, motByRegistration: true, autoTraderPublicSearchAdapter: true, listingUrlIngestion: false, marketPricing: false, liveRecommendations: autotraderConfigured(env), gracefulFallbacks: true, seoGuides: true, homepageFaq: true } });
+    if (url.pathname === '/api/health') return json({ ok: true, service: 'EV Scan API', version: '0.4.2', liveMotConfigured: configured(env), autoTraderConfigured: autotraderConfigured(env), capabilities: { staticFrontend: true, motByRegistration: true, autoTraderPublicSearchAdapter: true, listingUrlIngestion: false, marketPricing: false, liveRecommendations: autotraderConfigured(env), gracefulFallbacks: true, seoGuides: true, homepageFaq: true } });
     if (url.pathname === '/api/scoring-preview' && request.method === 'POST') {
       try { const body = await request.json(); return json({ ok: true, ...scoreDeal(body) }); }
       catch { return json({ ok: false, code: 'INVALID_JSON', message: 'Could not read the scoring input.' }, 400); }
