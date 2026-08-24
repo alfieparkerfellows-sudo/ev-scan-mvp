@@ -68,7 +68,7 @@ async function augmentHealth(response, env) {
   try {
     const account = await accountReady(env);
     const data = await response.json();
-    data.version = '0.7.2';
+    data.version = '0.7.3';
     data.accountsConfigured = account.ready;
     data.capabilities = {
       ...(data.capabilities || {}),
