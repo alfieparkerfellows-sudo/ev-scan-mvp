@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="robots" content="noindex,nofollow,noarchive" />
+  <meta name="theme-color" content="#070b15" />
+  <title>EV Scan Admin</title>
+  <link rel="stylesheet" href="/admin.css" />
+</head>
+<body>
+  <div class="admin-app">
+    <aside class="admin-sidebar">
+      <a class="admin-brand" href="/" aria-label="EV Scan home">
+        <span class="admin-brand-mark"><i></i><i></i><i></i><i></i></span>
+        <span><b>EV Scan</b><small>Admin</small></span>
+      </a>
+
+      <nav class="admin-nav" aria-label="Admin sections">
+        <button class="admin-nav-item is-active" data-view="overview"><span>⌂</span><b>Overview</b></button>
+        <button class="admin-nav-item" data-view="scans"><span>⌕</span><b>Scans</b></button>
+        <button class="admin-nav-item" data-view="reviews"><span>★</span><b>Reviews</b><em id="review-badge" hidden>0</em></button>
+        <button class="admin-nav-item" data-view="traffic"><span>↗</span><b>Traffic</b></button>
+        <button class="admin-nav-item" data-view="health"><span>⌁</span><b>Product health</b></button>
+        <button class="admin-nav-item" data-view="activity"><span>≋</span><b>Activity</b></button>
+      </nav>
+
+      <div class="admin-sidebar-foot">
+        <div class="source-mini" id="source-mini">
+          <span class="status-dot is-waiting"></span>
+          <div><b>Data collection</b><small>Checking…</small></div>
+        </div>
+        <button id="admin-lock" class="admin-lock">Lock dashboard</button>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-topbar">
+        <div>
+          <span class="page-kicker">Private EV Scan analytics</span>
+          <h1 id="page-title">Overview</h1>
+        </div>
+        <div class="topbar-actions">
+          <label class="range-picker">
+            <span>Range</span>
+            <select id="range-select">
+              <option value="1">Today</option>
+              <option value="7">7 days</option>
+              <option value="30" selected>30 days</option>
+              <option value="90">90 days</option>
+              <option value="365">12 months</option>
+            </select>
+          </label>
+          <button class="refresh-button" id="refresh-dashboard"><span>↻</span> Refresh</button>
+        </div>
+      </header>
+
+      <section class="system-banner" id="system-banner" hidden>
+        <span class="status-dot"></span>
+        <div><b id="system-banner-title">Dashboard ready</b><p id="system-banner-copy"></p></div>
+      </section>
+
+      <section class="admin-view is-active" data-panel="overview">
+        <div class="health-hero admin-card">
+          <div class="health-ring" id="health-ring" style="--health:0"><span><b id="health-score">—</b><small>/100</small></span></div>
+          <div class="health-copy">
+            <span class="card-kicker">EV Scan health</span>
+            <h2 id="health-title">Waiting for live data</h2>
+            <p id="health-summary">Once data collection is activated, this score will combine scan reliability, API health and front-end errors into one simple signal.</p>
+          </div>
+          <div class="health-flags" id="health-flags">
+            <span><i class="status-dot is-waiting"></i>DVSA</span>
+            <span><i class="status-dot is-waiting"></i>Auto Trader</span>
+            <span><i class="status-dot is-waiting"></i>Database</span>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <article class="kpi-card admin-card"><div class="kpi-head"><span>Visitors</span><i>↗</i></div><strong id="kpi-visitors">—</strong><small id="kpi-visitors-note">Unique sessions</small><div class="mini-spark" id="spark-visitors"></div></article>
+          <article class="kpi-card admin-card"><div class="kpi-head"><span>Vehicle scans</span><i>⌕</i></div><strong id="kpi-scans">—</strong><small id="kpi-scans-note">Completed scans</small><div class="mini-spark" id="spark-scans"></div></article>
+          <article class="kpi-card admin-card"><div class="kpi-head"><span>Scan success</span><i>✓</i></div><strong id="kpi-success">—</strong><small id="kpi-success-note">Successful responses</small><div class="mini-spark" id="spark-success"></div></article>
+          <article class="kpi-card admin-card"><div class="kpi-head"><span>Average review</span><i>★</i></div><strong id="kpi-rating">—</strong><small id="kpi-rating-note">No live reviews yet</small><div class="mini-spark" id="spark-reviews"></div></article>
+        </div>
+
+        <div class="overview-grid">
+          <article class="admin-card chart-card span-2">
+            <div class="card-heading"><div><span class="card-kicker">Growth</span><h2>Traffic & scans over time</h2></div><div class="chart-legend"><span><i class="legend-dot visitors"></i>Page views</span><span><i class="legend-dot scans"></i>Scans</span></div></div>
+            <div class="main-chart" id="main-trend-chart"><div class="empty-state compact"><b>No history yet</b><span>Live history will build automatically after launch.</span></div></div>
+          </article>
+
+          <article class="admin-card action-card">
+            <div class="card-heading"><div><span class="card-kicker">What should I improve?</span><h2>Priority actions</h2></div><span class="ai-pill">Auto insights</span></div>
+            <div class="insight-list" id="insight-list">
+              <div class="insight-item neutral"><i>1</i><div><b>Waiting for enough real usage</b><span>This panel will convert analytics into concrete product and SEO actions.</span></div></div>
+            </div>
+          </article>
+
+          <article class="admin-card funnel-card">
+            <div class="card-heading"><div><span class="card-kicker">User journey</span><h2>Conversion funnel</h2></div></div>
+            <div class="funnel" id="funnel-chart"></div>
+          </article>
+
+          <article class="admin-card">
+            <div class="card-heading"><div><span class="card-kicker">Demand intelligence</span><h2>Most scanned EVs</h2></div><button class="text-action" data-jump="scans">See scans</button></div>
+            <div class="rank-list" id="popular-vehicles"><div class="empty-state compact"><b>No vehicle data yet</b><span>Popular makes and models will appear here.</span></div></div>
+          </article>
+
+          <article class="admin-card">
+            <div class="card-heading"><div><span class="card-kicker">Acquisition</span><h2>Where visitors came from</h2></div><button class="text-action" data-jump="traffic">See traffic</button></div>
+            <div class="bar-list" id="source-bars"><div class="empty-state compact"><b>No source data yet</b><span>Google, LinkedIn, email and direct traffic will separate automatically.</span></div></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="admin-view" data-panel="scans">
+        <div class="section-intro"><div><span class="card-kicker">Vehicle intelligence</span><h2>Understand what people are checking.</h2><p>See which EVs are attracting attention, how often scans succeed and where users run into missing data.</p></div></div>
+        <div class="kpi-grid three">
+          <article class="kpi-card admin-card"><span>Total scans</span><strong id="scan-total">—</strong><small>Selected period</small></article>
+          <article class="kpi-card admin-card"><span>Successful</span><strong id="scan-successful">—</strong><small>Returned usable data</small></article>
+          <article class="kpi-card admin-card"><span>Failed / incomplete</span><strong id="scan-failed">—</strong><small>Needs investigation</small></article>
+        </div>
+        <div class="two-column-grid">
+          <article class="admin-card"><div class="card-heading"><div><span class="card-kicker">Top vehicles</span><h2>Models people scan most</h2></div></div><div class="rank-list large" id="scan-vehicles"></div></article>
+          <article class="admin-card"><div class="card-heading"><div><span class="card-kicker">API performance</span><h2>Data providers</h2></div></div><div class="api-list" id="scan-api"></div></article>
+        </div>
+      </section>
+
+      <section class="admin-view" data-panel="reviews">
+        <div class="section-intro split"><div><span class="card-kicker">Customer voice</span><h2>Real feedback, controlled by you.</h2><p>Approve genuine reviews for future homepage use, hide unhelpful submissions or delete them entirely.</p></div><div class="review-summary"><span>Average rating</span><strong id="review-average">—</strong><small id="review-summary-count">No reviews yet</small></div></div>
+        <div class="review-toolbar admin-card"><div><b id="review-pending-text">0 awaiting approval</b><span>Only approved reviews should ever appear publicly.</span></div><div class="review-filters"><button class="is-active" data-review-filter="all">All</button><button data-review-filter="pending">Pending</button><button data-review-filter="approved">Approved</button><button data-review-filter="hidden">Hidden</button></div></div>
+        <div class="review-grid" id="review-grid"><div class="empty-state admin-card"><b>No live reviews yet</b><span>When review storage is activated, submissions will land here automatically.</span></div></div>
+      </section>
+
+      <section class="admin-view" data-panel="traffic">
+        <div class="section-intro"><div><span class="card-kicker">Acquisition & content</span><h2>See how people actually discover EV Scan.</h2><p>Track traffic sources, landing pages and device mix without needing to jump between dashboards.</p></div></div>
+        <div class="traffic-grid">
+          <article class="admin-card span-2"><div class="card-heading"><div><span class="card-kicker">Top content</span><h2>Most viewed pages</h2></div></div><div class="table-wrap"><table><thead><tr><th>Page</th><th>Views</th><th>Visitors</th></tr></thead><tbody id="top-pages"></tbody></table></div></article>
+          <article class="admin-card"><div class="card-heading"><div><span class="card-kicker">Channels</span><h2>Traffic sources</h2></div></div><div class="bar-list" id="traffic-sources"></div></article>
+          <article class="admin-card"><div class="card-heading"><div><span class="card-kicker">Devices</span><h2>How people browse</h2></div></div><div class="donut-wrap"><div class="donut" id="device-donut"><span>—</span></div><div class="donut-legend" id="device-legend"></div></div></article>
+        </div>
+      </section>
+
+      <section class="admin-view" data-panel="health">
+        <div class="section-intro"><div><span class="card-kicker">Reliability</span><h2>Know when EV Scan has a problem before users tell you.</h2><p>Provider uptime, response speed and front-end errors are brought together in one place.</p></div></div>
+        <div class="two-column-grid health-grid">
+          <article class="admin-card"><div class="card-heading"><div><span class="card-kicker">Integrations</span><h2>API health</h2></div></div><div class="api-list large" id="health-api"></div></article>
+          <article class="admin-card"><div class="card-heading"><div><span class="card-kicker">Errors</span><h2>Recent problems</h2></div><span class="danger-count" id="error-count">0</span></div><div class="error-list" id="error-list"><div class="empty-state compact"><b>No errors recorded</b><span>That is what we want to see.</span></div></div></article>
+        </div>
+      </section>
+
+      <section class="admin-view" data-panel="activity">
+        <div class="section-intro split"><div><span class="card-kicker">Timeline</span><h2>Everything important, in order.</h2><p>A privacy-conscious activity stream of page views, scans, reviews, errors and partner interactions.</p></div><span class="live-pill"><i></i>Recent activity</span></div>
+        <article class="admin-card activity-card"><div class="activity-list" id="activity-list"><div class="empty-state"><b>No activity yet</b><span>Events will appear here after data collection is activated.</span></div></div></article>
+      </section>
+
+      <footer class="admin-footer">
+        <span>EV Scan Admin · private analytics</span>
+        <span>Designed to avoid storing full registration numbers or unnecessary personal data.</span>
+      </footer>
+    </main>
+  </div>
+
+  <div class="login-overlay" id="login-overlay">
+    <form class="login-card" id="admin-login-form">
+      <div class="login-mark"><span class="admin-brand-mark"><i></i><i></i><i></i><i></i></span></div>
+      <span class="card-kicker">Private dashboard</span>
+      <h2>EV Scan Admin</h2>
+      <p>Enter your admin access key. It is kept only for this browser session.</p>
+      <label><span>Admin access key</span><input id="admin-token" type="password" autocomplete="current-password" placeholder="Enter access key" /></label>
+      <button type="submit">Open dashboard</button>
+      <small id="login-message">The dashboard shell is ready. Live storage and access can be activated during the production launch phase.</small>
+    </form>
+  </div>
+
+  <script src="/admin.js"></script>
+</body>
+</html>
