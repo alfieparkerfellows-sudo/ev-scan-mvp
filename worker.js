@@ -1,3 +1,5 @@
+import { autotraderConfigured, searchPublicEvListings } from './autotrader.js';
+
 const JSON_HEADERS = {
   'content-type': 'application/json; charset=utf-8',
   'cache-control': 'no-store',
@@ -287,7 +289,7 @@ async function handleScan(request, env) {
     return json({
       ok: false,
       code: 'LISTING_PROVIDER_NOT_CONNECTED',
-      message: 'The backend is ready, but live marketplace listing ingestion is intentionally not enabled yet. We will use an approved marketplace/data integration rather than brittle scraping.',
+      message: 'The backend is ready, but live marketplace listing ingestion is intentionally not enabled yet. Auto Trader Connect onboarding is required before we can legally and reliably ingest public advert data.',
       nextSupportedInput: 'registration'
     }, 422);
   }
@@ -346,6 +348,34 @@ async function handleScan(request, env) {
   }
 }
 
+async function handleAutotraderSearch(request, env) {
+  if (!autotraderConfigured(env)) {
+    return json({
+      ok: false,
+      code: 'AUTOTRADER_NOT_CONFIGURED',
+      message: 'Auto Trader Connect support is coded, but sandbox credentials have not been issued yet.',
+      requiredSecrets: ['AUTOTRADER_KEY', 'AUTOTRADER_SECRET'],
+      optionalSecrets: ['AUTOTRADER_API_BASE']
+    }, 503);
+  }
+
+  let filters = {};
+  try { filters = await request.json(); } catch {}
+
+  try {
+    const data = await searchPublicEvListings(env, filters);
+    return json({ ok: true, mode: 'autotrader-public-search', ...data });
+  } catch (error) {
+    return json({
+      ok: false,
+      code: 'AUTOTRADER_UPSTREAM_ERROR',
+      message: 'Auto Trader search could not be completed.',
+      detail: String(error.detail || error.message || error).slice(0, 500),
+      cfRay: error.cfRay || null
+    }, Number(error.status) || 502);
+  }
+}
+
 async function serveAsset(request, env, url) {
   const response = await env.ASSETS.fetch(request);
   if (url.pathname !== '/' && url.pathname !== '/index.html') return response;
@@ -373,14 +403,16 @@ export default {
       return json({
         ok: true,
         service: 'EV Scan API',
-        version: '0.1.0',
+        version: '0.2.0',
         liveMotConfigured: configured(env),
+        autoTraderConfigured: autotraderConfigured(env),
         capabilities: {
           staticFrontend: true,
           motByRegistration: true,
+          autoTraderPublicSearchAdapter: true,
           listingUrlIngestion: false,
           marketPricing: false,
-          liveRecommendations: false
+          liveRecommendations: autotraderConfigured(env)
         }
       });
     }
@@ -397,6 +429,20 @@ export default {
     if (url.pathname === '/api/scan') {
       if (request.method !== 'POST') return json({ ok: false, code: 'METHOD_NOT_ALLOWED' }, 405);
       return handleScan(request, env);
+    }
+
+    if (url.pathname === '/api/autotrader/status') {
+      return json({
+        ok: true,
+        configured: autotraderConfigured(env),
+        environment: env.AUTOTRADER_API_BASE?.includes('api.autotrader.co.uk') ? 'production' : 'sandbox',
+        message: autotraderConfigured(env) ? 'Auto Trader credentials are configured.' : 'Waiting for Auto Trader Connect sandbox credentials.'
+      });
+    }
+
+    if (url.pathname === '/api/autotrader/search') {
+      if (request.method !== 'POST') return json({ ok: false, code: 'METHOD_NOT_ALLOWED' }, 405);
+      return handleAutotraderSearch(request, env);
     }
 
     return serveAsset(request, env, url);
