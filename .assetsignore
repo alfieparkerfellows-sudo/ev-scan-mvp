@@ -1,7 +1,9 @@
+.git/
+.github/
+docs/
 worker.js
 wrangler.jsonc
 README.md
-.github/
-docs/
+.assetsignore
 .dev.vars*
 *.md
