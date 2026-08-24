@@ -63,10 +63,25 @@
     .trust-preview-head{padding-bottom:20px!important}
     .demo-stats{padding-top:20px!important}
 
+    /* Dynamic report sections need their own internal spacing. */
+    .partner-card{
+      padding:32px!important;
+    }
+
+    /* Registration-only price cards must never retain demo market visuals. */
+    .report-metrics .metric-rich:first-child:has(.data-tag.estimated) .market-scale,
+    .report-metrics .metric-rich:first-child:has(.data-tag.estimated) .metric-foot{
+      display:none!important;
+    }
+    .battery-card:has(.battery-visual span[style*="width: 0%"] ) .battery-status strong{
+      color:#f7f8fb!important;
+    }
+
     /* Report feedback */
     .scan-feedback-card{
       margin-top:14px;
       margin-bottom:44px;
+      padding:32px!important;
       overflow:hidden;
       position:relative;
     }
@@ -147,7 +162,8 @@
       #how-it-works .info-card{min-height:auto!important;padding:24px!important}
       #how-it-works .info-card .step-no{margin-bottom:14px!important}
       .finder-card,.trust-card{padding:24px!important}
-      .scan-feedback-card{margin-bottom:28px}
+      .partner-card{padding:22px!important}
+      .scan-feedback-card{padding:22px!important;margin-bottom:28px}
       .scan-feedback-inner{gap:18px}
       .feedback-star{font-size:1.85rem}
       .feedback-actions .primary-button{width:100%}
@@ -191,6 +207,42 @@
     if (middleCopy) {
       middleCopy.textContent = 'Price, battery confidence, real-world range, insurance estimate, MOT patterns and model-specific risks.';
     }
+  }
+
+  function polishRegistrationOnlyReport() {
+    const report = $('#report-view');
+    const source = $('.source-note', report || document);
+    const trim = $('#trim-select', report || document);
+    const isLiveRegistration = Boolean(trim?.disabled && /live dvsa vehicle/i.test(source?.textContent || ''));
+    if (!isLiveRegistration) return;
+
+    const versionLabel = $('label[for="trim-select"]', report);
+    if (versionLabel && versionLabel.textContent.trim() !== 'Verified vehicle') {
+      versionLabel.textContent = 'Verified vehicle';
+    }
+
+    const priceCard = $$('.report-metrics .metric-rich', report)[0];
+    if (priceCard && /unknown/i.test($('.metric-value', priceCard)?.textContent || '')) {
+      const marketScale = $('.market-scale', priceCard);
+      const metricFoot = $('.metric-foot', priceCard);
+      if (marketScale) marketScale.hidden = true;
+      if (metricFoot) metricFoot.hidden = true;
+    }
+
+    const batteryCard = $('.battery-card', report);
+    if (batteryCard && /unknown/i.test($('.battery-status strong', batteryCard)?.textContent || '')) {
+      const status = $('.battery-status strong', batteryCard);
+      if (status) status.style.color = '#f7f8fb';
+    }
+  }
+
+  function watchReportPolish() {
+    const report = $('#report-view');
+    if (!report || report.dataset.evscanPolishObserver === '1') return;
+    report.dataset.evscanPolishObserver = '1';
+    const observer = new MutationObserver(() => polishRegistrationOnlyReport());
+    observer.observe(report, { childList:true, subtree:true, characterData:true, attributes:true, attributeFilter:['disabled','hidden','style'] });
+    polishRegistrationOnlyReport();
   }
 
   function feedbackStorage() {
@@ -290,6 +342,7 @@
     updateHomepageCopy();
     centreHeroActions();
     mountFeedback();
+    watchReportPolish();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
