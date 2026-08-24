@@ -211,7 +211,7 @@
       if (take) take.innerHTML = `<b>Our take:</b> ${mot.summary || 'No clear pattern identified.'}`;
     }
 
-    ['.degradation-card','.trim-card','.xray-card','.seller-card','.change-score-card','.effective-card','.fit-score-card','.recommendations-section'].forEach((selector) => {
+    ['.degradation-card','.trim-card','.xray-card','.seller-card','.change-score-card','.effective-card','.insurance-card','.fit-score-card','.recommendations-section'].forEach((selector) => {
       const node = $(selector);
       if (node) node.hidden = true;
     });
