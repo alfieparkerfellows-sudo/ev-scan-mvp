@@ -10,11 +10,12 @@ The interface is intentionally simple for people buying an EV for the first time
 
 ## Current MVP
 
-This first version is a static frontend prototype designed to run cheaply on Cloudflare Pages. It currently uses clearly labelled demo data so the user experience can be perfected before live vehicle APIs are added.
+The frontend is live on Cloudflare Workers and now includes a server-side DVSA MOT History API integration for registration lookups. Marketplace/listing data remains in demo mode until an approved Auto Trader integration is available.
 
 Included in the MVP:
 
 - Listing-link scan entry point
+- Live UK registration lookup via DVSA MOT History API when credentials are configured
 - Multi-stage scanning animation
 - Visual Deal Score
 - Separate Decision Confidence score
@@ -27,9 +28,9 @@ Included in the MVP:
 - "What we like" / "What we'd check"
 - Listing X-Ray for missing seller information
 - Auto-generated seller message with copy button
-- Seller-reply checker prototype
 - "What could change our verdict?"
 - Effective purchase price
+- Insurance estimator
 - Personal EV Fit Score
 - Beginner-friendly Find My EV questionnaire
 - Similar-budget recommendations
@@ -51,24 +52,34 @@ Never present an estimated battery-health figure as a measured State of Health. 
 
 ### Now
 
-- Static HTML/CSS/JavaScript
+- Static HTML/CSS/JavaScript frontend
+- Cloudflare Worker backend
 - GitHub as source of truth
-- Cloudflare Pages for hosting
+- Cloudflare Workers/Assets for hosting
+- DVSA MOT History API adapter
 - No accounts
 - No database
 - No paywall
 
-### Later
+### DVSA production secrets
 
-A small Cloudflare Worker can securely handle external API calls while keeping credentials out of the public frontend.
+Sensitive DVSA credentials must be stored as encrypted Cloudflare Worker secrets and must never be committed to GitHub.
 
-Potential data layers include:
+Required secret names:
 
-- DVSA MOT History API
+- `DVSA_CLIENT_ID`
+- `DVSA_CLIENT_SECRET`
+- `DVSA_API_KEY`
+
+The non-secret DVSA token URL, scope and API base are declared in `wrangler.jsonc`.
+
+The Worker obtains and caches an OAuth access token server-side, then sends the bearer token and API key to DVSA. Browser JavaScript never receives the DVSA credentials.
+
+### Next data layers
+
+- Approved Auto Trader Search / Vehicles / Valuations access
 - Vehicle/specification datasets
-- Valuation / comparable-car data
-- Approved marketplace integrations
-- AI analysis for listing and seller-response interpretation
+- Comparable-car market data
 - Optional specialist provenance and battery-test partners
 
 ## Product direction
@@ -98,4 +109,4 @@ Commercial relationships must never alter Deal Scores or recommendations.
 
 ## Status
 
-Frontend MVP in active development. All current vehicle data is illustrative demo data and must not be used as purchasing advice.
+MVP in active development. DVSA-backed vehicle/MOT fields may be marked **VERIFIED** when returned by the live API. Price, battery, listing and marketplace-derived fields remain estimated, unknown or demo-only until their approved data sources are connected.
