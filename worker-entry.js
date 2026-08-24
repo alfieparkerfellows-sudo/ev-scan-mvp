@@ -1,4 +1,4 @@
-import baseWorker from './worker.js';
+import baseWorker from './worker-admin.js';
 import { accountsConfigured, handleAccountRequest } from './account-api.js';
 
 async function injectAccountUi(response) {
