@@ -25,6 +25,22 @@ function accountUnavailable(status = 503) {
   });
 }
 
+function blockedAccountMutation(request, url) {
+  if (['GET','HEAD','OPTIONS'].includes(request.method)) return false;
+  const origin = request.headers.get('origin');
+  if (origin && origin !== url.origin) return true;
+  const fetchSite = (request.headers.get('sec-fetch-site') || '').toLowerCase();
+  if (fetchSite && !['same-origin','same-site','none'].includes(fetchSite)) return true;
+  return false;
+}
+
+function crossOriginDenied() {
+  return new Response(JSON.stringify({ ok:false, code:'CROSS_ORIGIN_DENIED', message:'That account request was blocked.' }), {
+    status:403,
+    headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-robots-tag':'noindex, nofollow'}
+  });
+}
+
 async function accountReady(env = {}) {
   const accountEnv = withAccountDb(env);
   if (!accountsConfigured(accountEnv)) return { ready: false, env: accountEnv };
@@ -71,6 +87,7 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname.startsWith('/api/account') || url.pathname.startsWith('/api/auth/')) {
+      if (blockedAccountMutation(request, url)) return crossOriginDenied();
       const account = await accountReady(env);
       if (!account.ready) {
         if (url.pathname === '/api/account/status') return accountUnavailable(200);
