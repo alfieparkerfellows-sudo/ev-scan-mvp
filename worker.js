@@ -385,8 +385,13 @@ async function serveAsset(request, env, url) {
   if (!contentType.includes('text/html')) return response;
 
   let html = await response.text();
-  if (!html.includes('src="/live.js"')) {
-    html = html.replace('</body>', '  <script src="/live.js"></script>\n</body>');
+  const scripts = [
+    ['/live.js', '<script src="/live.js"></script>'],
+    ['/insurance.js', '<script src="/insurance.js"></script>'],
+    ['/partners.js', '<script src="/partners.js"></script>']
+  ];
+  for (const [needle, tag] of scripts) {
+    if (!html.includes(needle)) html = html.replace('</body>', `  ${tag}\n</body>`);
   }
 
   const headers = new Headers(response.headers);
