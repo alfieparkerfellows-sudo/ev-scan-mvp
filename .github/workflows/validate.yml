@@ -21,6 +21,7 @@ jobs:
           node --check app.js
           node --check live.js
           node --check insurance.js
+          node --check partners.js
           node --check worker.js
           node --check autotrader.js
       - name: Check required files
@@ -30,6 +31,7 @@ jobs:
           test -f app.js
           test -f live.js
           test -f insurance.js
+          test -f partners.js
           test -f worker.js
           test -f autotrader.js
           test -f wrangler.jsonc
