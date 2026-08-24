@@ -21,6 +21,7 @@ jobs:
           node --check app.js
           node --check live.js
           node --check worker.js
+          node --check autotrader.js
       - name: Check required files
         run: |
           test -f index.html
@@ -28,6 +29,7 @@ jobs:
           test -f app.js
           test -f live.js
           test -f worker.js
+          test -f autotrader.js
           test -f wrangler.jsonc
           test -f .assetsignore
       - name: Validate Wrangler JSONC basics
