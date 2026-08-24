@@ -38,6 +38,24 @@
     .trust-section{display:none!important}
     .section-heading{margin-bottom:26px!important}
     .steps-grid{gap:14px!important}
+    #how-it-works .info-card{
+      min-height:190px!important;
+      display:flex!important;
+      flex-direction:column!important;
+      align-items:flex-start!important;
+      justify-content:flex-start!important;
+      padding:28px!important;
+    }
+    #how-it-works .info-card .step-no{
+      display:block!important;
+      margin:0 0 18px!important;
+    }
+    #how-it-works .info-card h3{
+      margin:0 0 10px!important;
+    }
+    #how-it-works .info-card p{
+      margin:0!important;
+    }
     .finder-card{padding:34px!important}
     .trust-card{padding:34px!important}
     .report-preview .metric-grid{margin-top:14px!important}
@@ -124,6 +142,8 @@
       .trust-preview-section{padding:8px 0 22px!important}
       .content-section,.report-preview,.finder-section,.trust-section{padding-top:34px!important;padding-bottom:34px!important}
       .section-heading{margin-bottom:20px!important}
+      #how-it-works .info-card{min-height:auto!important;padding:24px!important}
+      #how-it-works .info-card .step-no{margin-bottom:14px!important}
       .finder-card,.trust-card{padding:24px!important}
       .scan-feedback-card{margin-bottom:28px}
       .scan-feedback-inner{gap:18px}
@@ -156,6 +176,14 @@
     }
     if (secondary) actions.appendChild(secondary);
     hero.appendChild(actions);
+  }
+
+  function updateHowItWorksCopy() {
+    const cards = $$('#how-it-works .info-card');
+    const middleCopy = cards[1]?.querySelector('p');
+    if (middleCopy) {
+      middleCopy.textContent = 'Price, battery confidence, realistic range, insurance estimate, MOT patterns, model-specific risks and missing seller information.';
+    }
   }
 
   function feedbackStorage() {
@@ -253,6 +281,7 @@
 
   function mount() {
     centreHeroActions();
+    updateHowItWorksCopy();
     mountFeedback();
   }
 
