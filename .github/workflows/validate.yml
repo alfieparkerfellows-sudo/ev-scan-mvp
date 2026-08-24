@@ -117,8 +117,10 @@ jobs:
           grep -q 'Download my data' account.js
           grep -q 'Delete my account' account.js
           grep -q 'getDrivingProfile' account-personalisation.js
-          grep -q 'See what you get' account-polish.js
-          grep -q 'Create free account' account-polish.js
+          grep -q 'Unlock more from EV Scan' account-polish.js
+          grep -q 'Personalised EV matches' account-polish.js
+          grep -q 'Ownership reminders' account-polish.js
+          grep -q 'Create my free account' account-polish.js
           grep -q 'data-scroll-home' account-polish.js
       - name: Validate Find My EV v2
         run: |
