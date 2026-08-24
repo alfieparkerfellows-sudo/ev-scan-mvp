@@ -146,7 +146,14 @@
     const actions = document.createElement('div');
     actions.className = 'hero-center-actions';
     actions.appendChild(form);
-    if (meta) actions.appendChild(meta);
+    if (meta) {
+      if (![...meta.children].some(item => item.textContent.trim() === 'Insurance estimate')) {
+        const insurance = document.createElement('span');
+        insurance.textContent = 'Insurance estimate';
+        meta.appendChild(insurance);
+      }
+      actions.appendChild(meta);
+    }
     if (secondary) actions.appendChild(secondary);
     hero.appendChild(actions);
   }
