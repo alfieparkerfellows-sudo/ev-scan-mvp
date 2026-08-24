@@ -1,5 +1,6 @@
 import { autotraderConfigured, searchPublicEvListings } from './autotrader.js';
 import { renderGuide, renderGuideHub, renderGuide404, renderRobots, renderSitemap } from './seo-guides.js';
+import { renderHomeHead, renderHomeFaq } from './home-seo.js';
 
 const JSON_HEADERS = {
   'content-type': 'application/json; charset=utf-8',
@@ -342,6 +343,10 @@ async function serveAsset(request, env, url) {
     const contentType = response.headers.get('content-type') || '';
     if (!contentType.includes('text/html')) return response;
     let html = await response.text();
+    const headMarkup = renderHomeHead();
+    if (!html.includes('rel="canonical"')) html = html.replace('</head>', `${headMarkup}\n</head>`);
+    const faqMarkup = renderHomeFaq();
+    if (!html.includes('id="evscan-faq"')) html = html.replace('</main>', `${faqMarkup}\n    </main>`);
     const scripts = [
       ['/resilience.js', '<script src="/resilience.js"></script>'],
       ['/live.js', '<script src="/live.js"></script>'],
@@ -380,7 +385,7 @@ export default {
       return response;
     }
 
-    if (url.pathname === '/api/health') return json({ ok: true, service: 'EV Scan API', version: '0.4.0', liveMotConfigured: configured(env), autoTraderConfigured: autotraderConfigured(env), capabilities: { staticFrontend: true, motByRegistration: true, autoTraderPublicSearchAdapter: true, listingUrlIngestion: false, marketPricing: false, liveRecommendations: autotraderConfigured(env), gracefulFallbacks: true, seoGuides: true } });
+    if (url.pathname === '/api/health') return json({ ok: true, service: 'EV Scan API', version: '0.4.1', liveMotConfigured: configured(env), autoTraderConfigured: autotraderConfigured(env), capabilities: { staticFrontend: true, motByRegistration: true, autoTraderPublicSearchAdapter: true, listingUrlIngestion: false, marketPricing: false, liveRecommendations: autotraderConfigured(env), gracefulFallbacks: true, seoGuides: true, homepageFaq: true } });
     if (url.pathname === '/api/scoring-preview' && request.method === 'POST') {
       try { const body = await request.json(); return json({ ok: true, ...scoreDeal(body) }); }
       catch { return json({ ok: false, code: 'INVALID_JSON', message: 'Could not read the scoring input.' }, 400); }
