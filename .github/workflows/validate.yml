@@ -120,6 +120,10 @@ jobs:
       - name: Validate Wrangler JSONC basics
         run: |
           grep -q '"main": "./worker-entry.js"' wrangler.jsonc
+          grep -q '"d1_databases"' wrangler.jsonc
+          grep -q '"binding": "EVSCAN_DB"' wrangler.jsonc
+          grep -q '"database_name": "ec-scan-db"' wrangler.jsonc
+          grep -q '"database_id": "2f90d7be-db18-47eb-983e-3ce9095921e9"' wrangler.jsonc
           grep -q '"/api/\*"' wrangler.jsonc
           grep -q '"/cars/\*"' wrangler.jsonc
           grep -q '"/compare/\*"' wrangler.jsonc
