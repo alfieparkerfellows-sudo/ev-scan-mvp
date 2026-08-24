@@ -2,7 +2,10 @@
 .github/
 docs/
 worker.js
+worker-admin.js
+admin-api.js
 autotrader.js
+schema.sql
 wrangler.jsonc
 README.md
 .assetsignore
