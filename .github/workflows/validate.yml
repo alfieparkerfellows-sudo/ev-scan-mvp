@@ -35,6 +35,7 @@ jobs:
           node --check account.js
           node --check account-personalisation.js
           node --check account-polish.js
+          node --check finder-v2.js
           node --check autotrader.js
           node --check seo-guides.js
           node --check seo-models.js
@@ -63,6 +64,8 @@ jobs:
           test -f account-polish.js
           test -f account.css
           test -f account-polish.css
+          test -f finder-v2.js
+          test -f finder-v2.css
           test -f migrations/0001_accounts.sql
           test -f autotrader.js
           test -f seo-guides.js
@@ -117,6 +120,18 @@ jobs:
           grep -q 'See what you get' account-polish.js
           grep -q 'Create free account' account-polish.js
           grep -q 'data-scroll-home' account-polish.js
+      - name: Validate Find My EV v2
+        run: |
+          grep -q 'finder-v2.css' worker-entry.js
+          grep -q 'finder-v2.js' worker-entry.js
+          grep -q 'Find an EV that fits your actual life' finder-v2.js
+          grep -q 'What is the most you actually want to spend' finder-v2.js
+          grep -q 'public rapid charging' finder-v2.js
+          grep -q 'How important is keeping insurance down' finder-v2.js
+          grep -q 'Pick up to 3 things that matter most' finder-v2.js
+          grep -q 'Why it fits' finder-v2.js
+          grep -q 'What to watch' finder-v2.js
+          grep -q '@media(max-width:680px)' finder-v2.css
       - name: Validate Wrangler JSONC basics
         run: |
           grep -q '"main": "./worker-entry.js"' wrangler.jsonc
