@@ -280,11 +280,7 @@ async function handleScan(request, env) {
   const input = getInputMode(body);
 
   if (input.type === 'none') {
-    return json({
-      ok: false,
-      code: 'MISSING_INPUT',
-      message: 'Provide either a registration or a listingUrl.'
-    }, 400);
+    return json({ ok: false, code: 'MISSING_INPUT', message: 'Provide either a registration or a listingUrl.' }, 400);
   }
 
   if (input.type === 'listingUrl') {
@@ -350,6 +346,25 @@ async function handleScan(request, env) {
   }
 }
 
+async function serveAsset(request, env, url) {
+  const response = await env.ASSETS.fetch(request);
+  if (url.pathname !== '/' && url.pathname !== '/index.html') return response;
+  if (!response.ok) return response;
+
+  const contentType = response.headers.get('content-type') || '';
+  if (!contentType.includes('text/html')) return response;
+
+  let html = await response.text();
+  if (!html.includes('src="/live.js"')) {
+    html = html.replace('</body>', '  <script src="/live.js"></script>\n</body>');
+  }
+
+  const headers = new Headers(response.headers);
+  headers.delete('content-length');
+  headers.set('cache-control', 'no-cache');
+  return new Response(html, { status: response.status, headers });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -384,6 +399,6 @@ export default {
       return handleScan(request, env);
     }
 
-    return env.ASSETS.fetch(request);
+    return serveAsset(request, env, url);
   }
 };
