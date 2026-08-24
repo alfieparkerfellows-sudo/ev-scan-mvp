@@ -99,6 +99,23 @@
     wrap.querySelector('input')?.focus();
   });
 
+  /* Desktop keeps the deliberate break after real-world range; mobile flows naturally. */
+  function applyResponsiveHeroSubtitle() {
+    const subtitle = document.querySelector('#home .hero-subtitle');
+    if (!subtitle) return;
+    const mobileCopy = 'Paste the listing. We’ll explain the price, battery, real-world range, MOT history and estimated insurance cost.';
+    const desktopCopy = 'Paste the listing. We’ll explain the price, battery, real-world range,<br>MOT history and estimated insurance cost.';
+    if (window.matchMedia('(max-width: 720px)').matches) {
+      if (subtitle.textContent.trim() !== mobileCopy) subtitle.textContent = mobileCopy;
+    } else if (subtitle.innerHTML !== desktopCopy) {
+      subtitle.innerHTML = desktopCopy;
+    }
+  }
+
+  /* feedback.js also sets this text, so run this just after all synchronous scripts mount. */
+  setTimeout(applyResponsiveHeroSubtitle, 0);
+  window.addEventListener('resize', applyResponsiveHeroSubtitle, { passive: true });
+
   document.addEventListener('error', (event) => {
     const target = event.target;
     if (!(target instanceof HTMLImageElement)) return;
