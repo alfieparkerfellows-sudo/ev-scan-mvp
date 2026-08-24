@@ -30,6 +30,7 @@ jobs:
           node --check autotrader.js
           node --check seo-guides.js
           node --check seo-models.js
+          node --check seo-intent.js
           node --check home-seo.js
       - name: Check required files
         run: |
@@ -47,9 +48,11 @@ jobs:
           test -f autotrader.js
           test -f seo-guides.js
           test -f seo-models.js
+          test -f seo-intent.js
           test -f home-seo.js
           test -f seo.css
           test -f seo-models.css
+          test -f seo-intent.css
           test -f wrangler.jsonc
           test -f .assetsignore
           test -f privacy.html
@@ -67,14 +70,20 @@ jobs:
         run: |
           grep -q '/ev-guides' worker.js
           grep -q '/cars' worker.js
+          grep -q '/compare/' worker.js
+          grep -q '/best/' worker.js
           grep -q '/robots.txt' worker.js
           grep -q '/sitemap.xml' worker.js
           grep -q 'OAI-SearchBot' seo-guides.js
           grep -q 'FAQPage' home-seo.js
           grep -q 'tesla/model-3' seo-models.js
           grep -q 'nissan/leaf' seo-models.js
+          grep -q 'hyundai-ioniq-5-vs-kia-ev6' seo-intent.js
+          grep -q 'first-used-electric-car' seo-intent.js
       - name: Validate Wrangler JSONC basics
         run: |
           grep -q '"main": "./worker.js"' wrangler.jsonc
           grep -q '"/api/\*"' wrangler.jsonc
           grep -q '"/cars/\*"' wrangler.jsonc
+          grep -q '"/compare/\*"' wrangler.jsonc
+          grep -q '"/best/\*"' wrangler.jsonc
