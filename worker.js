@@ -2,6 +2,7 @@ import { autotraderConfigured, searchPublicEvListings } from './autotrader.js';
 import { renderGuide, renderGuideHub, renderGuide404, renderRobots, renderSitemap } from './seo-guides.js';
 import { renderHomeHead, renderHomeFaq } from './home-seo.js';
 import { renderModel, renderModelHub, renderModel404, modelSitemapEntries } from './seo-models.js';
+import { renderComparison, renderUseCase, renderIntent404, intentSitemapEntries, intentCounts } from './seo-intent.js';
 
 const JSON_HEADERS = {
   'content-type': 'application/json; charset=utf-8',
@@ -31,6 +32,13 @@ function modelResponse(body, status = 200) {
   const enhanced = String(body || '').includes('/seo-models.css')
     ? String(body || '')
     : String(body || '').replace('</head>', '<link rel="stylesheet" href="/seo-models.css"></head>');
+  return seoResponse(enhanced, status);
+}
+
+function intentResponse(body, status = 200) {
+  const enhanced = String(body || '').includes('/seo-intent.css')
+    ? String(body || '')
+    : String(body || '').replace('</head>', '<link rel="stylesheet" href="/seo-intent.css"></head>');
   return seoResponse(enhanced, status);
 }
 
@@ -383,7 +391,7 @@ export default {
       return new Response(renderRobots(), { headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=3600' } });
     }
     if (url.pathname === '/sitemap.xml') {
-      const sitemap = renderSitemap().replace('</urlset>', `${modelSitemapEntries()}</urlset>`);
+      const sitemap = renderSitemap().replace('</urlset>', `${modelSitemapEntries()}${intentSitemapEntries()}</urlset>`);
       return new Response(sitemap, { headers: { 'content-type': 'application/xml; charset=utf-8', 'cache-control': 'public, max-age=3600' } });
     }
     if (url.pathname === '/ev-guides' || url.pathname === '/ev-guides/') {
@@ -408,8 +416,24 @@ export default {
       response.headers.set('x-robots-tag', 'noindex,follow');
       return response;
     }
+    if (url.pathname.startsWith('/compare/')) {
+      const slug = decodeURIComponent(url.pathname.slice('/compare/'.length).replace(/\/$/, ''));
+      const page = renderComparison(slug);
+      if (page) return intentResponse(page);
+      const response = intentResponse(renderIntent404(), 404);
+      response.headers.set('x-robots-tag', 'noindex,follow');
+      return response;
+    }
+    if (url.pathname.startsWith('/best/')) {
+      const slug = decodeURIComponent(url.pathname.slice('/best/'.length).replace(/\/$/, ''));
+      const page = renderUseCase(slug);
+      if (page) return intentResponse(page);
+      const response = intentResponse(renderIntent404(), 404);
+      response.headers.set('x-robots-tag', 'noindex,follow');
+      return response;
+    }
 
-    if (url.pathname === '/api/health') return json({ ok: true, service: 'EV Scan API', version: '0.5.0', liveMotConfigured: configured(env), autoTraderConfigured: autotraderConfigured(env), capabilities: { staticFrontend: true, motByRegistration: true, autoTraderPublicSearchAdapter: true, listingUrlIngestion: false, marketPricing: false, liveRecommendations: autotraderConfigured(env), gracefulFallbacks: true, seoGuides: true, seoModelGuides: true, homepageFaq: true } });
+    if (url.pathname === '/api/health') return json({ ok: true, service: 'EV Scan API', version: '0.6.0', liveMotConfigured: configured(env), autoTraderConfigured: autotraderConfigured(env), capabilities: { staticFrontend: true, motByRegistration: true, autoTraderPublicSearchAdapter: true, listingUrlIngestion: false, marketPricing: false, liveRecommendations: autotraderConfigured(env), gracefulFallbacks: true, seoGuides: true, seoModelGuides: true, seoComparisons: intentCounts.comparisons, seoUseCases: intentCounts.useCases, homepageFaq: true } });
     if (url.pathname === '/api/scoring-preview' && request.method === 'POST') {
       try { const body = await request.json(); return json({ ok: true, ...scoreDeal(body) }); }
       catch { return json({ ok: false, code: 'INVALID_JSON', message: 'Could not read the scoring input.' }, 400); }
