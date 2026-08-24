@@ -388,7 +388,8 @@ async function serveAsset(request, env, url) {
   const scripts = [
     ['/live.js', '<script src="/live.js"></script>'],
     ['/insurance.js', '<script src="/insurance.js"></script>'],
-    ['/partners.js', '<script src="/partners.js"></script>']
+    ['/partners.js', '<script src="/partners.js"></script>'],
+    ['/feedback.js', '<script src="/feedback.js"></script>']
   ];
   for (const [needle, tag] of scripts) {
     if (!html.includes(needle)) html = html.replace('</body>', `  ${tag}\n</body>`);
