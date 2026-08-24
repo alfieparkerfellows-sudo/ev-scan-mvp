@@ -1,6 +1,12 @@
 import baseWorker from './worker-admin.js';
 import { accountsConfigured, handleAccountRequest } from './account-api.js';
 
+function withAccountDb(env = {}) {
+  if (env.ACCOUNTS_DB) return env;
+  if (!env.EVSCAN_DB) return env;
+  return Object.assign({}, env, { ACCOUNTS_DB: env.EVSCAN_DB });
+}
+
 async function injectAccountUi(response) {
   if (!response?.ok) return response;
   const type = response.headers.get('content-type') || '';
@@ -15,18 +21,20 @@ async function injectAccountUi(response) {
 
 async function augmentHealth(response, env) {
   try {
+    const accountEnv = withAccountDb(env);
+    const configured = accountsConfigured(accountEnv);
     const data = await response.json();
     data.version = '0.7.0';
-    data.accountsConfigured = accountsConfigured(env);
+    data.accountsConfigured = configured;
     data.capabilities = {
       ...(data.capabilities || {}),
       optionalAccounts: true,
-      savedScans: accountsConfigured(env),
-      shortlistAndCompare: accountsConfigured(env),
-      drivingProfile: accountsConfigured(env),
-      myGarage: accountsConfigured(env),
-      inAppOwnershipReminders: accountsConfigured(env),
-      accountThemes: accountsConfigured(env)
+      savedScans: configured,
+      shortlistAndCompare: configured,
+      drivingProfile: configured,
+      myGarage: configured,
+      inAppOwnershipReminders: configured,
+      accountThemes: configured
     };
     const headers = new Headers(response.headers);
     headers.set('content-type', 'application/json; charset=utf-8');
@@ -39,7 +47,7 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname.startsWith('/api/account') || url.pathname.startsWith('/api/auth/')) {
-      return handleAccountRequest(request, env, url);
+      return handleAccountRequest(request, withAccountDb(env), url);
     }
 
     const response = await baseWorker.fetch(request, env, ctx);
