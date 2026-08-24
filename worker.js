@@ -1,4 +1,5 @@
 import { autotraderConfigured, searchPublicEvListings } from './autotrader.js';
+import { renderGuide, renderGuideHub, renderGuide404, renderRobots, renderSitemap } from './seo-guides.js';
 
 const JSON_HEADERS = {
   'content-type': 'application/json; charset=utf-8',
@@ -10,6 +11,17 @@ let tokenState = { token: null, expiresAt: 0 };
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data, null, 2), { status, headers: JSON_HEADERS });
+}
+
+function seoResponse(body, status = 200) {
+  return new Response(body, {
+    status,
+    headers: {
+      'content-type': 'text/html; charset=utf-8',
+      'cache-control': 'public, max-age=900, stale-while-revalidate=86400',
+      'x-content-type-options': 'nosniff'
+    }
+  });
 }
 
 function cleanRegistration(value = '') {
@@ -349,7 +361,26 @@ async function serveAsset(request, env, url) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
-    if (url.pathname === '/api/health') return json({ ok: true, service: 'EV Scan API', version: '0.3.0', liveMotConfigured: configured(env), autoTraderConfigured: autotraderConfigured(env), capabilities: { staticFrontend: true, motByRegistration: true, autoTraderPublicSearchAdapter: true, listingUrlIngestion: false, marketPricing: false, liveRecommendations: autotraderConfigured(env), gracefulFallbacks: true } });
+
+    if (url.pathname === '/robots.txt') {
+      return new Response(renderRobots(), { headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=3600' } });
+    }
+    if (url.pathname === '/sitemap.xml') {
+      return new Response(renderSitemap(), { headers: { 'content-type': 'application/xml; charset=utf-8', 'cache-control': 'public, max-age=3600' } });
+    }
+    if (url.pathname === '/ev-guides' || url.pathname === '/ev-guides/') {
+      return seoResponse(renderGuideHub());
+    }
+    if (url.pathname.startsWith('/ev-guides/')) {
+      const slug = decodeURIComponent(url.pathname.slice('/ev-guides/'.length).replace(/\/$/, ''));
+      const page = renderGuide(slug);
+      if (page) return seoResponse(page);
+      const response = seoResponse(renderGuide404(), 404);
+      response.headers.set('x-robots-tag', 'noindex,follow');
+      return response;
+    }
+
+    if (url.pathname === '/api/health') return json({ ok: true, service: 'EV Scan API', version: '0.4.0', liveMotConfigured: configured(env), autoTraderConfigured: autotraderConfigured(env), capabilities: { staticFrontend: true, motByRegistration: true, autoTraderPublicSearchAdapter: true, listingUrlIngestion: false, marketPricing: false, liveRecommendations: autotraderConfigured(env), gracefulFallbacks: true, seoGuides: true } });
     if (url.pathname === '/api/scoring-preview' && request.method === 'POST') {
       try { const body = await request.json(); return json({ ok: true, ...scoreDeal(body) }); }
       catch { return json({ ok: false, code: 'INVALID_JSON', message: 'Could not read the scoring input.' }, 400); }
