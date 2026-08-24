@@ -8,6 +8,13 @@
     "DVSA_SCOPE": "https://tapi.dvsa.gov.uk/.default",
     "DVSA_API_BASE": "https://history.mot.api.gov.uk"
   },
+  "d1_databases": [
+    {
+      "binding": "EVSCAN_DB",
+      "database_name": "ec-scan-db",
+      "database_id": "2f90d7be-db18-47eb-983e-3ce9095921e9"
+    }
+  ],
   "assets": {
     "directory": ".",
     "binding": "ASSETS",
