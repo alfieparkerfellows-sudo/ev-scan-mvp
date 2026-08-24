@@ -55,11 +55,6 @@
   `;
   document.head.appendChild(style);
 
-  /*
-    Add real affiliate URLs here once approved. Leaving them blank keeps the
-    buttons disabled so EV Scan never implies an affiliate relationship that
-    does not yet exist.
-  */
   const PARTNERS = [
     {
       key: 'history', icon: '🧾', kicker: 'Vehicle history',
@@ -130,4 +125,18 @@
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
   else mount();
+})();
+
+(() => {
+  if (document.querySelector('script[data-evscan-brand]')) return;
+  const brand = document.createElement('script');
+  brand.src = '/brand.js';
+  brand.dataset.evscanBrand = 'true';
+  brand.onload = () => {
+    const light = document.createElement('script');
+    light.src = '/brand-light.js';
+    light.dataset.evscanBrandLight = 'true';
+    document.head.appendChild(light);
+  };
+  document.head.appendChild(brand);
 })();
