@@ -19,91 +19,130 @@ EV Scan should not publish thin pages for every keyword variation. Each indexabl
 9. **Original data wins later.** Once DVSA and Auto Trader are live, model pages should be enriched with EV Scan’s own market/MOT observations.
 10. **No doorway-page spam.** Do not generate near-identical city, year or keyword variants without genuinely different content.
 
-## Live cornerstone guide cluster
+## Current published SEO footprint
 
-### Battery health
+### 12 cornerstone beginner guides
+
+Battery health:
 - `/ev-guides/how-long-do-electric-car-batteries-last`
 - `/ev-guides/how-much-do-ev-batteries-degrade`
 - `/ev-guides/what-is-good-battery-health-for-used-ev`
 - `/ev-guides/how-to-check-electric-car-battery-health-before-buying`
 
-### Buying a used EV
+Buying a used EV:
 - `/ev-guides/what-to-check-before-buying-used-electric-car`
 - `/ev-guides/should-i-buy-high-mileage-electric-car`
 - `/ev-guides/are-used-electric-cars-reliable`
 - `/ev-guides/is-buying-a-used-electric-car-worth-it`
 
-### Range & charging / living with an EV
+Range, charging and ownership:
 - `/ev-guides/how-much-electric-car-range-do-i-need`
 - `/ev-guides/why-does-electric-car-range-drop-in-winter`
 - `/ev-guides/can-you-own-an-electric-car-without-home-charging`
 
-### Running costs
+Running costs:
 - `/ev-guides/how-much-does-electric-car-insurance-cost`
 
-## Next cluster: model buying guides
+### 10 used-EV model guides
 
-Create these only when we can add meaningful model-specific information.
-
-Priority order:
-1. Tesla Model 3
-2. Tesla Model Y
-3. MG4 EV
-4. Volkswagen ID.3
-5. Hyundai Ioniq 5
-6. Kia EV6
-7. Nissan Leaf
-8. Polestar 2
-9. Skoda Enyaq
-10. Kia e-Niro / Niro EV
-
-Suggested structure:
 - `/cars/tesla/model-3`
+- `/cars/tesla/model-y`
+- `/cars/hyundai/ioniq-5`
+- `/cars/kia/ev6`
+- `/cars/mg/mg4-ev`
+- `/cars/volkswagen/id-3`
+- `/cars/nissan/leaf`
+- `/cars/polestar/2`
+- `/cars/skoda/enyaq`
+- `/cars/kia/niro-ev`
+
+Model guides answer the buying question first, then cover versions, used checks, charging/battery context, supported recall/warranty notes where available, and a model-specific Scan CTA.
+
+### 5 used-EV comparison pages
+
+- `/compare/hyundai-ioniq-5-vs-kia-ev6`
+- `/compare/tesla-model-3-vs-polestar-2`
+- `/compare/mg4-vs-volkswagen-id3`
+- `/compare/tesla-model-y-vs-skoda-enyaq`
+- `/compare/nissan-leaf-vs-kia-e-niro`
+
+Comparison pages explain **who each car suits**, where each wins, what to check and why the condition/value of the exact used car can change the answer.
+
+### 4 buyer-intent shortlist pages
+
+- `/best/first-used-electric-car`
+- `/best/used-electric-car-for-motorway-driving`
+- `/best/used-electric-car-without-home-charging`
+- `/best/used-electric-car-for-families`
+
+Primary CTA: **Find My EV**.
+
+## Deliberately held until Auto Trader live data
+
+Do not publish fixed-price shortlist pages until we can keep them accurate with approved live marketplace data:
+
+- Best used EVs under £10,000
+- Best used EVs under £15,000
+- Best used EVs under £20,000
+- Best used EVs under £25,000
+- Cheapest good used EVs currently for sale
+- Current best-value used EV deals
+
+These are high-value commercial searches but go stale quickly. Once Auto Trader access is connected, generate them from current allowed market data and show a clear **last updated** date.
+
+Also hold “cheapest EVs to insure” rankings until we have a defensible insurance-data method. The current EV Scan insurance feature is an estimator, not a live insurer-pricing database.
+
+## Future model sub-pages
+
+Only split a model guide into additional URLs when there is enough unique information to avoid cannibalisation. Potential examples:
+
 - `/cars/tesla/model-3/common-problems`
 - `/cars/tesla/model-3/real-world-range`
 - `/cars/tesla/model-3/battery-health`
 - `/cars/tesla/model-3/trims`
 
-Only split sub-pages when the content is substantial enough to avoid cannibalisation.
+The parent model page should remain the broad “used buyer guide” page. Sub-pages must answer narrower searches substantially better than the parent.
 
-## Next cluster: commercial-intent searches
+## Next expansion priorities
 
-Priority pages:
-- Best used EVs under £10,000
-- Best used EVs under £15,000
-- Best used EVs under £20,000
-- Best used EVs for first-time EV buyers
-- Best used EVs without home charging
-- Best used EVs for motorway driving
-- Best used EVs for long range
-- Cheapest used EVs to insure
+### More model guides
 
-Primary CTA: **Find My EV**.
+Use real search impressions plus used-market relevance to decide the order. Likely candidates:
+- BMW i3
+- Renault Zoe
+- Volkswagen ID.4
+- Audi Q4 e-tron
+- Hyundai Kona Electric
+- Kia Soul EV
+- Vauxhall Corsa Electric
+- Peugeot e-208
+- Ford Mustang Mach-E
+- Jaguar I-PACE
 
-## Next cluster: comparisons
+### More high-intent comparisons
 
-Examples:
-- Tesla Model 3 vs Polestar 2 used
-- Hyundai Ioniq 5 vs Kia EV6
-- MG4 vs Volkswagen ID.3
+Potential next pages:
 - Skoda Enyaq vs Volkswagen ID.4
-- Tesla Model Y vs Skoda Enyaq
+- Hyundai Kona Electric vs Kia e-Niro
+- MG4 vs Tesla Model 3
+- BMW i3 vs Nissan Leaf
+- Peugeot e-208 vs Vauxhall Corsa Electric
 
-Comparison pages should explain *who each car suits*, not simply list specifications.
+Build these based on impressions and actual user behaviour rather than filling every possible pairing.
 
 ## Page template
 
-Every guide should follow this order:
+Every question/model page should follow this order:
 
 1. Breadcrumbs
 2. Query-matching H1
 3. **Short answer** box immediately visible
-4. 3 key takeaways
+4. Key decision context
 5. Helpful explanation sections
 6. Practical “what this means when buying used” guidance
 7. Context-specific CTA
-8. 3 closely related internal links
-9. Methodology / uncertainty note
+8. Closely related internal links
+9. Methodology / uncertainty / official-source note where relevant
 10. Last-updated date
 
 ## CTA mapping
@@ -132,31 +171,41 @@ Actual EV questions belong on standalone guide URLs.
 
 ## Technical SEO checklist
 
+Implemented:
 - Server-rendered HTML for indexable pages
 - Unique title + meta description per page
 - Canonical URL per page
 - Robots meta
-- Open Graph / Twitter metadata
-- Article structured data on guides
-- Breadcrumb structured data on guides
+- Open Graph metadata
+- Article / collection structured data
+- Breadcrumb structure on guide pages
 - WebSite / Organization / FAQ structured data on homepage
-- XML sitemap generated from the guide database
+- XML sitemap generated from guide, model, comparison and shortlist databases
 - `robots.txt` allows Google and OAI-SearchBot
-- Strong crawlable internal links
+- Crawlable homepage links into EV Guides and Model Guides
 - Clean 404 state with `noindex,follow`
-- Mobile-first layout
-- No unnecessary JavaScript dependency for article content
+- Mobile-first layouts
+- No JavaScript dependency for core article text
+- API responses explicitly `noindex`
+
+Still required when permanent domain is ready:
+- Google Search Console verification
+- Bing Webmaster Tools / IndexNow consideration
+- Submit sitemap
+- Monitor indexing / crawl errors
+- Add permanent branded social sharing image
 
 ## Domain migration
 
 The current canonical base is the temporary `workers.dev` URL. When EV Scan receives its permanent domain:
 
-1. Change the `SITE_URL` constant in `seo-guides.js` and `home-seo.js`.
+1. Change the `SITE_URL` constants in `seo-guides.js`, `seo-models.js`, `seo-intent.js` and `home-seo.js`.
 2. Add the custom domain in Cloudflare.
 3. 301 redirect the workers.dev hostname to the preferred domain if possible.
 4. Verify the domain in Google Search Console.
 5. Submit `/sitemap.xml`.
 6. Confirm canonical tags and sitemap use only the new hostname.
+7. Confirm OAI-SearchBot and other desired crawlers still receive 200 responses.
 
 ## Measurement once the domain is live
 
@@ -166,6 +215,7 @@ Use Google Search Console to track:
 - Positions 5–20 that can be improved
 - New long-tail questions people discover us through
 - Pages competing for the same query
+- Model guides earning impressions for narrower “problems”, “battery”, “range” or “trim” searches that may justify dedicated sub-pages
 
 Expand based on real impressions rather than guessing indefinitely.
 
@@ -179,5 +229,6 @@ Once DVSA and Auto Trader are stable, use aggregated/allowed data to add genuine
 - Price versus mileage patterns
 - Trim availability
 - Market-position context
+- “better than X% of comparable listings” only when the sample and methodology support it
 
 Do not publish statistics until sample size, data rights and methodology are adequate. Original data should strengthen the content rather than create misleading precision.
