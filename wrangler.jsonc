@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "ev-scan-mvp",
-  "main": "./worker-admin.js",
+  "main": "./worker-entry.js",
   "compatibility_date": "2026-08-24",
   "vars": {
     "DVSA_TOKEN_URL": "https://login.microsoftonline.com/a455b827-244f-4c97-b5b4-ce5d13b4d00c/oauth2/v2.0/token",
