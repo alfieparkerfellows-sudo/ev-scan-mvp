@@ -2,6 +2,9 @@ import baseWorker from './worker-providers.js';
 import { accountsConfigured, handleAccountRequest } from './account-api.js';
 import { ensureAccountSchema } from './account-schema.js';
 
+const SCAN_CACHE_VERSION = '0.8.2';
+const SCAN_CACHE_TTL_SECONDS = 30 * 60;
+
 function withAccountDb(env = {}) {
   if (env.ACCOUNTS_DB) return env;
   if (!env.EVSCAN_DB) return env;
@@ -110,11 +113,102 @@ async function injectAccountUi(response) {
   return new Response(html, { status: response.status, headers });
 }
 
+async function ensureScanCache(db) {
+  if (!db?.prepare) return false;
+  try {
+    await db.prepare(`CREATE TABLE IF NOT EXISTS scan_cache (
+      cache_key TEXT PRIMARY KEY,
+      listing_url TEXT NOT NULL,
+      response_json TEXT NOT NULL,
+      created_at INTEGER NOT NULL,
+      expires_at INTEGER NOT NULL
+    )`).run();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function canonicalListingUrl(value = '') {
+  try {
+    const url = new URL(String(value || '').trim());
+    if (!['http:', 'https:'].includes(url.protocol)) return '';
+    url.hash = '';
+    return url.toString();
+  } catch {
+    return '';
+  }
+}
+
+async function scanCacheKey(listingUrl) {
+  const input = new TextEncoder().encode(`${SCAN_CACHE_VERSION}:${listingUrl}`);
+  const digest = await crypto.subtle.digest('SHA-256', input);
+  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+}
+
+async function scanRequestListingUrl(request) {
+  try {
+    const body = await request.clone().json();
+    if (!body || typeof body !== 'object' || Array.isArray(body)) return '';
+    return canonicalListingUrl(body.listingUrl);
+  } catch {
+    return '';
+  }
+}
+
+async function readCachedScan(env, listingUrl) {
+  const db = env.EVSCAN_DB;
+  if (!listingUrl || !(await ensureScanCache(db))) return null;
+  try {
+    const key = await scanCacheKey(listingUrl);
+    const now = Math.floor(Date.now() / 1000);
+    const row = await db.prepare('SELECT response_json, created_at, expires_at FROM scan_cache WHERE cache_key = ?1 AND expires_at > ?2 LIMIT 1').bind(key, now).first();
+    if (!row?.response_json) return null;
+    const payload = JSON.parse(row.response_json);
+    if (!payload?.ok || payload?.quality?.passed !== true) return null;
+    payload.cache = { hit: true, ageSeconds: Math.max(0, now - Number(row.created_at || now)), ttlSeconds: SCAN_CACHE_TTL_SECONDS };
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+async function writeCachedScan(env, listingUrl, payload) {
+  const db = env.EVSCAN_DB;
+  if (!listingUrl || !payload?.ok || payload?.quality?.passed !== true || !(await ensureScanCache(db))) return;
+  try {
+    const key = await scanCacheKey(listingUrl);
+    const now = Math.floor(Date.now() / 1000);
+    const expires = now + SCAN_CACHE_TTL_SECONDS;
+    const clean = { ...payload, cache: { hit: false, ttlSeconds: SCAN_CACHE_TTL_SECONDS } };
+    await db.prepare(`INSERT INTO scan_cache (cache_key, listing_url, response_json, created_at, expires_at)
+      VALUES (?1, ?2, ?3, ?4, ?5)
+      ON CONFLICT(cache_key) DO UPDATE SET listing_url = excluded.listing_url, response_json = excluded.response_json, created_at = excluded.created_at, expires_at = excluded.expires_at`)
+      .bind(key, listingUrl, JSON.stringify(clean), now, expires)
+      .run();
+    if (Math.random() < 0.03) {
+      await db.prepare('DELETE FROM scan_cache WHERE expires_at <= ?1').bind(now).run();
+    }
+  } catch {}
+}
+
+function cachedScanResponse(payload) {
+  return new Response(JSON.stringify(payload, null, 2), {
+    status: 200,
+    headers: {
+      'content-type': 'application/json; charset=utf-8',
+      'cache-control': 'no-store',
+      'x-content-type-options': 'nosniff',
+      'x-robots-tag': 'noindex, nofollow'
+    }
+  });
+}
+
 async function augmentHealth(response, env) {
   try {
     const account = await accountReady(env);
     const data = await response.json();
-    data.version = '0.8.1';
+    data.version = SCAN_CACHE_VERSION;
     data.accountsConfigured = account.ready;
     data.capabilities = {
       ...(data.capabilities || {}),
@@ -126,7 +220,9 @@ async function augmentHealth(response, env) {
       inAppOwnershipReminders: account.ready,
       accountThemes: account.ready,
       personalisedEvFinder: true,
-      directAutoTraderApi: false
+      directAutoTraderApi: false,
+      verifiedScanCache: Boolean(env.EVSCAN_DB),
+      scanCacheTtlSeconds: SCAN_CACHE_TTL_SECONDS
     };
     const headers = new Headers(response.headers);
     headers.set('content-type', 'application/json; charset=utf-8');
@@ -149,6 +245,26 @@ export default {
     }
 
     if (url.pathname.startsWith('/api/autotrader/')) return retiredAutoTraderRoute();
+
+    if (url.pathname === '/api/scan' && request.method === 'POST') {
+      const listingUrl = await scanRequestListingUrl(request);
+      if (listingUrl) {
+        const cached = await readCachedScan(env, listingUrl);
+        if (cached) return cachedScanResponse(cached);
+      }
+      const scanResponse = await baseWorker.fetch(request, env, ctx);
+      if (listingUrl && scanResponse?.ok) {
+        try {
+          const payload = await scanResponse.clone().json();
+          if (payload?.ok && payload?.quality?.passed === true) {
+            const task = writeCachedScan(env, listingUrl, payload);
+            if (ctx?.waitUntil) ctx.waitUntil(task);
+            else await task;
+          }
+        } catch {}
+      }
+      return scanResponse;
+    }
 
     const response = await baseWorker.fetch(request, env, ctx);
     if (url.pathname === '/api/health') return augmentHealth(response, env);
