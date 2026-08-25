@@ -1,5 +1,5 @@
 const SITE_URL = 'https://ev-scan-mvp.alfieparkerfellows.workers.dev';
-const UPDATED = '2026-08-24';
+const UPDATED = '2026-08-25';
 
 function esc(value = '') {
   return String(value)
@@ -667,6 +667,66 @@ export const guides = [
       href: '/#find-my-ev'
     },
     related: ['can-you-own-an-electric-car-without-home-charging', 'how-much-electric-car-range-do-i-need', 'what-to-check-before-buying-used-electric-car']
+  },
+  {
+    slug: 'electric-car-battery-replacement-cost',
+    category: 'Battery health',
+    title: 'Electric Car Battery Replacement Cost UK: What Used Buyers Need to Know',
+    metaTitle: 'EV Battery Replacement Cost UK: Used Buyer Guide | EV Scan',
+    metaDescription: 'Worried about electric-car battery replacement cost? Learn why full replacement is uncommon, what warranties cover, repair options and what evidence to check on a used EV.',
+    answer: 'There is no honest single UK replacement price for every EV battery. A complete high-voltage pack can be expensive, but many battery problems are diagnosed and repaired at component level, and qualifying capacity loss or defects may still sit within manufacturer cover.',
+    answerDetail: 'Before treating a used EV as a potential full-battery bill, identify the exact battery, remaining warranty, fault evidence and whether repair, a remanufactured pack or a complete replacement is actually being proposed.',
+    keyPoints: ['Do not turn an unexplained warning light into an assumed full-pack replacement.', 'Battery warranty terms differ by manufacturer, age, mileage and capacity threshold.', 'Get a written diagnosis and itemised quotation before pricing the risk.'],
+    sections: [
+      { heading: 'Why one headline replacement figure is misleading', paragraphs: ['Battery packs differ enormously in size, chemistry, cooling design, packaging and parts availability. Labour, diagnostics, transport restrictions and whether a new, repaired or remanufactured pack is used also change the bill.', 'A quote for one model or an out-of-warranty new pack is not a reliable estimate for another EV. Treat broad online cost ranges as context, not a price for the car in front of you.'] },
+      { heading: 'A battery problem does not always mean a complete new pack', paragraphs: ['A high-voltage fault can involve sensors, contactors, cooling parts, wiring, control software or an individual battery module. The correct repair depends on manufacturer procedures, pack design and the technician’s diagnosis.', 'Ask whether the workshop is proposing software work, a component or module repair, a remanufactured assembly or a complete new pack—and why.'] },
+      { heading: 'Check the warranty before calculating the worst case', paragraphs: ['Many manufacturers publish separate time and mileage limits for the high-voltage battery, often with detailed exclusions and a minimum-capacity condition. The first-registration date, current mileage and compliant servicing can all matter.', 'Obtain confirmation for the VIN from the manufacturer or authorised network. A seller’s phrase such as “eight-year battery warranty” does not prove a particular fault or level of degradation will be covered.'] },
+      { heading: 'What to inspect before buying', bullets: ['Battery or charging warning messages and diagnostic reports.', 'Measured State of Health evidence, including who produced it and how.', 'Remaining manufacturer battery cover and its capacity threshold.', 'AC and DC charging behaviour without interruptions.', 'Current usable range in representative conditions.', 'Accident, flood or underbody damage near the battery enclosure.', 'A written, itemised repair quotation for any known fault.'] },
+      { heading: 'How EV Scan frames the risk', paragraphs: ['EV Scan separates verified evidence from estimates and unknowns. We use the exact model, advert, MOT record, mileage, warranty context and seller statements to show what is known and what still needs confirmation.', 'If a car has a battery warning or materially weak range, pause the purchase until a qualified diagnosis turns that uncertainty into evidence.'] }
+    ],
+    sources: [['GOV.UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/'],['Kia UK EV battery warranty explanation','https://www.kia.com/uk/about/news/electric-car-battery-warranty/'],['BYD UK warranty policy','https://www.byd.com/uk/service-maintenance/warranty-policy']],
+    cta: { eyebrow: 'Worried about a battery bill?', title: 'Check the exact EV before pricing the worst case.', copy: 'Paste the listing into EV Scan so we can organise its battery, warranty, MOT, range and missing evidence into practical next checks.', button: 'Scan the EV you found', href: '/#home' },
+    related: ['electric-car-battery-warranty-explained', 'how-to-check-electric-car-battery-health-before-buying', 'what-is-good-battery-health-for-used-ev']
+  },
+  {
+    slug: 'electric-car-battery-warranty-explained',
+    category: 'Warranty',
+    title: 'Electric Car Battery Warranty Explained for UK Used Buyers',
+    metaTitle: 'EV Battery Warranty Explained UK: Used Buyer Guide | EV Scan',
+    metaDescription: 'Understand EV battery warranty time, mileage and capacity limits, transfer rules, exclusions and the proof to obtain before buying a used electric car in the UK.',
+    answer: 'An EV battery warranty is a contract with time, mileage, fault and sometimes minimum-capacity conditions—not a promise that an ageing battery will always be replaced free of charge.',
+    answerDetail: 'For a used EV, confirm the exact policy that applied when the car was first registered, how much cover remains, whether it transfers and what evidence the manufacturer requires for a claim.',
+    keyPoints: ['Time and mileage limits usually work on whichever comes first.', 'Defect cover and capacity-retention cover are not always the same.', 'The VIN, registration date, mileage and service history determine the useful answer.'],
+    sections: [
+      { heading: 'The four warranty questions that matter', bullets: ['When did cover begin and when does it expire?', 'What mileage limit applies?', 'Does the policy cover faults, capacity loss or both?', 'What capacity threshold, exclusions and maintenance conditions apply?'] },
+      { heading: 'Capacity loss is different from sudden failure', paragraphs: ['Some policies promise repair if usable capacity falls below a stated percentage during the cover period. Others focus on manufacturing defects. Normal ageing above the threshold may not trigger a claim even when the car has less range than new.', 'Ask the manufacturer how State of Health is measured for warranty purposes. An independent report can be useful buying evidence without automatically being the test used to approve a claim.'] },
+      { heading: 'Transfer and service history', paragraphs: ['Manufacturer cover often stays with the vehicle, but transfer conditions and exclusions differ. Imported cars, missed servicing, modification, accident damage or use outside policy terms can complicate a claim.', 'Request the warranty booklet that applies to the car’s registration date and ask an authorised retailer to confirm remaining cover against the VIN. Keep that confirmation with the purchase file.'] },
+      { heading: 'What to obtain before buying', bullets: ['First-registration date and current mileage.', 'VIN-specific confirmation of remaining battery cover.', 'The applicable warranty terms, not only a current marketing page.', 'Service and recall/campaign history.', 'Any battery diagnostic or State of Health report.', 'Written explanation of previous battery repairs or replacements.', 'Confirmation that charging cables and software are current.'] },
+      { heading: 'Do not overpay merely because a warranty remains', paragraphs: ['Remaining cover reduces some risk but does not guarantee condition, range or a future claim. Compare the car’s current battery evidence, price and suitability with alternatives.', 'A strong used EV is one whose real range fits your life, whose history is clear and whose remaining cover is properly evidenced.'] }
+    ],
+    sources: [['Kia UK warranty terms and exclusions','https://www.kia.com/uk/owners/insurance-and-warranty/7-year-warranty/terms-and-exclusions/'],['BYD UK warranty policy','https://www.byd.com/uk/service-maintenance/warranty-policy'],['Volkswagen UK battery warranty information','https://www.volkswagen.co.uk/en/owners-and-services/my-car/warranties.html']],
+    cta: { eyebrow: 'Checking the warranty?', title: 'Work out what remains on the exact car—not the model in general.', copy: 'Scan the advert and EV Scan will turn its age, mileage, battery claims and missing evidence into a focused seller checklist.', button: 'Check this EV’s warranty context', href: '/#home' },
+    related: ['electric-car-battery-replacement-cost', 'how-long-do-electric-car-batteries-last', 'how-to-check-electric-car-battery-health-before-buying']
+  },
+  {
+    slug: 'used-electric-car-mot-history',
+    category: 'MOT history',
+    title: 'Used Electric Car MOT History: What to Look For',
+    metaTitle: 'Used EV MOT History: What to Check Before Buying | EV Scan',
+    metaDescription: 'Learn how to read a used electric car MOT history in the UK, spot repeat advisories and mileage anomalies, and understand what an MOT cannot tell you about the battery.',
+    answer: 'A used EV’s MOT history can reveal recurring tyre, brake, suspension, lighting and structural concerns, mileage patterns and neglected advisories—but it does not measure high-voltage battery health or prove the car has been well maintained.',
+    answerDetail: 'Read the chronology, not only the latest pass. Repeated advisories, rapid mileage changes and faults that reappear can be more informative than one clean certificate.',
+    keyPoints: ['Use the official GOV.UK MOT history service for the registration.', 'Look for patterns across years rather than counting advisories.', 'Add battery, charging, warranty, recall and service checks because the MOT does not cover them.'],
+    sections: [
+      { heading: 'Start with identity and mileage', paragraphs: ['Confirm the registration matches the advert and compare mileage at every recorded test with the seller’s current figure. Small inconsistencies can have innocent explanations, but unexplained reversals or large jumps need evidence.', 'Also check test dates and gaps. A period without an MOT can simply mean the car was off the road or new enough not to need one, but ask when the timeline does not make sense.'] },
+      { heading: 'The recurring EV-relevant patterns', bullets: ['Tyres repeatedly close to the legal limit or damaged on inner edges.', 'Suspension joints, bushes or springs appearing across successive tests.', 'Brake corrosion, imbalance or binding on a car that relies heavily on regenerative braking.', 'Lighting, cameras or warning-system issues that may affect test outcomes.', 'Damage, corrosion or insecure covers around the underside.', 'The same advisory returning without evidence of repair.'] },
+      { heading: 'What an MOT cannot tell you', paragraphs: ['An MOT pass is not a battery-health certificate, a service record, an accident-history check or confirmation that rapid charging works. It also does not prove every manufacturer recall or service campaign is complete.', 'A car can pass its MOT and still have weak usable range, intermittent charging faults, missing software updates, poor service history or expensive tyres approaching replacement.'] },
+      { heading: 'How to use advisories in a viewing', paragraphs: ['Turn each repeated or recent advisory into a physical inspection item and a seller question. Ask for invoices where the seller says work has been completed.', 'Price immediate tyres, brakes or suspension work before negotiating. On heavy, powerful EVs, a set of correctly specified tyres can materially change the true purchase cost.'] },
+      { heading: 'The complete used-EV evidence stack', bullets: ['Official MOT history and mileage chronology.', 'Service invoices and manufacturer digital history.', 'Registration-specific recall/campaign check.', 'Battery and charging evidence.', 'Insurance quote for the exact registration.', 'Independent inspection where condition or value justifies it.'] }
+    ],
+    sources: [['GOV.UK check MOT history','https://www.gov.uk/check-mot-history'],['GOV.UK check a used vehicle before buying','https://www.gov.uk/checks-when-buying-a-used-car'],['GOV.UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
+    cta: { eyebrow: 'Have the registration?', title: 'Let EV Scan turn the MOT timeline into useful buying questions.', copy: 'Enter or paste the car details and we’ll combine MOT patterns with the listing, range, insurance and missing seller evidence.', button: 'Check this used EV', href: '/#home' },
+    related: ['what-to-check-before-buying-used-electric-car', 'how-to-check-electric-car-battery-health-before-buying', 'are-used-electric-cars-reliable']
   }
 ];
 
@@ -754,6 +814,11 @@ function relatedGuides(guide) {
   return `<section class="seo-related"><div class="seo-section-label">Related EV guides</div><div class="seo-related-grid">${related.map(item => `<a href="/ev-guides/${esc(item.slug)}"><span>${esc(item.category)}</span><strong>${esc(item.title)}</strong><em>Read guide →</em></a>`).join('')}</div></section>`;
 }
 
+function sourceList(guide) {
+  if (!guide.sources?.length) return '';
+  return `<section class="seo-article-section seo-sources"><h2>Sources and checks</h2><p>Warranty, recall and specification terms can change. Use these primary sources, then confirm the position for the exact registration or VIN.</p><ul>${guide.sources.map(([label, url]) => `<li><a href="${esc(url)}" rel="nofollow noopener">${esc(label)}</a></li>`).join('')}</ul></section>`;
+}
+
 export function renderGuide(slug) {
   const guide = guideBySlug.get(slug);
   if (!guide) return null;
@@ -776,6 +841,7 @@ export function renderGuide(slug) {
         <div><span>${esc(guide.cta.eyebrow)}</span><h2>${esc(guide.cta.title)}</h2><p>${esc(guide.cta.copy)}</p></div>
         <a href="${esc(guide.cta.href)}">${esc(guide.cta.button)} →</a>
       </section>
+      ${sourceList(guide)}
       ${relatedGuides(guide)}
       <aside class="seo-method-note"><strong>How EV Scan handles uncertain information</strong><p>We separate <b>verified</b> information from <b>estimated</b> information, seller claims and unknowns. Battery condition, range, insurance and ownership costs can vary by vehicle and person, so estimates are never presented as guaranteed measurements or quotes.</p></aside>
     </article>
@@ -837,3 +903,4 @@ export function renderGuide404() {
   return `${head({ title: 'EV Guide Not Found | EV Scan', description: 'That EV Scan guide could not be found.', canonical: absolute('/ev-guides/') })}
 <body class="seo-page"><main class="seo-main"><section class="seo-hub-hero"><div class="seo-kicker">404</div><h1>We couldn’t find that EV guide.</h1><p>Try the guide library instead, or scan the car you are researching.</p><div class="seo-404-actions"><a href="/ev-guides/">Browse EV Guides</a><a href="/#home">Scan a car</a></div></section></main>${footer()}</body></html>`;
 }
+
