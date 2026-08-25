@@ -364,6 +364,150 @@ export const models = [
     sources: [['Volkswagen UK battery warranty','https://www.volkswagen.co.uk/en/owners-and-services/my-car/warranties.html/__layer/layers/owners/my-car/warranties/understanding-battery-degradation/master.layer'],['Volkswagen ID.4 official information','https://www.volkswagen.co.uk/en/electric-and-hybrid/electric-cars/id4.html']],
     related: ['skoda/enyaq','volkswagen/id-3','tesla/model-y'],
     cta: { eyebrow: 'Found an ID.4?', title: 'Check the exact battery, software and value before viewing.', copy: 'Paste the advert and EV Scan will help you assess price, MOT history, realistic range, insurance and the gaps in the seller’s description.', button: 'Check this Volkswagen ID.4', href: '/#home' }
+  },
+  {
+    make: 'Cupra', model: 'Born', slug: 'cupra/born',
+    title: 'Used Cupra Born Buyer’s Guide',
+    metaTitle: 'Used Cupra Born Buyer’s Guide: Battery, Range & Checks | EV Scan',
+    metaDescription: 'Buying a used Cupra Born in the UK? Compare battery and e-Boost versions, real-world range, charging, warranty, software, tyres and insurance checks.',
+    answer: 'A used Cupra Born is a strong electric hatchback if you want Volkswagen ID.3 fundamentals with sportier styling. Confirm the battery, power output and equipment first: similar-looking cars can differ materially in range, charging, performance and insurance cost.',
+    bestFor: ['Sporty electric hatchback buyers', 'Everyday family use', 'Drivers comparing an ID.3 or MG4'],
+    versions: ['58 kWh-class rear-wheel-drive versions', 'e-Boost performance versions', '77 kWh-class V3 editions'],
+    sections: [
+      { heading: 'Battery, range and charging differences', paragraphs: ['Most early UK cars use the mid-size battery, while larger-battery editions trade extra purchase price and weight for longer official range. Real range will be lower than WLTP in cold, fast or heavily loaded driving.', 'Check AC and DC charging, the charge-port lock, scheduled charging and any supplied cable. Peak charging speed is not the same as a flat charging curve, so judge the car against your normal stops.'] },
+      { heading: 'Software, trim and running costs', paragraphs: ['Confirm the exact V1, V2 or V3-era specification and whether later software campaigns or updates have been applied. Test the infotainment, phone connection, navigation, climate controls, cameras and driver-assistance settings.', 'Large wheels and e-Boost performance can raise tyre and insurance costs. Obtain a quote for the exact registration before paying a deposit.'] },
+      { heading: 'What to inspect on a used Cupra Born', bullets: ['Battery and power version shown by the VIN/build data.', 'Software version, warning history and campaign status.', 'AC/DC charging and cable condition.', 'Tyres, wheel damage, alignment and repeated MOT advisories.', 'Remaining vehicle and high-voltage battery warranty.'] },
+      { heading: 'Who does the Born suit?', paragraphs: ['It suits buyers who want a compact EV with useful rear space and a more characterful cabin than an ID.3. Compare it directly with the ID.3 and MG4: the best choice is the individual car with the right equipment, insurance and price, not automatically the sportiest badge.'] }
+    ],
+    sources: [['CUPRA UK EV range and charging guidance','https://www.cupraofficial.co.uk/electric-and-hybrid/is-ev-right-for-me'],['CUPRA UK warranty terms','https://www.cupraofficial.co.uk/owners/care-and-maintenance/cupra-warranty'],['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
+    related: ['volkswagen/id-3','mg/mg4-ev','mini/electric'],
+    cta: { eyebrow: 'Found a Cupra Born?', title: 'Check the exact Born, not just the advert badge.', copy: 'EV Scan will help you assess its price, MOT pattern, battery and range fit, insurance and the questions the seller has not answered.', button: 'Scan this Cupra Born', href: '/#home' }
+  },
+  {
+    make: 'BMW', model: 'i4', slug: 'bmw/i4',
+    title: 'Used BMW i4 Buyer’s Guide',
+    metaTitle: 'Used BMW i4 Buyer’s Guide: eDrive35, eDrive40 & M50 Checks | EV Scan',
+    metaDescription: 'Buying a used BMW i4? Compare eDrive35, eDrive40 and M50 versions, battery and charging, range, warranty, tyres, options and running costs.',
+    answer: 'The BMW i4 is one of the most convincing used electric executive cars, but version and options matter. An eDrive40 is the long-range sweet spot for many buyers; eDrive35 can be better value, while M50 performance brings higher tyre and insurance exposure.',
+    bestFor: ['Long-distance executive driving', 'Drivers who value handling', 'Tesla Model 3 alternatives'],
+    versions: ['eDrive35 rear-wheel drive', 'eDrive40 rear-wheel drive', 'M50 xDrive high-performance all-wheel drive'],
+    sections: [
+      { heading: 'Choose the version around your journeys', paragraphs: ['The smaller-battery eDrive35 can suit commuting and regular home charging. The eDrive40 generally offers the strongest range balance, while the M50 is for buyers who deliberately want its performance.', 'Wheel size, temperature and motorway speed materially affect real range. Compare the dashboard estimate with recent consumption and your own worst regular journey.'] },
+      { heading: 'Charging, warranty and options', paragraphs: ['Test both AC and DC charging where practical, inspect the port and confirm supplied cables. BMW’s UK warranty booklet states battery cover is subject to detailed terms for eight years or 100,000 miles from first registration.', 'Options such as adaptive suspension, upgraded audio, driving assistance and comfort equipment can affect value. Verify equipment through the VIN rather than trusting copied advert text.'] },
+      { heading: 'Model-specific checks', bullets: ['Exact eDrive35, eDrive40 or M50 identity and factory options.', 'Tyre brand, tread, inner-edge wear and wheel damage.', 'Charging, preconditioning, app and infotainment functions.', 'Service, warning and recall/campaign history.', 'Insurance quote and remaining battery/vehicle warranty.'] },
+      { heading: 'Ownership costs can still be premium', paragraphs: ['Used depreciation can make an i4 look affordable, but tyres, body repairs, insurance and complex optional equipment remain premium-car costs. Inspect brakes and suspension as well as the EV system, and price any missing second key or charging cable.'] }
+    ],
+    sources: [['BMW UK i4 technical information','https://www.bmw.co.uk/en/all-models/m-models/bmw-i4-m60/bmw-i4-m60-xdrive-gran-coupe-technical-data.html'],['BMW UK vehicle warranty booklet','https://www.bmw.co.uk/content/dam/bmw/marketGB/bmw_co_uk/owners/service-workshop/bmw-warranties/BMW_Warranty_Booklet_EAA_Compliant.pdf.asset.1764772884104.pdf'],['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
+    related: ['tesla/model-3','polestar/2','bmw/i3'],
+    cta: { eyebrow: 'Considering a BMW i4?', title: 'Check whether this i4’s version and options justify the price.', copy: 'Scan the advert for a clearer view of value, MOT history, range fit, insurance and the evidence to request before viewing.', button: 'Scan this BMW i4', href: '/#home' }
+  },
+  {
+    make: 'BMW', model: 'iX3', slug: 'bmw/ix3',
+    title: 'Used BMW iX3 Buyer’s Guide',
+    metaTitle: 'Used BMW iX3 Buyer’s Guide: Range, Charging & Checks | EV Scan',
+    metaDescription: 'Buying the first-generation used BMW iX3? Check battery range, rear-wheel drive, charging, warranty, tyres, options and premium-SUV running costs.',
+    answer: 'A first-generation used BMW iX3 is a refined, practical premium EV with a straightforward rear-wheel-drive layout. Do not confuse it with the all-new 2026 iX3: used examples have different technology, range and charging performance.',
+    bestFor: ['Comfortable family motorway use', 'Traditional BMW controls', 'Premium SUV buyers with home charging'],
+    versions: ['Premier Edition / Premier Edition Pro early cars', 'M Sport', 'M Sport Pro'],
+    sections: [
+      { heading: 'Separate the used iX3 from the new generation', paragraphs: ['Most current used UK stock is the earlier G08-based iX3. New-generation specifications published for 2026 do not describe those cars, so identify model year and factory equipment before comparing range or charging claims.', 'The earlier car is rear-wheel drive rather than xDrive. That helps efficiency, but buyers who specifically need all-wheel drive should choose accordingly.'] },
+      { heading: 'Range, charging and battery cover', paragraphs: ['Use recent consumption and a realistic cold-motorway scenario instead of the advert’s maximum range. Test AC and DC charging, charging schedules, preconditioning and the BMW app.', 'BMW’s UK warranty booklet describes high-voltage battery cover for eight years or 100,000 miles, subject to its terms. Verify the first-registration date, mileage and remaining cover.'] },
+      { heading: 'What to inspect', bullets: ['Correct first-generation model identity and exact trim.', 'Tyres, large alloy wheels, brakes and suspension.', 'Charging port, cables, app, cameras and infotainment.', 'Service history and outstanding recalls/campaigns.', 'Panoramic roof, powered tailgate and all costly options.'] },
+      { heading: 'Who should buy one?', paragraphs: ['The iX3 suits a buyer who values comfort, cabin familiarity and a useful boot more than dramatic EV styling. Compare it with an Audi Q4 e-tron, Mercedes EQB and Tesla Model Y, including insurance and warranty rather than purchase price alone.'] }
+    ],
+    sources: [['BMW UK vehicle warranty booklet','https://www.bmw.co.uk/content/dam/bmw/marketGB/bmw_co_uk/owners/service-workshop/bmw-warranties/BMW_Warranty_Booklet_EAA_Compliant.pdf.asset.1764772884104.pdf'],['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
+    related: ['tesla/model-y','audi/e-tron','volkswagen/id-4'],
+    cta: { eyebrow: 'Found a used iX3?', title: 'Check the generation, range fit and premium-car costs together.', copy: 'EV Scan can organise its advert, MOT history, expected range, insurance and seller questions before you book a viewing.', button: 'Scan this BMW iX3', href: '/#home' }
+  },
+  {
+    make: 'Audi', model: 'Q4 e-tron', slug: 'audi/q4-e-tron',
+    title: 'Used Audi Q4 e-tron Buyer’s Guide',
+    metaTitle: 'Used Audi Q4 e-tron Buyer’s Guide: Battery & Checks | EV Scan',
+    metaDescription: 'Buying a used Audi Q4 e-tron? Compare 35, 40, 45 and 50 quattro versions, range, charging, software, warranty, trim and family-EV costs.',
+    answer: 'A used Audi Q4 e-tron is a polished family EV, but its badge numbers changed alongside battery, motor and charging updates. Confirm the exact model year and powertrain before comparing price, range or warranty.',
+    bestFor: ['Premium family practicality', 'Comfortable commuting', 'Buyers comparing Enyaq and ID.4'],
+    versions: ['Early 35 e-tron smaller-battery cars', '40 / later 45 rear-wheel-drive cars', '50 / later 55 quattro cars', 'SUV and Sportback body styles'],
+    sections: [
+      { heading: 'Decode the badge and model year', paragraphs: ['Q4 e-tron names do not all mean the same battery or performance. Later powertrain revisions improved some range and charging figures, so use VIN/build data and the registration year instead of assuming every Q4 with a similar badge matches.', 'Sportback shape, wheel size and quattro drive also influence space, efficiency, tyres and insurance.'] },
+      { heading: 'Charging, software and warranty', paragraphs: ['Test AC and DC charging, the port lock, route planning, preconditioning where fitted and scheduled charging. Check infotainment, cameras, phone integration and whether relevant software campaigns are complete.', 'Audi states e-tron high-voltage battery warranty cover runs for up to eight years or 100,000 miles, subject to the detailed terms. Confirm what remains on the exact car.'] },
+      { heading: 'Model-specific inspection list', bullets: ['Exact battery, motor, body style, trim and model year.', 'Software and service-campaign status.', 'Tyres, wheel damage, alignment and suspension noises.', 'AC/DC charging and supplied cables.', 'Heat pump and other advertised options actually fitted.'] },
+      { heading: 'Price it against its platform relatives', paragraphs: ['The Q4 shares underlying technology with the Volkswagen ID.4, Škoda Enyaq and Cupra Born. Audi finish and equipment may justify a premium, but compare usable space, warranty, options and condition before paying for the badge.'] }
+    ],
+    sources: [['Audi UK Q4 e-tron battery and powertrain information','https://www.audi.co.uk/en/models/q4/q4-e-tron/layers/battery-and-powertrain/'],['Audi UK e-tron battery warranty and service plans','https://www.audi.co.uk/en/owners/service-and-maintenance/service-plans/e-tron/'],['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
+    related: ['skoda/enyaq','volkswagen/id-4','audi/e-tron'],
+    cta: { eyebrow: 'Looking at a Q4 e-tron?', title: 'Check the exact powertrain before paying the Audi premium.', copy: 'Scan the car to assess price, MOT history, realistic range, insurance and missing specification evidence.', button: 'Scan this Audi Q4 e-tron', href: '/#home' }
+  },
+  {
+    make: 'Mercedes-Benz', model: 'EQA', slug: 'mercedes-benz/eqa',
+    title: 'Used Mercedes EQA Buyer’s Guide',
+    metaTitle: 'Used Mercedes EQA Buyer’s Guide: Range, Charging & Checks | EV Scan',
+    metaDescription: 'Buying a used Mercedes EQA? Compare EQA 250 and 4MATIC versions, battery range, charging, warranty, trim, software and premium running costs.',
+    answer: 'A used Mercedes EQA is an easy transition into a premium EV, especially for urban and mixed driving. Its compact-SUV packaging and real range need checking against rivals, and the exact 250, 250+ or 4MATIC version matters.',
+    bestFor: ['Compact premium SUV buyers', 'Comfort-led commuting', 'Drivers wanting familiar Mercedes controls'],
+    versions: ['EQA 250 front-wheel drive', 'Later EQA 250+ long-range version', 'EQA 300 / 350 4MATIC'],
+    sections: [
+      { heading: 'Match the derivative to your use', paragraphs: ['The common EQA 250 is likely to be the value choice, while later 250+ cars target longer range. 4MATIC models add traction and performance but usually increase weight, energy use, tyres and insurance.', 'Check model year as well as badge because battery, equipment and efficiency evolved during the car’s life.'] },
+      { heading: 'Range, charging and warranty evidence', paragraphs: ['Check recent energy consumption, cold-weather motorway suitability and whether the charging speed fits your normal stops. Test AC and DC charging, pre-entry climate control, navigation and app access.', 'Ask Mercedes-Benz to confirm remaining high-voltage battery and vehicle cover for the VIN; warranty terms can differ by registration date and derivative.'] },
+      { heading: 'What to inspect on an EQA', bullets: ['Exact 250, 250+ or 4MATIC derivative and trim.', 'MBUX, cameras, sensors, app and both keys.', 'Charging port, cables and charge scheduling.', 'Tyres, wheel damage, suspension and brakes.', 'Service history and open recall/campaign status.'] },
+      { heading: 'Running-cost reality', paragraphs: ['An attractively depreciated EQA still carries premium-brand tyre, bodywork and insurance exposure. Check rear-seat and boot space in person, then compare it with the Q4 e-tron, iX3 and Volvo XC40 Recharge on whole-life fit.'] }
+    ],
+    sources: [['Mercedes-Benz UK EQA specifications','https://www.mercedes-benz.co.uk/passengercars/models/suv/eqa/overview.html'],['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
+    related: ['audi/q4-e-tron','volkswagen/id-4','bmw/ix3'],
+    cta: { eyebrow: 'Found a Mercedes EQA?', title: 'Check whether its version, range and price fit your real life.', copy: 'EV Scan helps turn the advert into clear MOT, battery/range, insurance, value and seller checks.', button: 'Scan this Mercedes EQA', href: '/#home' }
+  },
+  {
+    make: 'Mercedes-Benz', model: 'EQB', slug: 'mercedes-benz/eqb',
+    title: 'Used Mercedes EQB Buyer’s Guide',
+    metaTitle: 'Used Mercedes EQB Buyer’s Guide: Seven Seats & Checks | EV Scan',
+    metaDescription: 'Buying a used Mercedes EQB? Check five- or seven-seat specification, battery range, charging, warranty, 250 and 4MATIC versions, tyres and costs.',
+    answer: 'A used Mercedes EQB is unusual because some versions offer seven seats in a relatively compact electric SUV. Confirm the actual seating layout first, then check derivative, usable range with passengers, charging and premium running costs.',
+    bestFor: ['Families needing occasional seven seats', 'Comfort-focused school-run use', 'Compact electric SUV buyers'],
+    versions: ['EQB 250 / 250+ front-wheel-drive versions', 'EQB 300 4MATIC', 'EQB 350 4MATIC', 'Five- and seven-seat specifications'],
+    sections: [
+      { heading: 'Seven seats are not automatic', paragraphs: ['Do not assume every EQB advertised is a seven-seater. Inspect the exact seating layout and test third-row access, passenger limits and boot space with the seats in use.', 'A heavily loaded family journey reduces range, so plan against passengers, luggage, winter temperature and motorway speed rather than an ideal official figure.'] },
+      { heading: 'Battery, charging and version choice', paragraphs: ['Front-wheel-drive versions usually make most sense for efficiency and value. 4MATIC cars suit buyers who genuinely need extra traction or performance and accept higher running costs.', 'Test AC/DC charging, route planning, preconditioning if fitted, charge scheduling and the Mercedes app. Verify battery and vehicle warranty against the VIN and first-registration date.'] },
+      { heading: 'What to inspect', bullets: ['Five- or seven-seat layout and all seat mechanisms.', 'Exact derivative, model year and factory equipment.', 'Tyres, wheels, suspension and family-use interior wear.', 'MBUX, cameras, sensors, charging and both keys.', 'Service, recall/campaign and warranty records.'] },
+      { heading: 'Who should buy an EQB?', paragraphs: ['It is most compelling when occasional third-row flexibility solves a real need. If you only need five seats, compare a roomier or more efficient Enyaq, ID.4, Model Y, Q4 e-tron or iX3 before accepting the Mercedes premium.'] }
+    ],
+    sources: [['Mercedes-Benz UK electric SUV range','https://www.mercedes-benz.co.uk/passengercars/models/suv.html/'],['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
+    related: ['skoda/enyaq','tesla/model-y','audi/q4-e-tron'],
+    cta: { eyebrow: 'Considering an EQB?', title: 'Check the seats, range and exact derivative before viewing.', copy: 'Scan the listing for a clearer view of MOT history, family range, insurance, price and missing evidence.', button: 'Scan this Mercedes EQB', href: '/#home' }
+  },
+  {
+    make: 'Volvo', model: 'XC40 Recharge / EX40', slug: 'volvo/xc40-recharge',
+    title: 'Used Volvo XC40 Recharge / EX40 Buyer’s Guide',
+    metaTitle: 'Used Volvo XC40 Recharge / EX40 Buyer’s Guide | EV Scan',
+    metaDescription: 'Buying a used electric Volvo XC40 Recharge or EX40? Compare single- and twin-motor versions, range, charging, battery warranty, software and costs.',
+    answer: 'The electric Volvo XC40 Recharge—renamed EX40—is a quick, practical premium compact SUV. Used buyers must distinguish early twin-motor cars from later, more efficient single-motor versions and verify software, charging and tyre condition.',
+    bestFor: ['Compact family SUV use', 'Strong performance and safety focus', 'Buyers wanting Google-based infotainment'],
+    versions: ['Early Recharge Twin all-wheel drive', 'Single Motor front- or later rear-wheel-drive versions', 'Extended Range and later EX40 derivatives'],
+    sections: [
+      { heading: 'The name and drivetrain changed', paragraphs: ['Volvo confirms the EX40 is the same model line previously called XC40 Recharge Pure Electric. Do not confuse either with the XC40 plug-in hybrid.', 'Early twin-motor cars are very quick but can use more energy and tyres. Later single-motor and extended-range versions may be the smarter choice for buyers prioritising distance and running cost.'] },
+      { heading: 'Charging, software and warranty', paragraphs: ['Test AC and DC charging, Google Maps route planning, battery preconditioning, the Volvo app, cameras and software updates. Real charging time varies with temperature, battery condition and charger output.', 'Volvo states high-voltage battery cover is eight years or 100,000 miles with detailed conditions including a 70% State-of-Health threshold. Verify remaining cover for the car.'] },
+      { heading: 'Model-specific used checks', bullets: ['Pure-electric identity, model year and exact single/twin-motor version.', 'Tyre wear, wheel damage, alignment and suspension.', 'Infotainment, app, cameras, climate and software state.', 'Charging port, cables and 12-volt warning history.', 'Service, recall/campaign and warranty evidence.'] },
+      { heading: 'Insurance and running costs', paragraphs: ['Performance, weight and large wheels can make insurance and tyres expensive. Quote the registration before buying and compare a single-motor car with EQA, Q4 e-tron and iX3 alternatives rather than assuming every XC40 Recharge drives or costs the same.'] }
+    ],
+    sources: [['Volvo UK EX40 and XC40 Recharge naming information','https://www.volvocars.com/uk/cars/ex40-electric/'],['Volvo UK electric battery warranty','https://www.volvocars.com/uk/cars/electrification/battery/'],['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
+    related: ['audi/q4-e-tron','bmw/ix3','mercedes-benz/eqa'],
+    cta: { eyebrow: 'Found an electric XC40 or EX40?', title: 'Check the motor, battery and ownership costs on this exact car.', copy: 'EV Scan will help assess its advert, MOT pattern, expected range, insurance and the questions worth asking.', button: 'Scan this Volvo XC40 Recharge', href: '/#home' }
+  },
+  {
+    make: 'Ford', model: 'Mustang Mach-E', slug: 'ford/mustang-mach-e',
+    title: 'Used Ford Mustang Mach-E Buyer’s Guide',
+    metaTitle: 'Used Ford Mustang Mach-E Buyer’s Guide: Battery & Checks | EV Scan',
+    metaDescription: 'Buying a used Ford Mustang Mach-E? Compare Standard and Extended Range, RWD, AWD and GT, charging, battery warranty, recalls, tyres and insurance.',
+    answer: 'A used Mustang Mach-E is a spacious, distinctive long-range family EV. The exact Standard or Extended Range battery and RWD, AWD or GT drivetrain materially changes range, pace, tyres and insurance, so decode the advert before comparing price.',
+    bestFor: ['Distinctive family EV buyers', 'Long-distance driving', 'Drivers wanting a large practical cabin'],
+    versions: ['Standard Range RWD or AWD', 'Extended Range RWD or AWD', 'GT high-performance AWD', 'Later Standard Range LFP-battery cars'],
+    sections: [
+      { heading: 'Battery and drivetrain are the buying decision', paragraphs: ['Extended Range RWD is attractive for long-distance efficiency, while AWD adds traction and performance. GT should be chosen deliberately because tyres, insurance and ride priorities differ.', 'Ford identifies LFP batteries on certain later Standard Range cars and gives battery-specific charging guidance. Confirm chemistry and model year rather than applying one charging routine to every Mach-E.'] },
+      { heading: 'Charging, warranty and recall checks', paragraphs: ['Test AC/DC charging, route planning, battery preconditioning where supported, Ford app access and the charge-port door. Ask about software updates and any high-voltage or 12-volt warning history.', 'Ford states high-voltage battery cover lasts eight years or 100,000 miles, subject to detailed capacity and warranty terms. Check the VIN for open recalls and completion evidence.'] },
+      { heading: 'What to inspect', bullets: ['Standard/Extended Range, battery chemistry, RWD/AWD/GT identity.', 'Tyres, wheels, brakes, suspension and alignment.', 'SYNC screen, cameras, driver assistance, app and both keys.', 'Charging cables, port and AC/DC operation.', 'Service, software, recall and battery-warranty records.'] },
+      { heading: 'Running-cost and suitability check', paragraphs: ['The Mach-E’s size and performance can produce expensive tyres and insurance, particularly on AWD and GT versions. Check parking fit and ride comfort, then compare it with Model Y, EV6, Enyaq and ID.4 on real family journeys.'] }
+    ],
+    sources: [['Ford UK EV battery warranty guidance','https://www.ford.co.uk/support/how-tos/warranty/warranties-and-coverage/how-long-do-ford-electric-vehicle-batteries-last'],['Ford UK Mustang Mach-E LFP battery guidance','https://www.ford.co.uk/support/how-tos/electric-vehicles/mustang-mach-e/lithium-iron-phosphate-electric-vehicle-batteries'],['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
+    related: ['tesla/model-y','kia/ev6','skoda/enyaq'],
+    cta: { eyebrow: 'Found a Mustang Mach-E?', title: 'Check the exact battery and drivetrain before you fall for the styling.', copy: 'EV Scan can assess its price, MOT history, realistic range, insurance and missing seller evidence.', button: 'Scan this Mustang Mach-E', href: '/#home' }
   }
 ];
 

@@ -103,8 +103,14 @@ jobs:
           grep -q 'bmw/i3' seo-models.js
           grep -q 'jaguar/i-pace' seo-models.js
           grep -q 'volkswagen/id-4' seo-models.js
+          grep -q 'cupra/born' seo-models.js
+          grep -q 'bmw/i4' seo-models.js
+          grep -q 'audi/q4-e-tron' seo-models.js
+          grep -q 'ford/mustang-mach-e' seo-models.js
           grep -q '/cars/bmw/i3' sitemap.xml
           grep -q '/cars/jaguar/i-pace' evscan-sitemap.xml
+          grep -q '/cars/cupra/born' sitemap.xml
+          grep -q '/cars/ford/mustang-mach-e' evscan-sitemap.xml
           grep -q 'hyundai-ioniq-5-vs-kia-ev6' seo-intent.js
           grep -q 'first-used-electric-car' seo-intent.js
       - name: Validate account layer
