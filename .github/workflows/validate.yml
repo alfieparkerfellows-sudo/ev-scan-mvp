@@ -100,6 +100,11 @@ jobs:
           grep -q 'FAQPage' home-seo.js
           grep -q 'tesla/model-3' seo-models.js
           grep -q 'nissan/leaf' seo-models.js
+          grep -q 'bmw/i3' seo-models.js
+          grep -q 'jaguar/i-pace' seo-models.js
+          grep -q 'volkswagen/id-4' seo-models.js
+          grep -q '/cars/bmw/i3' sitemap.xml
+          grep -q '/cars/jaguar/i-pace' evscan-sitemap.xml
           grep -q 'hyundai-ioniq-5-vs-kia-ev6' seo-intent.js
           grep -q 'first-used-electric-car' seo-intent.js
       - name: Validate account layer
@@ -145,3 +150,4 @@ jobs:
           grep -q '"/cars/\*"' wrangler.jsonc
           grep -q '"/compare/\*"' wrangler.jsonc
           grep -q '"/best/\*"' wrangler.jsonc
+

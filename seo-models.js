@@ -1,5 +1,5 @@
 const SITE_URL = 'https://ev-scan-mvp.alfieparkerfellows.workers.dev';
-const UPDATED = '2026-08-24';
+const UPDATED = '2026-08-25';
 
 function esc(value = '') {
   return String(value)
@@ -184,6 +184,186 @@ export const models = [
     ],
     sources: [['Kia UK recall information','https://www.kia.com/uk/owners/safety-recall/'],['Kia Niro warranty brochure','https://www.kia.com/content/dam/kwcms/kme/uk/en/assets/vehicles/The_all-new_Niro/specification/Niro_Family_SS_']],
     cta: { eyebrow: 'Found an electric Niro?', title: 'Check whether it is still the best EV for the money.', copy: 'Paste the advert and EV Scan will help you compare price, MOT history, range, insurance and similar alternatives around the same budget.', button: 'Check this Niro EV', href: '/#home' }
+  },
+  {
+    make: 'BMW', model: 'i3', slug: 'bmw/i3',
+    title: 'Used BMW i3 Buyer’s Guide',
+    metaTitle: 'Used BMW i3 Buyer’s Guide: Battery, REx & Checks | EV Scan',
+    metaDescription: 'Buying a used BMW i3 in the UK? Compare battery generations and Range Extender cars, then check battery health, charging, tyres, warranty and condition.',
+    answer: 'A used BMW i3 remains a clever premium city EV, but the battery generation and whether it is a pure-electric or Range Extender car change the ownership experience. Buy on verified specification, current usable range and condition—not the badge alone.',
+    bestFor: ['City and suburban driving', 'Distinctive compact EV design', 'Buyers who value a light, premium cabin'],
+    versions: ['Early smaller-battery pure-electric cars', '94Ah and later 120Ah pure-electric cars', 'Range Extender (REx) versions'],
+    sections: [
+      { heading: 'Battery generation changes the value', paragraphs: ['The i3 received larger batteries during its life, so age is not enough to tell you the useful range. Confirm the battery version from the vehicle record and specification, then judge whether its present-day range fits your regular journeys.', 'BMW says its Approved Used electric cars can receive a Battery Health Quick Report. For any i3, ask for battery-health evidence or a manufacturer assessment rather than trying to infer health from one dashboard estimate.'] },
+      { heading: 'Pure electric or Range Extender?', paragraphs: ['A REx car adds a small petrol engine that generates electricity when the battery is low. It can reduce range anxiety, but it also adds an engine, fuel system, exhaust and servicing needs that a pure-electric i3 does not have.', 'If considering a REx, check it has been run and maintained correctly, starts without warnings and is appropriate for how you intend to use it.'] },
+      { heading: 'Model-specific used checks', bullets: ['Confirm the battery generation and BEV/REx status.', 'Inspect the tall, narrow tyres for age, damage and matching specification.', 'Test AC and DC charging, noting that charging capability varies by age/specification.', 'Check the lightweight body panels, doors, screens, climate control and all warning messages.', 'Confirm remaining high-voltage battery warranty with BMW for the exact registration.'] },
+      { heading: 'Battery and warranty context', paragraphs: ['BMW currently describes high-voltage battery cover for its electric vehicles as up to eight years or 100,000 miles from first registration, subject to the applicable terms. An older i3 may be near or beyond that limit, so obtain the exact warranty position before relying on it.'] }
+    ],
+    sources: [['BMW UK Approved Used electric cars','https://www.bmw.co.uk/en_GB/electric-cars/used-cars.html'],['BMW UK warranties','https://www.bmw.co.uk/en/topics/owners/service-workshop/warranties.html']],
+    related: ['nissan/leaf','renault/zoe','mini/electric'],
+    cta: { eyebrow: 'Found an i3?', title: 'Check its battery generation, history and value together.', copy: 'Paste the advert into EV Scan and we’ll help you assess the exact i3, its MOT pattern, expected range, price, insurance and questions for the seller.', button: 'Scan this BMW i3', href: '/#home' }
+  },
+  {
+    make: 'Renault', model: 'Zoe', slug: 'renault/zoe',
+    title: 'Used Renault Zoe Buyer’s Guide',
+    metaTitle: 'Used Renault Zoe Buyer’s Guide: Battery Lease & Checks | EV Scan',
+    metaDescription: 'Buying a used Renault Zoe? Check battery ownership or lease status, battery generation, charging compatibility, warranty, safety history and real-world range.',
+    answer: 'A used Renault Zoe can be an affordable, easy-to-drive small EV, but you must establish whether the traction battery is owned or leased and identify the exact battery and charging version. Those details can matter more than trim level.',
+    bestFor: ['Affordable local driving', 'Small-car practicality', 'Regular home or workplace charging'],
+    versions: ['Early cars with smaller batteries', 'ZE40-era cars', 'Later ZE50 cars', 'Battery-owned and battery-leased examples'],
+    sections: [
+      { heading: 'Resolve battery ownership before anything else', paragraphs: ['Earlier Zoes were sold with separate battery-rental agreements as well as battery-owned arrangements. Do not assume the battery is included simply because the advert does not mention a lease.', 'Ask for written evidence of battery ownership or the current lease position. Renault’s warranty terms distinguish owned “i” batteries from batteries subject to a lease agreement.'] },
+      { heading: 'Charging capability varies between Zoes', paragraphs: ['Zoe versions can differ in AC charging speed and whether they support DC rapid charging. Check the exact derivative and test the type of charging you expect to use; a headline battery size does not tell the whole charging story.', 'For a car used mostly around town, dependable AC charging may matter more than occasional rapid charging.'] },
+      { heading: 'Model-specific used checks', bullets: ['Written proof that the battery is owned or details of any live lease.', 'Exact battery generation and current usable range.', 'AC charging on a suitable charge point and DC capability where fitted.', 'Dashboard warnings, climate control, infotainment and supplied cables.', 'Registration-specific recall status and service history.'] },
+      { heading: 'Warranty and battery-health context', paragraphs: ['Renault’s published terms say owned Zoe batteries registered from 1 March 2020 can have cover for eight years or 100,000 miles, subject to the detailed conditions. Earlier and leased batteries can have different terms, so verify the individual car with Renault.'] }
+    ],
+    sources: [['Renault UK Z.E. battery warranty terms','https://www.renault.co.uk/warranty/renault-ze-warranty-dec2019.html'],['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
+    related: ['nissan/leaf','bmw/i3','vauxhall/corsa-electric'],
+    cta: { eyebrow: 'Looking at a Zoe?', title: 'Confirm what you are actually buying before you view it.', copy: 'EV Scan can help you turn the advert into battery-ownership, range, MOT, price, insurance and seller questions for that exact Zoe.', button: 'Check this Renault Zoe', href: '/#home' }
+  },
+  {
+    make: 'Hyundai', model: 'Kona Electric', slug: 'hyundai/kona-electric',
+    title: 'Used Hyundai Kona Electric Buyer’s Guide',
+    metaTitle: 'Used Hyundai Kona Electric Buyer’s Guide & Checks | EV Scan',
+    metaDescription: 'Buying a used Hyundai Kona Electric? Compare battery versions and generations, then check recall completion, battery history, charging, warranty and tyres.',
+    answer: 'A used Hyundai Kona Electric can deliver excellent efficiency and useful range in a compact crossover, especially in larger-battery form. Early cars require a registration-specific battery recall check, not a guess based only on model year.',
+    bestFor: ['Range-conscious buyers', 'Efficient commuting', 'Compact crossover practicality'],
+    versions: ['First-generation smaller-battery cars', 'First-generation larger-battery cars', 'Later second-generation Kona Electric'],
+    sections: [
+      { heading: 'Do not confuse the two generations', paragraphs: ['The newer Kona Electric is a substantially different car from the first generation, while first-generation adverts may use similar trim names across different battery sizes. Confirm generation, battery and equipment before comparing prices.'] },
+      { heading: 'Battery recall completion is essential evidence', paragraphs: ['The UK recall database records battery-related action for certain Kona EVs, including battery-management software inspection and, where required, module or battery-assembly replacement. This does not mean every Kona has an unresolved problem.', 'Check the exact registration or VIN with Hyundai and ask for evidence that every applicable campaign has been completed.'] },
+      { heading: 'Model-specific used checks', bullets: ['Registration/VIN recall and campaign status.', 'Evidence of any battery inspection or replacement work.', 'AC and DC charging, charge-port operation and supplied cables.', 'Tyre wear, wheel condition and any repeated MOT advisories.', 'Exact battery, trim, heat-pump and equipment specification.'] },
+      { heading: 'Range, charging and warranty', paragraphs: ['The larger-battery first-generation Kona is attractive for drivers who want distance without a large car, but peak charging speed is only one part of a journey. Compare realistic motorway range and charging time with newer alternatives.', 'Ask Hyundai to confirm the remaining vehicle and high-voltage battery cover for the individual car, including how any battery replacement affected its records.'] }
+    ],
+    sources: [['GOV.UK Kona EV recall information','https://www.check-vehicle-recalls.service.gov.uk/recall-type/vehicle/make/HYUNDAI/model/KONA%20EV/year/2018/recalls'],['Hyundai UK Kona Electric','https://www.hyundai.com/uk/en/models/kona-electric.html']],
+    related: ['kia/niro-ev','mg/mg4-ev','volkswagen/id-3'],
+    cta: { eyebrow: 'Found a Kona Electric?', title: 'Check the battery history and exact version before committing.', copy: 'Scan the advert for a clear view of price, MOT history, range expectations, insurance and the recall evidence to request from the seller.', button: 'Scan this Kona Electric', href: '/#home' }
+  },
+  {
+    make: 'Vauxhall', model: 'Corsa Electric', slug: 'vauxhall/corsa-electric',
+    title: 'Used Vauxhall Corsa Electric Buyer’s Guide',
+    metaTitle: 'Used Vauxhall Corsa Electric Buyer’s Guide | EV Scan',
+    metaDescription: 'Buying a used Corsa-e or Corsa Electric? Compare versions, battery and charging, heat-pump equipment, warranty, software, tyres and used-car checks.',
+    answer: 'A used Corsa-e or Corsa Electric is a straightforward small EV with familiar controls and CCS rapid charging. The strongest buys have a clear service history, reliable charging, the equipment you need and a price advantage over closely related rivals.',
+    bestFor: ['Familiar small-car driving', 'Urban and commuter use', 'Buyers wanting CCS rapid charging'],
+    versions: ['Earlier Corsa-e models', 'Later Corsa Electric badging and trims', 'Newer higher-output/larger-battery versions'],
+    sections: [
+      { heading: 'Compare it with its close relatives', paragraphs: ['The Corsa Electric shares core electric-car technology with models such as the Peugeot e-208. That gives used buyers useful alternatives, but trim, cabin layout, wheel size, equipment and price still differ.', 'Judge the exact car against those alternatives rather than assuming the Vauxhall or Peugeot badge is automatically better value.'] },
+      { heading: 'Charging and range checks', paragraphs: ['Confirm AC charging works without warnings and test DC charging where practical. Ask which cable is supplied and whether the car has the on-board charging specification advertised.', 'Range varies with battery version, weather, speed, heating use and battery condition. Use the seller’s display as context, not a guaranteed real-world figure.'] },
+      { heading: 'Model-specific used checks', bullets: ['Exact battery/motor version and original equipment.', 'AC/DC charging operation and charge scheduling.', 'Heat-pump presence where it matters to you; do not assume from trim alone.', 'Infotainment, app connectivity, cabin heating and warning messages.', 'Tyres, wheels, MOT history and registration-specific recall status.'] },
+      { heading: 'Battery warranty context', paragraphs: ['Vauxhall publishes an eight-year or 100,000-mile electric-vehicle battery warranty, with detailed terms applying. Confirm the first-registration date, mileage and remaining cover on the individual used car.'] }
+    ],
+    sources: [['Vauxhall Corsa Electric','https://www.vauxhall.co.uk/content/vauxhall/worldwide/uk/en/index/cars/new-corsa/electric.html'],['Vauxhall warranty information','https://www.vauxhall.co.uk/content/vauxhall/worldwide/uk/en/index/owners/insurance-and-warranty/warranty.html']],
+    related: ['peugeot/e-208','renault/zoe','fiat/500e'],
+    cta: { eyebrow: 'Found a Corsa Electric?', title: 'See whether this one is better value than its rivals.', copy: 'Paste the advert and EV Scan will help you judge its exact version, price, MOT pattern, range, insurance and missing seller information.', button: 'Check this Corsa Electric', href: '/#home' }
+  },
+  {
+    make: 'Peugeot', model: 'e-208', slug: 'peugeot/e-208',
+    title: 'Used Peugeot e-208 Buyer’s Guide',
+    metaTitle: 'Used Peugeot e-208 Buyer’s Guide: What to Check | EV Scan',
+    metaDescription: 'Buying a used Peugeot e-208? Check battery and motor version, charging, heat-pump equipment, i-Cockpit driving position, warranty, software and tyres.',
+    answer: 'A used Peugeot e-208 is a stylish, compact EV that can suit commuting and town use well. Before buying, make sure its i-Cockpit driving position works for you, then verify the exact electric version, charging behaviour, equipment and warranty.',
+    bestFor: ['Stylish small-EV buyers', 'Commuting and town use', 'Drivers who like the i-Cockpit layout'],
+    versions: ['Earlier 50 kWh-class cars', 'Different Active, Allure and GT-era trims', 'Later revised motor/battery versions'],
+    sections: [
+      { heading: 'Sit in it before choosing it', paragraphs: ['The small steering wheel and high-set instrument display suit some drivers better than others. Adjust the seat and wheel properly and make sure you can read the display comfortably before the rest of the test drive.'] },
+      { heading: 'Exact version and equipment matter', paragraphs: ['Powertrain and trim specifications changed through the e-208’s life. Verify the derivative, first-registration date and fitted equipment rather than copying specifications from a current new-car page.', 'Compare it directly with a Corsa Electric of similar age because the two cars share important underlying EV technology but can differ in price and cabin experience.'] },
+      { heading: 'Model-specific used checks', bullets: ['AC and DC charging without warning messages.', 'Cabin heating, pre-conditioning and heat-pump specification.', 'Infotainment, phone connection, cameras and driver-assistance systems.', 'Tyres, wheels and repeated MOT advisories.', 'Service history, recall status and remaining battery warranty.'] },
+      { heading: 'Battery warranty and realistic range', paragraphs: ['Peugeot states that the e-208 traction battery is covered for eight years or 100,000 miles with a minimum-capacity condition, subject to its terms. Confirm what remains for the exact car.', 'Real-world range depends on speed, temperature, heating, load and battery condition, so use a journey-based requirement rather than one optimistic advert number.'] }
+    ],
+    sources: [['Peugeot e-208 FAQ and battery warranty','https://www.peugeot.co.uk/models/peugeot-208/faq.html'],['Peugeot e-208 official information','https://www.peugeot.co.uk/models/peugeot-208/electric.html']],
+    related: ['vauxhall/corsa-electric','fiat/500e','mini/electric'],
+    cta: { eyebrow: 'Found an e-208?', title: 'Check the exact car—not a generic new-car specification.', copy: 'EV Scan will help you assess the listing price, MOT history, expected range, insurance and the questions its advert has not answered.', button: 'Scan this Peugeot e-208', href: '/#home' }
+  },
+  {
+    make: 'Fiat', model: '500e', slug: 'fiat/500e',
+    title: 'Used Fiat 500e Buyer’s Guide',
+    metaTitle: 'Used Fiat 500e Buyer’s Guide: Battery & Checks | EV Scan',
+    metaDescription: 'Buying a used Fiat 500e? Compare battery versions, hatchback and convertible cars, then check charging, range, warranty, tyres, software and condition.',
+    answer: 'A used Fiat 500e is at its best as a compact, characterful city EV. The larger-battery car is usually more flexible, but the smaller-battery version can be good value when your mileage is predictable and home charging is easy.',
+    bestFor: ['City parking and short trips', 'Style-led small-EV buyers', 'Second-car duties'],
+    versions: ['Smaller-battery entry versions', 'Larger-battery versions', 'Hatchback and convertible body styles'],
+    sections: [
+      { heading: 'Choose the battery for your real routine', paragraphs: ['The two battery choices create meaningfully different used-car propositions. A lower purchase price is not a bargain if the smaller battery makes your regular journeys awkward; equally, paying for range you never use can waste budget.'] },
+      { heading: 'The convertible needs an extra inspection', paragraphs: ['If viewing the fabric-roof convertible, operate the roof fully more than once and inspect its seals, condition and drainage areas. Check for warning messages and signs of water entry rather than treating the roof as a cosmetic option.'] },
+      { heading: 'Model-specific used checks', bullets: ['Exact battery size, trim and body style.', 'AC/DC charging, port operation and supplied cable.', 'Infotainment, phone pairing, app features and cabin heating.', 'Tyres, small-car parking damage and wheel condition.', 'Roof operation and evidence of leaks on convertibles.'] },
+      { heading: 'Battery warranty and charging context', paragraphs: ['Fiat states that the 500 Electric battery is covered for eight years or 100,000 miles, subject to its warranty conditions. Confirm remaining cover using the car’s first-registration date and mileage.', 'The 500e can rapid-charge, but battery size and conditions affect charging performance. For city-focused owners, dependable overnight AC charging may be the more important test.'] }
+    ],
+    sources: [['Fiat UK 500 Electric','https://www.fiat.co.uk/models/fiat-500-electric'],['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
+    related: ['mini/electric','peugeot/e-208','vauxhall/corsa-electric'],
+    cta: { eyebrow: 'Found a 500e?', title: 'Check whether its battery and price fit your life.', copy: 'Scan the listing for a clearer view of version, value, MOT history, realistic range, insurance and seller questions.', button: 'Check this Fiat 500e', href: '/#home' }
+  },
+  {
+    make: 'MINI', model: 'Electric', slug: 'mini/electric',
+    title: 'Used MINI Electric Buyer’s Guide',
+    metaTitle: 'Used MINI Electric Buyer’s Guide: Range & Checks | EV Scan',
+    metaDescription: 'Buying a used MINI Electric? Understand the earlier hatchback’s range limits, then check battery health, charging, tyres, equipment, warranty and condition.',
+    answer: 'The earlier used MINI Electric is fun, compact and easy to place, but its modest range makes it a specialist choice rather than a universal first EV. It works best when your routine is predictable and you can charge conveniently.',
+    bestFor: ['Short predictable journeys', 'Drivers who value compact handling', 'Home-charged second-car use'],
+    versions: ['Earlier F56-generation MINI Electric / Cooper SE', 'Different Level and trim packages', 'New-generation all-electric MINI Cooper'],
+    sections: [
+      { heading: 'Separate the two generations', paragraphs: ['Used adverts may now mix the earlier MINI Electric with the newer all-electric MINI Cooper. They have different batteries, range and technology, so verify generation and derivative before comparing prices.', 'This guide’s range caution is particularly important for the earlier F56-based car.'] },
+      { heading: 'Range fit matters more than performance', paragraphs: ['The earlier MINI Electric can be excellent for commuting and local journeys, but buyers who frequently need long motorway trips should compare a longer-range alternative. Winter, motorway speed and heating can all reduce the distance available.', 'Plan around your difficult weekly journey, not your easiest daily trip.'] },
+      { heading: 'Model-specific used checks', bullets: ['Battery generation and current usable range.', 'AC/DC charging and supplied cables.', 'Tyres, wheels, suspension and parking damage.', 'Climate control, infotainment, app connectivity and warning messages.', 'Exact trim/equipment and remaining warranty.'] },
+      { heading: 'Battery warranty context', paragraphs: ['MINI describes high-voltage battery protection for its electric vehicles for up to eight years or 100,000 miles from first registration, subject to warranty conditions. Confirm the exact remaining cover with a MINI retailer.'] }
+    ],
+    sources: [['MINI UK electric warranty','https://www.mini.co.uk/en_GB/home/owners/mini-warranties.html/1000'],['MINI Approved Used Electric','https://www.mini.co.uk/en_GB/home/range/approved-used-electric.html']],
+    related: ['bmw/i3','fiat/500e','peugeot/e-208'],
+    cta: { eyebrow: 'Found a MINI Electric?', title: 'Make sure its real range is enough before the test drive wins you over.', copy: 'EV Scan can help you assess the advert, price, MOT history, range fit, insurance and missing seller information.', button: 'Scan this MINI Electric', href: '/#home' }
+  },
+  {
+    make: 'Audi', model: 'e-tron', slug: 'audi/e-tron',
+    title: 'Used Audi e-tron Buyer’s Guide',
+    metaTitle: 'Used Audi e-tron Buyer’s Guide: Battery & Checks | EV Scan',
+    metaDescription: 'Buying a used Audi e-tron SUV? Compare 50, 55 and S versions, then check battery health, charging, warranty, tyres, suspension, equipment and history.',
+    answer: 'A used Audi e-tron can offer a quiet, spacious premium-EV experience for much less than its original price, but efficiency, tyre cost and complex equipment make condition and warranty especially important. Compare like-for-like 50, 55 and S cars.',
+    bestFor: ['Quiet premium motorway travel', 'Large-cabin comfort', 'Buyers with reliable home charging'],
+    versions: ['e-tron 50 quattro', 'e-tron 55 quattro', 'e-tron S', 'SUV and Sportback body styles'],
+    sections: [
+      { heading: 'Low used price does not mean low running-cost risk', paragraphs: ['The e-tron is a large, heavy premium SUV. Tyres, wheels, insurance and out-of-warranty repairs can still reflect that, even when depreciation has made the purchase price tempting.', 'Obtain an insurance quote and inspect every expensive feature rather than budgeting from the price alone.'] },
+      { heading: 'Battery and charging evidence', paragraphs: ['Audi says fully electric Approved Used cars under eight years old receive a battery health certificate. If buying elsewhere, ask what battery-health evidence is available and verify current range through a representative drive.', 'Test both charge-port operation and AC charging; where practical, confirm DC rapid charging and check for charge-related warnings.'] },
+      { heading: 'Model-specific used checks', bullets: ['Exact 50, 55 or S derivative and body style.', 'Battery-health evidence and remaining high-voltage battery warranty.', 'Both charge ports/doors where fitted, cables and charging behaviour.', 'Air suspension operation where fitted, tyres and wheel damage.', 'Climate control, cameras, screens, driver assistance and all warning messages.'] },
+      { heading: 'Warranty context', paragraphs: ['Audi describes e-tron battery cover for up to eight years or 100,000 miles, whichever comes first, subject to terms. Approved Used cover is separate, so establish exactly which warranty applies and for how long.'] }
+    ],
+    sources: [['Audi UK Approved Used electric cars','https://www.audi.co.uk/en/used-cars/used-electric-and-hybrid/'],['Audi UK e-tron service and battery warranty','https://www.audi.co.uk/en/owners/service-and-maintenance/service-plans/e-tron/']],
+    related: ['jaguar/i-pace','tesla/model-y','skoda/enyaq'],
+    cta: { eyebrow: 'Found a depreciated e-tron?', title: 'Check whether the car is affordable to own, not only to buy.', copy: 'Scan the advert for price context, MOT patterns, expected range, insurance and the evidence you should request before viewing.', button: 'Check this Audi e-tron', href: '/#home' }
+  },
+  {
+    make: 'Jaguar', model: 'I-PACE', slug: 'jaguar/i-pace',
+    title: 'Used Jaguar I-PACE Buyer’s Guide',
+    metaTitle: 'Used Jaguar I-PACE Buyer’s Guide: Recall & Checks | EV Scan',
+    metaDescription: 'Buying a used Jaguar I-PACE? Check battery recall status, software, charging, battery health, warranty, tyres, suspension and premium-car running costs.',
+    answer: 'A used Jaguar I-PACE can be a compelling performance EV at its depreciated price, but it is not a car to buy without registration-specific battery recall evidence, battery and charging checks, a complete history and a realistic repair budget.',
+    bestFor: ['Premium performance and comfort', 'Drivers wanting a distinctive EV', 'Buyers with strong warranty/history evidence'],
+    versions: ['EV400-era S, SE and HSE trims', 'Later model-year equipment revisions', 'Special and high-specification editions'],
+    sections: [
+      { heading: 'Battery recall status is a first-line check', paragraphs: ['I-PACE battery campaigns have made registration/VIN-specific recall checking essential. Do not rely on a seller saying “all updates done” without documentary evidence or confirmation from Jaguar.', 'Use the UK recall checker and ask a Jaguar retailer to confirm every applicable campaign, software update, inspection or remedy for the exact car.'] },
+      { heading: 'Depreciation does not remove premium-car costs', paragraphs: ['An I-PACE may cost less used than a newer mainstream EV, but tyres, insurance, suspension and complex electrical equipment can still carry premium-car costs. A strong warranty can therefore be materially valuable.', 'Check the warranty’s exclusions and claim limit rather than accepting the word “warranty” as enough.'] },
+      { heading: 'Model-specific used checks', bullets: ['VIN-specific battery recall/campaign status and written completion evidence.', 'Battery-health assessment, charging behaviour and realistic current range.', 'AC/DC charging, port operation and supplied cables.', 'Tyres, wheels, suspension, brakes and repeated MOT advisories.', 'Screens, cameras, climate control, keys, app connectivity and warning history.'] },
+      { heading: 'Battery warranty context', paragraphs: ['Jaguar states that the I-PACE battery warranty is limited to eight years or 100,000 miles and includes a State of Health condition, subject to the detailed terms. Verify age, mileage, measured battery status and remaining cover on the exact car.'] }
+    ],
+    sources: [['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/'],['Jaguar UK I-PACE battery warranty information','https://buy.jaguar.co.uk/page/terms-and-conditions']],
+    related: ['audi/e-tron','tesla/model-y','polestar/2'],
+    cta: { eyebrow: 'Considering an I-PACE?', title: 'Make the battery history and recall evidence part of the price decision.', copy: 'EV Scan can help you organise the advert, MOT record, range, insurance, value and seller questions before you risk premium-car money.', button: 'Scan this Jaguar I-PACE', href: '/#home' }
+  },
+  {
+    make: 'Volkswagen', model: 'ID.4', slug: 'volkswagen/id-4',
+    title: 'Used Volkswagen ID.4 Buyer’s Guide',
+    metaTitle: 'Used Volkswagen ID.4 Buyer’s Guide: What to Check | EV Scan',
+    metaDescription: 'Buying a used VW ID.4? Compare battery and drivetrain versions, then check software, charging, tyres, warranty, equipment and family-EV value.',
+    answer: 'A used Volkswagen ID.4 is a practical family EV with a broad choice of batteries and drivetrains. The best buys have the right battery for your journeys, current software, reliable charging and a clear price advantage over closely related alternatives.',
+    bestFor: ['Family space', 'Comfortable everyday driving', 'Buyers wanting a mainstream electric SUV'],
+    versions: ['Smaller-battery Pure-era cars', 'Pro / Pro Performance versions', 'GTX all-wheel-drive versions'],
+    sections: [
+      { heading: 'Battery and drivetrain names need decoding', paragraphs: ['Used ID.4 adverts can mix trim, battery and performance labels. Confirm the usable battery class, rear- or all-wheel drive, model year and original equipment before comparing price or range.', 'A larger battery helps on long journeys, while a smaller-battery car can be the better-value family EV when daily mileage is modest.'] },
+      { heading: 'Software is a used-car inspection item', paragraphs: ['Check the software version, infotainment response, navigation, cameras, phone connection, charging schedules and whether any warning messages return after a restart.', 'Ask whether applicable software campaigns have been completed and verify the position with Volkswagen for the registration.'] },
+      { heading: 'Model-specific used checks', bullets: ['Exact battery, motor, trim and model year.', 'Software/campaign status and infotainment stability.', 'AC/DC charging, port operation and supplied cables.', 'Tyres, wheels, suspension and MOT pattern.', 'Remaining vehicle and high-voltage battery warranty.'] },
+      { heading: 'Battery warranty and related alternatives', paragraphs: ['Volkswagen states that its pure-electric cars have an eight-year or 100,000-mile high-voltage battery warranty, with a capacity threshold and detailed conditions. Confirm the car’s remaining cover.', 'Also compare the Škoda Enyaq, which shares key platform technology but offers a different cabin and ownership proposition.'] }
+    ],
+    sources: [['Volkswagen UK battery warranty','https://www.volkswagen.co.uk/en/owners-and-services/my-car/warranties.html/__layer/layers/owners/my-car/warranties/understanding-battery-degradation/master.layer'],['Volkswagen ID.4 official information','https://www.volkswagen.co.uk/en/electric-and-hybrid/electric-cars/id4.html']],
+    related: ['skoda/enyaq','volkswagen/id-3','tesla/model-y'],
+    cta: { eyebrow: 'Found an ID.4?', title: 'Check the exact battery, software and value before viewing.', copy: 'Paste the advert and EV Scan will help you assess price, MOT history, realistic range, insurance and the gaps in the seller’s description.', button: 'Check this Volkswagen ID.4', href: '/#home' }
   }
 ];
 
@@ -218,9 +398,9 @@ function card(model) {
 export function renderModelHub() {
   const canonical = absolute('/cars/');
   const title = 'Used Electric Car Buyer’s Guides UK | EV Scan';
-  const description = 'Beginner-friendly UK used EV buyer guides covering Tesla, Hyundai, Kia, MG, Volkswagen, Nissan, Polestar and Skoda electric cars.';
+  const description = 'Beginner-friendly UK used EV buyer guides covering major electric cars from Tesla, BMW, Hyundai, Kia, Volkswagen, Nissan, Renault, MG and more.';
   const schema = { '@context':'https://schema.org', '@type':'CollectionPage', name:title, description, url:canonical, isPartOf:{'@type':'WebSite',name:'EV Scan',url:absolute('/')} };
-  return `<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}">${baseHead({title,description,canonical,schema})}<link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/seo.css"></head><body class="seo-page">${header()}<main class="seo-main seo-hub-main"><section class="seo-hub-hero"><span class="seo-kicker">Used EV model guides</span><h1>Know the EV before you buy the advert.</h1><p>Pick the electric car you are researching. We explain what versions exist, what matters when buying used and the checks we would make before viewing one.</p><a href="/#home">Already found a car? Scan it</a></section><section class="seo-hub-section"><div class="seo-hub-heading"><span>Start with the model</span><h2>Popular used EVs in the UK</h2></div><div class="seo-guide-grid">${models.map(card).join('')}</div></section><section class="seo-problem-cta seo-hub-cta"><div><span>Not sure which model?</span><h2>Tell us how you drive instead.</h2><p>You do not need to know what battery size or charging speed you want. EV Scan’s beginner-friendly finder starts with your budget and real journeys.</p></div><a href="/#find-my-ev">Find my EV</a></section></main>${footer()}</body></html>`;
+  return `<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}">${baseHead({title,description,canonical,schema})}<link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/seo.css"></head><body class="seo-page">${header()}<main class="seo-main seo-hub-main"><section class="seo-hub-hero"><span class="seo-kicker">Used EV model guides</span><h1>Know the EV before you buy the advert.</h1><p>Pick the electric car you are researching. We explain what versions exist, what matters when buying used and the checks we would make before viewing one.</p><a href="/#home">Already found a car? Scan it</a></section><section class="seo-hub-section"><div class="seo-hub-heading"><span>Start with the model</span><h2>Popular used EVs in the UK</h2></div><div class="seo-guide-grid">${models.map(card).join('')}</div></section><section class="seo-article-section"><h2>Before you choose a model</h2><p>Not sure how much battery or range you need? Start with our <a href="/ev-guides/how-much-electric-car-range-do-i-need">range guide</a>, learn <a href="/ev-guides/how-to-check-electric-car-battery-health-before-buying">how to check battery health</a>, or use the full <a href="/ev-guides/what-to-check-before-buying-used-electric-car">used-EV viewing checklist</a>.</p></section><section class="seo-problem-cta seo-hub-cta"><div><span>Not sure which model?</span><h2>Tell us how you drive instead.</h2><p>You do not need to know what battery size or charging speed you want. EV Scan’s beginner-friendly finder starts with your budget and real journeys.</p></div><a href="/#find-my-ev">Find my EV</a></section></main>${footer()}</body></html>`;
 }
 
 export function renderModel(slug = '') {
@@ -239,7 +419,9 @@ export function renderModel(slug = '') {
       {'@type':'ListItem',position:3,name:`${model.make} ${model.model}`,item:canonical}
     ]}
   };
-  return `<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}">${baseHead({title,description,canonical,schema})}<link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/seo.css"></head><body class="seo-page">${header()}<main class="seo-main"><nav class="seo-breadcrumb"><a href="/">EV Scan</a><span>›</span><a href="/cars/">Used EV guides</a><span>›</span><span>${esc(model.make)} ${esc(model.model)}</span></nav><article><header class="seo-article-hero"><span class="seo-kicker">Used ${esc(model.make)} ${esc(model.model)} guide</span><h1>${esc(model.title)}</h1><div class="seo-direct-answer"><span>Quick answer</span><strong>${esc(model.answer)}</strong></div><div class="seo-model-fit"><span>Best for</span>${model.bestFor.map(item => `<b>${esc(item)}</b>`).join('')}</div><p class="seo-updated">Updated ${UPDATED} · UK used-EV buyer guide</p></header><div class="seo-article-body"><section class="seo-article-section"><h2>Which ${esc(model.model)} versions will you see used?</h2><p>The exact derivative matters when comparing price, range and insurance. Common used-market versions include:</p><ul>${model.versions.map(item => `<li>${esc(item)}</li>`).join('')}</ul></section>${model.sections.map(section => `<section class="seo-article-section"><h2>${esc(section.heading)}</h2>${(section.paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('')}${section.bullets?.length?`<ul>${section.bullets.map(item=>`<li>${esc(item)}</li>`).join('')}</ul>`:''}</section>`).join('')}</div><section class="seo-problem-cta"><div><span>${esc(model.cta.eyebrow)}</span><h2>${esc(model.cta.title)}</h2><p>${esc(model.cta.copy)}</p></div><a href="${esc(model.cta.href)}">${esc(model.cta.button)}</a></section>${sourceList(model)}<section class="seo-related"><span class="seo-section-label">Compare other used EVs</span><div class="seo-related-grid">${models.filter(x=>x.slug!==model.slug).slice(0,3).map(x=>`<a href="${modelPath(x)}"><span>${esc(x.make)}</span><strong>${esc(x.model)}</strong><em>Read buyer’s guide →</em></a>`).join('')}</div></section></article></main>${footer()}</body></html>`;
+  const related = (model.related || []).map(modelByPath).filter(Boolean);
+  const comparisons = related.length ? related : models.filter(x=>x.slug!==model.slug).slice(0,3);
+  return `<!doctype html><html lang="en-GB"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)}</title><meta name="description" content="${esc(description)}">${baseHead({title,description,canonical,schema})}<link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/seo.css"></head><body class="seo-page">${header()}<main class="seo-main"><nav class="seo-breadcrumb"><a href="/">EV Scan</a><span>›</span><a href="/cars/">Used EV guides</a><span>›</span><span>${esc(model.make)} ${esc(model.model)}</span></nav><article><header class="seo-article-hero"><span class="seo-kicker">Used ${esc(model.make)} ${esc(model.model)} guide</span><h1>${esc(model.title)}</h1><div class="seo-direct-answer"><span>Quick answer</span><strong>${esc(model.answer)}</strong></div><div class="seo-model-fit"><span>Best for</span>${model.bestFor.map(item => `<b>${esc(item)}</b>`).join('')}</div><p class="seo-updated">Updated ${UPDATED} · UK used-EV buyer guide</p></header><div class="seo-article-body"><section class="seo-article-section"><h2>Which ${esc(model.model)} versions will you see used?</h2><p>The exact derivative matters when comparing price, range and insurance. Common used-market versions include:</p><ul>${model.versions.map(item => `<li>${esc(item)}</li>`).join('')}</ul></section>${model.sections.map(section => `<section class="seo-article-section"><h2>${esc(section.heading)}</h2>${(section.paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('')}${section.bullets?.length?`<ul>${section.bullets.map(item=>`<li>${esc(item)}</li>`).join('')}</ul>`:''}</section>`).join('')}<section class="seo-article-section"><h2>Useful checks for any used EV</h2><p>Read how to <a href="/ev-guides/how-to-check-electric-car-battery-health-before-buying">check battery health before buying</a>, decide <a href="/ev-guides/how-much-electric-car-range-do-i-need">how much range you need</a>, and use our <a href="/ev-guides/what-to-check-before-buying-used-electric-car">complete used-EV checklist</a>.</p></section></div><section class="seo-problem-cta"><div><span>${esc(model.cta.eyebrow)}</span><h2>${esc(model.cta.title)}</h2><p>${esc(model.cta.copy)}</p></div><a href="${esc(model.cta.href)}">${esc(model.cta.button)}</a></section>${sourceList(model)}<section class="seo-related"><span class="seo-section-label">Compare other used EVs</span><div class="seo-related-grid">${comparisons.map(x=>`<a href="${modelPath(x)}"><span>${esc(x.make)}</span><strong>${esc(x.model)}</strong><em>Read buyer’s guide →</em></a>`).join('')}</div></section></article></main>${footer()}</body></html>`;
 }
 
 export function renderModel404() {
@@ -250,3 +432,4 @@ export function modelSitemapEntries() {
   const paths = ['/cars/', ...models.map(modelPath)];
   return paths.map(path => `<url><loc>${esc(absolute(path))}</loc><lastmod>${UPDATED}</lastmod><changefreq>weekly</changefreq><priority>${path==='/cars/'?'0.8':'0.75'}</priority></url>`).join('');
 }
+
