@@ -2,8 +2,10 @@ import baseWorker from './worker-providers.js';
 import { accountsConfigured, handleAccountRequest } from './account-api.js';
 import { ensureAccountSchema } from './account-schema.js';
 
-const SCAN_CACHE_VERSION = '0.8.2';
+const SCAN_CACHE_VERSION = '0.8.3';
 const SCAN_CACHE_TTL_SECONDS = 30 * 60;
+const MARKETCHECK_ZERO_COST_SCAN_BUDGET = 900;
+const MARKETCHECK_BUDGET_KEY = 'marketcheck-starter-v1';
 
 function withAccountDb(env = {}) {
   if (env.ACCOUNTS_DB) return env;
@@ -11,13 +13,8 @@ function withAccountDb(env = {}) {
   return Object.assign({}, env, { ACCOUNTS_DB: env.EVSCAN_DB });
 }
 
-function accountUnavailable(status = 503) {
-  return new Response(JSON.stringify({
-    ok: status < 400,
-    configured: false,
-    code: 'ACCOUNTS_NOT_READY',
-    message: 'EV Scan accounts are being connected. Core scanning remains available without an account.'
-  }, null, 2), {
+function jsonResponse(data, status = 200) {
+  return new Response(JSON.stringify(data, null, 2), {
     status,
     headers: {
       'content-type': 'application/json; charset=utf-8',
@@ -26,6 +23,15 @@ function accountUnavailable(status = 503) {
       'x-robots-tag': 'noindex, nofollow'
     }
   });
+}
+
+function accountUnavailable(status = 503) {
+  return jsonResponse({
+    ok: status < 400,
+    configured: false,
+    code: 'ACCOUNTS_NOT_READY',
+    message: 'EV Scan accounts are being connected. Core scanning remains available without an account.'
+  }, status);
 }
 
 function blockedAccountMutation(request, url) {
@@ -38,26 +44,24 @@ function blockedAccountMutation(request, url) {
 }
 
 function crossOriginDenied() {
-  return new Response(JSON.stringify({ ok:false, code:'CROSS_ORIGIN_DENIED', message:'That account request was blocked.' }), {
-    status:403,
-    headers:{'content-type':'application/json; charset=utf-8','cache-control':'no-store','x-content-type-options':'nosniff','x-robots-tag':'noindex, nofollow'}
-  });
+  return jsonResponse({ ok:false, code:'CROSS_ORIGIN_DENIED', message:'That account request was blocked.' }, 403);
 }
 
 function retiredAutoTraderRoute() {
-  return new Response(JSON.stringify({
+  return jsonResponse({
     ok: false,
     code: 'AUTOTRADER_DIRECT_INTEGRATION_RETIRED',
     message: 'EV Scan no longer depends on direct Auto Trader API access. Vehicle listings are handled through the multi-provider verification pipeline.'
-  }, null, 2), {
-    status: 410,
-    headers: {
-      'content-type': 'application/json; charset=utf-8',
-      'cache-control': 'no-store',
-      'x-content-type-options': 'nosniff',
-      'x-robots-tag': 'noindex, nofollow'
-    }
-  });
+  }, 410);
+}
+
+function zeroCostMarketBudgetExhausted() {
+  return jsonResponse({
+    ok: false,
+    code: 'ZERO_COST_MARKET_BUDGET_EXHAUSTED',
+    message: 'EV Scan cannot complete the required market checks right now. No report was generated.',
+    retryable: false
+  }, 503);
 }
 
 async function accountReady(env = {}) {
@@ -113,7 +117,7 @@ async function injectAccountUi(response) {
   return new Response(html, { status: response.status, headers });
 }
 
-async function ensureScanCache(db) {
+async function ensureRuntimeTables(db) {
   if (!db?.prepare) return false;
   try {
     await db.prepare(`CREATE TABLE IF NOT EXISTS scan_cache (
@@ -122,6 +126,11 @@ async function ensureScanCache(db) {
       response_json TEXT NOT NULL,
       created_at INTEGER NOT NULL,
       expires_at INTEGER NOT NULL
+    )`).run();
+    await db.prepare(`CREATE TABLE IF NOT EXISTS provider_budgets (
+      budget_key TEXT PRIMARY KEY,
+      used INTEGER NOT NULL DEFAULT 0,
+      updated_at INTEGER NOT NULL
     )`).run();
     return true;
   } catch {
@@ -158,7 +167,7 @@ async function scanRequestListingUrl(request) {
 
 async function readCachedScan(env, listingUrl) {
   const db = env.EVSCAN_DB;
-  if (!listingUrl || !(await ensureScanCache(db))) return null;
+  if (!listingUrl || !(await ensureRuntimeTables(db))) return null;
   try {
     const key = await scanCacheKey(listingUrl);
     const now = Math.floor(Date.now() / 1000);
@@ -175,7 +184,7 @@ async function readCachedScan(env, listingUrl) {
 
 async function writeCachedScan(env, listingUrl, payload) {
   const db = env.EVSCAN_DB;
-  if (!listingUrl || !payload?.ok || payload?.quality?.passed !== true || !(await ensureScanCache(db))) return;
+  if (!listingUrl || !payload?.ok || payload?.quality?.passed !== true || !(await ensureRuntimeTables(db))) return;
   try {
     const key = await scanCacheKey(listingUrl);
     const now = Math.floor(Date.now() / 1000);
@@ -192,24 +201,53 @@ async function writeCachedScan(env, listingUrl, payload) {
   } catch {}
 }
 
+async function reserveMarketCheckZeroCostAttempt(env) {
+  if (!env.MARKETCHECK_API_KEY) return true;
+  const db = env.EVSCAN_DB;
+  if (!(await ensureRuntimeTables(db))) return false;
+  try {
+    const now = Math.floor(Date.now() / 1000);
+    await db.prepare('INSERT OR IGNORE INTO provider_budgets (budget_key, used, updated_at) VALUES (?1, 0, ?2)')
+      .bind(MARKETCHECK_BUDGET_KEY, now)
+      .run();
+    const result = await db.prepare(`UPDATE provider_budgets
+      SET used = used + 1, updated_at = ?2
+      WHERE budget_key = ?1 AND used < ?3`)
+      .bind(MARKETCHECK_BUDGET_KEY, now, MARKETCHECK_ZERO_COST_SCAN_BUDGET)
+      .run();
+    return Number(result?.meta?.changes || result?.changes || 0) > 0;
+  } catch {
+    return false;
+  }
+}
+
+async function readMarketCheckBudget(env) {
+  if (!env.MARKETCHECK_API_KEY || !env.EVSCAN_DB?.prepare) return null;
+  try {
+    await ensureRuntimeTables(env.EVSCAN_DB);
+    const row = await env.EVSCAN_DB.prepare('SELECT used FROM provider_budgets WHERE budget_key = ?1 LIMIT 1').bind(MARKETCHECK_BUDGET_KEY).first();
+    const used = Math.max(0, Number(row?.used || 0));
+    return { used, cap: MARKETCHECK_ZERO_COST_SCAN_BUDGET, remaining: Math.max(0, MARKETCHECK_ZERO_COST_SCAN_BUDGET - used) };
+  } catch {
+    return null;
+  }
+}
+
 function cachedScanResponse(payload) {
-  return new Response(JSON.stringify(payload, null, 2), {
-    status: 200,
-    headers: {
-      'content-type': 'application/json; charset=utf-8',
-      'cache-control': 'no-store',
-      'x-content-type-options': 'nosniff',
-      'x-robots-tag': 'noindex, nofollow'
-    }
-  });
+  return jsonResponse(payload, 200);
 }
 
 async function augmentHealth(response, env) {
   try {
     const account = await accountReady(env);
+    const marketBudget = await readMarketCheckBudget(env);
     const data = await response.json();
     data.version = SCAN_CACHE_VERSION;
     data.accountsConfigured = account.ready;
+    data.zeroSpend = {
+      enforced: true,
+      marketCheck: marketBudget
+    };
     data.capabilities = {
       ...(data.capabilities || {}),
       optionalAccounts: true,
@@ -222,7 +260,8 @@ async function augmentHealth(response, env) {
       personalisedEvFinder: true,
       directAutoTraderApi: false,
       verifiedScanCache: Boolean(env.EVSCAN_DB),
-      scanCacheTtlSeconds: SCAN_CACHE_TTL_SECONDS
+      scanCacheTtlSeconds: SCAN_CACHE_TTL_SECONDS,
+      zeroSpendProtection: true
     };
     const headers = new Headers(response.headers);
     headers.set('content-type', 'application/json; charset=utf-8');
@@ -251,6 +290,8 @@ export default {
       if (listingUrl) {
         const cached = await readCachedScan(env, listingUrl);
         if (cached) return cachedScanResponse(cached);
+        const budgetAvailable = await reserveMarketCheckZeroCostAttempt(env);
+        if (!budgetAvailable) return zeroCostMarketBudgetExhausted();
       }
       const scanResponse = await baseWorker.fetch(request, env, ctx);
       if (listingUrl && scanResponse?.ok) {
