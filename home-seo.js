@@ -3,7 +3,7 @@ const SITE_URL = 'https://ev-scan-mvp.alfieparkerfellows.workers.dev';
 const FAQS = [
   {
     q: 'What is EV Scan?',
-    a: 'EV Scan is a free UK used-electric-car buying assistant. You can paste a vehicle listing or enter a registration and we turn technical EV information into a simple buying report.'
+    a: 'EV Scan is a free UK used-electric-car buying assistant. Paste a vehicle listing and we cross-check the advert against available vehicle, MOT and market evidence before releasing a simple buying report.'
   },
   {
     q: 'Is EV Scan free?',
@@ -15,23 +15,23 @@ const FAQS = [
   },
   {
     q: 'Can EV Scan check MOT history?',
-    a: 'EV Scan can use official DVSA MOT information when the live registration service is available. We explain MOT patterns in plain English rather than only showing a list of tests.'
+    a: 'EV Scan uses official DVSA MOT information as part of a live listing scan when the vehicle can be matched confidently to a registration. If that verification is unavailable, EV Scan does not release a partial buying report.'
   },
   {
-    q: 'Can EV Scan check an Auto Trader advert?',
-    a: 'EV Scan is being built to analyse approved marketplace listing data, including Auto Trader once the required production access is connected. Until then, marketplace-only fields stay unavailable rather than being guessed.'
+    q: 'Can EV Scan analyse car adverts?',
+    a: 'Yes, when EV Scan can access and independently match enough reliable data for the exact advert. If a marketplace or provider cannot be verified strongly enough, EV Scan refuses the scan rather than showing a partial or guessed report.'
   },
   {
     q: 'Can EV Scan estimate battery health?',
-    a: 'EV Scan can show battery confidence or an expected battery-health range when there is enough reliable model information. We do not present an estimated State of Health as a measured battery test.'
+    a: 'EV Scan can explain battery specification and battery-related buying risks, but a listing link cannot remotely measure battery State of Health. EV Scan does not invent a SoH percentage without measured battery evidence.'
   },
   {
     q: 'Does EV Scan estimate electric-car insurance?',
-    a: 'Yes. The report includes an insurance budgeting estimator that asks about the driver, vehicle use and other relevant factors. It is an estimate, not an insurer quote.'
+    a: 'EV Scan includes a separate insurance budgeting estimator that asks about the driver, vehicle use and other relevant factors. It is an estimate, not an insurer quote.'
   },
   {
     q: 'How accurate is EV Scan?',
-    a: 'Accuracy depends on the information available for that car. EV Scan labels information as verified, estimated, seller claim or unknown so you can see exactly how much confidence to place in each part of the report.'
+    a: 'EV Scan uses a strict evidence gate. A live buying report is only released when the advert, vehicle identity, MOT information and market evidence can be matched strongly enough. If critical evidence is missing or conflicting, no report is generated.'
   },
   {
     q: 'Does advertising affect EV Scan recommendations?',
@@ -57,7 +57,7 @@ export function renderHomeHead() {
         '@id': `${SITE_URL}/#website`,
         url: SITE_URL,
         name: 'EV Scan',
-        description: 'A beginner-friendly UK used-EV buying assistant that explains price, battery, range, MOT history, insurance and buying risks in plain English.'
+        description: 'A beginner-friendly UK used-EV buying assistant that cross-checks a vehicle advert against available vehicle, MOT and market evidence before releasing a report.'
       },
       {
         '@type': 'Organization',
@@ -83,11 +83,11 @@ export function renderHomeHead() {
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="EV Scan">
   <meta property="og:title" content="EV Scan — Check a Used Electric Car Before You Buy">
-  <meta property="og:description" content="Paste a used EV listing or enter a registration. EV Scan explains price, battery, real-world range, MOT history, insurance and the questions worth asking before you buy.">
+  <meta property="og:description" content="Paste a used EV listing. EV Scan cross-checks the advert against available vehicle, MOT and market evidence and only releases a report when the data is reliable enough.">
   <meta property="og:url" content="${SITE_URL}/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="EV Scan — Check a Used Electric Car Before You Buy">
-  <meta name="twitter:description" content="Beginner-friendly used EV buying reports with clear answers, not jargon.">
+  <meta name="twitter:description" content="Beginner-friendly used EV buying reports with strict evidence checks, not guesses.">
   <link rel="stylesheet" href="/seo.css">
   <script type="application/ld+json">${schema}</script>`;
 }
