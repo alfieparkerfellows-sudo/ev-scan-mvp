@@ -5,7 +5,9 @@ docs/
 migrations/
 worker.js
 worker-admin.js
+worker-providers.js
 worker-entry.js
+listing-providers.js
 admin-api.js
 account-api.js
 account-schema.js
@@ -16,4 +18,3 @@ README.md
 .assetsignore
 .dev.vars*
 *.md
-
