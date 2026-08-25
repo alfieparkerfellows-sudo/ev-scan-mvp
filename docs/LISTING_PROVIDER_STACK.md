@@ -1,6 +1,6 @@
 # EV Scan listing provider stack
 
-EV Scan 0.8 uses a fail-closed, zero-spend listing pipeline. A user supplies one vehicle-listing URL. The Worker tries the permitted/available providers in a controlled order, independently matches the vehicle, verifies the registration/MOT record, and only releases a report if the strict quality gate passes.
+EV Scan 0.8.3 uses a fail-closed, zero-spend listing pipeline. A user supplies one vehicle-listing URL. The Worker tries the permitted/available providers in a controlled order, independently matches the vehicle, verifies the registration/MOT record, and only releases a report if the strict quality gate passes.
 
 The operating rule is deliberately conservative: **accuracy and £0 spend are more important than scan completion rate**. If the free providers cannot supply enough reliable evidence, EV Scan refuses the scan instead of guessing, opening a partial report, or automatically moving onto a paid tier.
 
@@ -32,6 +32,7 @@ Cloudflare Workers AI is configured through the `AI` binding in `wrangler.jsonc`
 5. Successful verified scans are cached in D1 for 30 minutes. Failed or incomplete scans are never cached. This protects free quotas when the same listing is scanned repeatedly.
 6. The direct Auto Trader API integration is retired. The old `/api/autotrader/*` routes return HTTP 410 and are not part of the live scanner.
 7. MarketCheck is currently the market-comparison bottleneck. When its starter allowance is exhausted, market-dependent scans must refuse rather than inventing price intelligence until a genuinely zero-cost replacement is connected.
+8. EV Scan enforces an internal lifetime ceiling of **900 uncached MarketCheck-backed scan attempts**, below the currently advertised 1,000 starter calls. The remaining allowance is exposed internally through `/api/health`. This deliberately leaves a safety buffer and prevents EV Scan from intentionally entering MarketCheck's paid data-fee usage even if billing is later added by mistake.
 
 ## Experimental Auto Trader switch
 
@@ -89,4 +90,4 @@ For restricted marketplace domains, EV Scan does not use the generic scraper cha
 
 ## Possible free fallback to test later
 
-Cloudflare Browser Run is available on the Workers Free plan with 10 browser minutes per day. It may be useful as an additional renderer for difficult permitted dealer websites, but it is not connected in EV Scan 0.8 yet. Add it only after real-world URL testing shows that direct/Jina/Firecrawl coverage needs another fallback.
+Cloudflare Browser Run is available on the Workers Free plan with 10 browser minutes per day. It may be useful as an additional renderer for difficult permitted dealer websites, but it is not connected in EV Scan 0.8.3 yet. Add it only after real-world URL testing shows that direct/Jina/Firecrawl coverage needs another fallback.
