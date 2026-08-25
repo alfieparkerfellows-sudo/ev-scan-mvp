@@ -508,6 +508,44 @@ export const models = [
     sources: [['Ford UK EV battery warranty guidance','https://www.ford.co.uk/support/how-tos/warranty/warranties-and-coverage/how-long-do-ford-electric-vehicle-batteries-last'],['Ford UK Mustang Mach-E LFP battery guidance','https://www.ford.co.uk/support/how-tos/electric-vehicles/mustang-mach-e/lithium-iron-phosphate-electric-vehicle-batteries'],['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
     related: ['tesla/model-y','kia/ev6','skoda/enyaq'],
     cta: { eyebrow: 'Found a Mustang Mach-E?', title: 'Check the exact battery and drivetrain before you fall for the styling.', copy: 'EV Scan can assess its price, MOT history, realistic range, insurance and missing seller evidence.', button: 'Scan this Mustang Mach-E', href: '/#home' }
+  },
+  {
+    make: 'Kia', model: 'Soul EV', slug: 'kia/soul-ev',
+    title: 'Used Kia Soul EV Buyer’s Guide',
+    metaTitle: 'Used Kia Soul EV Buyer’s Guide: Battery & Checks | EV Scan',
+    metaDescription: 'Buying a used Kia Soul EV in the UK? Compare early 27 and 30 kWh cars with the later 64 kWh model, then check battery, charging, warranty, tyres and history.',
+    answer: 'A used Kia Soul EV can be a characterful, practical-value choice, but the early and later cars are radically different. Identify the generation and battery first: an older 27 or 30 kWh car suits local use, while the later 64 kWh Soul EV is the much stronger all-rounder.',
+    bestFor: ['Distinctive compact-crossover buyers', 'Efficient commuting', 'Value-focused buyers who can charge at home'],
+    versions: ['First-generation 27 kWh cars', 'Later first-generation 30 kWh cars', 'Second-generation 64 kWh Soul EV'],
+    sections: [
+      { heading: 'Generation matters more than the badge', paragraphs: ['Early Soul EVs have much smaller batteries and shorter real-world range than the later 64 kWh model. Do not compare asking prices until you have confirmed the model year, battery size and connector arrangement.', 'The later car shares useful EV technology with the Kia e-Niro, but its boxier shape and smaller used supply create a different price and practicality proposition.'] },
+      { heading: 'Battery, range and charging', paragraphs: ['Ask for current usable-range evidence in similar weather and inspect the energy-use history. A dashboard estimate is context rather than a measured battery-health certificate.', 'Kia states that the Soul EV uses CCS rapid charging. Test AC charging, inspect the port and cable, and where practical confirm that DC charging starts without warnings.'] },
+      { heading: 'Warranty, recalls and running costs', paragraphs: ['Kia warranty terms vary with registration date. Its UK terms describe transferable vehicle and high-voltage battery cover subject to time, mileage, capacity and servicing conditions, so confirm the exact balance from the VIN and first-registration date.', 'Insurance groups, tyres and parts availability can differ substantially between generations. Quote the exact registration and inspect service and recall records before paying a deposit.'] },
+      { heading: 'What to inspect on a used Soul EV', bullets: ['Generation, battery size, trim and charging connectors.', 'Usable range evidence, warning lights and battery warranty position.', 'AC and DC charging, port lock and supplied cables.', 'Tyres, brakes, suspension, underbody and repeated MOT advisories.', 'Heating, air conditioning, infotainment, cameras and both keys.', 'Service history and outstanding recall or campaign status.'] },
+      { heading: 'What EV Scan would check next', bullets: ['Whether the asking price is fair for that exact generation.', 'MOT mileage and recurring tyre, brake or suspension advisories.', 'Range fit for your coldest and longest regular journey.', 'Insurance estimate and likely near-term consumable costs.', 'Missing seller evidence and questions to ask before viewing.'] }
+    ],
+    sources: [['Kia UK Soul EV information','https://www.kia.com/uk/new-cars/soul-ev-fleet/'],['Kia UK warranty terms and exclusions','https://www.kia.com/uk/owners/insurance-and-warranty/7-year-warranty/terms-and-exclusions/'],['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
+    related: ['kia/niro-ev','hyundai/kona-electric','nissan/leaf'],
+    cta: { eyebrow: 'Found a Kia Soul EV?', title: 'Check the generation and battery before you compare the price.', copy: 'EV Scan can organise the advert, MOT history, realistic range, insurance and missing seller evidence for this exact Soul EV.', button: 'Scan this Kia Soul EV', href: '/#home' }
+  },
+  {
+    make: 'BYD', model: 'Atto 3', slug: 'byd/atto-3',
+    title: 'Used BYD Atto 3 Buyer’s Guide',
+    metaTitle: 'Used BYD Atto 3 Buyer’s Guide: Battery & Checks | EV Scan',
+    metaDescription: 'Buying a used BYD Atto 3 in the UK? Check Comfort and Design specification, Blade Battery range, charging, warranty, tyres, software, insurance and history.',
+    answer: 'A used BYD Atto 3 can offer strong equipment and family-friendly space, but the UK used market is still young. Confirm Comfort or Design specification, charging behaviour, software and transferable warranty evidence, then compare the price with more established rivals.',
+    bestFor: ['Well-equipped family crossover buyers', 'Mixed town and commuting use', 'Buyers who value a long remaining battery warranty'],
+    versions: ['Comfort', 'Design', 'Later model-year and software revisions'],
+    sections: [
+      { heading: 'The UK choice is mostly trim, age and condition', paragraphs: ['UK Atto 3 cars use BYD Blade Battery technology, so used adverts are less complicated than ranges with several battery sizes. Comfort and Design equipment, registration date, software state and physical condition still change value.', 'Confirm factory specification from the VIN or original order information rather than assuming every imported-looking feature list applies to a UK car.'] },
+      { heading: 'Battery, range and charging', paragraphs: ['Judge range against your own winter motorway and everyday journeys, not only the official figure. Check recent energy use, cabin heating and whether the car can complete your longest routine with a sensible reserve.', 'Test AC charging, scheduled charging, port operation and the supplied cables. If public rapid charging matters to you, confirm DC charging starts correctly and understand that temperature and state of charge affect speed.'] },
+      { heading: 'Warranty and ownership evidence', paragraphs: ['BYD UK lists basic cover of six years or 93,750 miles, drive-unit cover of eight years or 93,750 miles and battery cover of eight years or 125,000 miles, with model-dependent terms. Verify the exact car, transfer position and servicing requirements rather than relying on the headline.', 'A newer brand can mean fewer independent specialists and less long-term used-market evidence. Check local servicing access, insurance, parts/body-repair implications and software support before deciding.'] },
+      { heading: 'What to inspect on a used Atto 3', bullets: ['Comfort or Design trim, model year and UK specification.', 'Battery and vehicle warranty evidence linked to the VIN.', 'AC/DC charging, cables, app functions and charge scheduling.', 'Infotainment rotation, cameras, driver assistance and software version.', 'Tyres, wheels, brakes, suspension, underbody and charging-port condition.', 'Service history and registration-specific recall/campaign status.'] },
+      { heading: 'What EV Scan would check next', bullets: ['Price against similar-age Atto 3 and established family-EV alternatives.', 'MOT history, mileage consistency and recurring advisories.', 'Realistic range for your driving and charging access.', 'Insurance estimate for the exact registration.', 'Missing specification, warranty and servicing evidence to request.'] }
+    ],
+    sources: [['BYD UK Atto 3','https://www.byd.com/uk/electric-cars/atto3'],['BYD UK warranty policy','https://www.byd.com/uk/service-maintenance/warranty-policy'],['UK vehicle recall checker','https://www.check-vehicle-recalls.service.gov.uk/']],
+    related: ['mg/mg4-ev','kia/niro-ev','volkswagen/id-4'],
+    cta: { eyebrow: 'Found a BYD Atto 3?', title: 'Check the warranty evidence and whole-car value before viewing.', copy: 'Scan this Atto 3 for a clearer view of its advert, MOT record, range fit, insurance and unanswered seller questions.', button: 'Scan this BYD Atto 3', href: '/#home' }
   }
 ];
 
@@ -576,4 +614,5 @@ export function modelSitemapEntries() {
   const paths = ['/cars/', ...models.map(modelPath)];
   return paths.map(path => `<url><loc>${esc(absolute(path))}</loc><lastmod>${UPDATED}</lastmod><changefreq>weekly</changefreq><priority>${path==='/cars/'?'0.8':'0.75'}</priority></url>`).join('');
 }
+
 
