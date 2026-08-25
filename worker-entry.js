@@ -1,4 +1,4 @@
-import baseWorker from './worker-admin.js';
+import baseWorker from './worker-providers.js';
 import { accountsConfigured, handleAccountRequest } from './account-api.js';
 import { ensureAccountSchema } from './account-schema.js';
 
@@ -68,7 +68,7 @@ async function augmentHealth(response, env) {
   try {
     const account = await accountReady(env);
     const data = await response.json();
-    data.version = '0.7.3';
+    data.version = '0.8.0';
     data.accountsConfigured = account.ready;
     data.capabilities = {
       ...(data.capabilities || {}),
