@@ -202,7 +202,7 @@ async function augmentHealth(response, env) {
     data.capabilities = {
       ...(data.capabilities || {}), listingUrlIngestion:true, registrationLookup:true, strictEvidenceGate:true,
       failClosedScanning:true, incompleteListingReports:false, marketPricing:false, liveRecommendations:false,
-      providerFailover:true, liveFirecrawlCreditStatus:true, cloudflareBrowserFallback:providers.cloudflareBrowser
+      providerFailover:true, liveFirecrawlCreditStatus:true, jinaReaderFallback:providers.jina, cloudflareBrowserFallback:providers.cloudflareBrowser
     };
     return json(data,response.status);
   } catch { return response; }
@@ -229,7 +229,7 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === '/api/listing-status') return json({ ok:true, version:VERSION, ...(await listingStatus(env,true)), registrationStillAvailable:true });
-    if (url.pathname === '/api/provider-status') return json({ ok:true, version:VERSION, providers:providerConfiguration(env), listingStatus:await listingStatus(env,false), policy:'fail-closed-zero-spend', activeThirdPartyKeys:['FIRECRAWL_API_KEY'], rejectedProviders:['MarketCheck','Jina API key','Reef as a production dependency'] });
+    if (url.pathname === '/api/provider-status') return json({ ok:true, version:VERSION, providers:providerConfiguration(env), listingStatus:await listingStatus(env,false), policy:'fail-closed', activeThirdPartyKeys:['FIRECRAWL_API_KEY','JINA_API_KEY'], rejectedProviders:['MarketCheck','Reef as a production dependency'] });
     if (url.pathname === '/api/scan') {
       if (request.method !== 'POST') return json({ ok:false, code:'METHOD_NOT_ALLOWED' },405);
       const body = await readScanBody(request);
