@@ -124,10 +124,17 @@ async function handleListingScan(request, env, ctx, body) {
     const quotaFailure = (resolution.trace || []).some((item) => /FIRECRAWL_QUOTA/.test(item?.error || ''));
     if (quotaFailure) return listingUnavailable(await listingStatus(env,true));
     const restricted = resolution.code === 'SOURCE_REQUIRES_APPROVED_PROVIDER';
+    const candidate = resolution.candidate || {};
+    const missingFields = [
+      ['make',candidate.make],['model',candidate.model],['year',candidate.year],['price',finite(candidate.price)],
+      ['mileage',finite(candidate.mileage)],['registration',candidate.registration],['batteryCapacityKwh',finite(candidate.batteryCapacityKwh)],
+      ['rangeMiles',finite(candidate.rangeMiles)],['description',candidate.description],['images',Array.isArray(candidate.images) && candidate.images.length]
+    ].filter(([,value]) => value === null || value === undefined || value === '' || value === false).map(([label]) => label);
     return json({
       ok:false,
       code:resolution.code || 'SCAN_NOT_RELIABLE',
       message:restricted ? resolution.message : (resolution.message || 'EV Scan could not verify this listing strongly enough to show a reliable report.'),
+      diagnostics:{ missingFields, providers:(resolution.trace || []).map((item) => ({ provider:item.provider, ok:Boolean(item.ok), skipped:Boolean(item.skipped), error:item.error || null })) },
       registrationStillAvailable:true
     }, restricted ? 422 : 422);
   }
