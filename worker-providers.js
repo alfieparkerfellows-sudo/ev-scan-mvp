@@ -113,6 +113,7 @@ async function fetchDvsaForListing(request, env, ctx, registration) {
 
 async function handleListingScan(request, env, ctx, body) {
   const listingUrl = clean(body?.listingUrl);
+  const suppliedRegistration = cleanRegistration(body?.registration);
   if (!listingUrl) return json({ ok:false, code:'FULL_LISTING_REQUIRED', message:'EV Scan requires the vehicle listing link so it can verify the advert before showing a report.' },422);
 
   const quota = await listingStatus(env,true);
@@ -131,8 +132,17 @@ async function handleListingScan(request, env, ctx, body) {
     }, restricted ? 422 : 422);
   }
 
-  const registration = cleanRegistration(resolution.candidate?.registration);
-  if (!looksLikeRegistration(registration)) return json({ ok:false, code:'SCAN_NOT_RELIABLE', message:'EV Scan could not match this advert to a verified UK registration with enough confidence, so no report has been generated.', registrationStillAvailable:true },422);
+  const extractedRegistration = cleanRegistration(resolution.candidate?.registration);
+  const registration = looksLikeRegistration(suppliedRegistration) ? suppliedRegistration : extractedRegistration;
+  const registrationSource = looksLikeRegistration(suppliedRegistration) ? 'user' : 'listing';
+  if (!looksLikeRegistration(registration)) return json({
+    ok:false,
+    code:'REGISTRATION_REQUIRED',
+    message:'The advert was readable, but eBay did not reveal the registration. Enter the UK registration to verify this exact car against DVSA. No report has been generated yet.',
+    registrationRequired:true,
+    registrationStillAvailable:true
+  },422);
+  resolution.candidate.registration = registration;
 
   const { response:dvsaResponse, payload:dvsa } = await fetchDvsaForListing(request,env,ctx,registration);
   if (!dvsaResponse.ok || !dvsa?.ok) {
@@ -159,7 +169,8 @@ async function handleListingScan(request, env, ctx, body) {
     verification:{
       dvsa:{ registration:dvsa.vehicle.registration, make:dvsa.vehicle.make, model:dvsa.vehicle.model, firstUsedDate:dvsa.vehicle.firstUsedDate, fuelType:dvsa.vehicle.fuelType },
       extractionProviders:providers,
-      evidenceLabels:{ listing:'LISTING_SOURCE', vehicleIdentity:'DVSA_VERIFIED', mot:'DVSA_VERIFIED', askingPrice:'LISTING_SOURCE', marketPrice:'NOT_AVAILABLE', batterySpec:'LISTING_SOURCE', batteryHealth:'NOT_MEASURED' }
+      registrationSource,
+      evidenceLabels:{ listing:'LISTING_SOURCE', vehicleIdentity:registrationSource === 'user' ? 'USER_SUPPLIED_DVSA_VERIFIED' : 'DVSA_VERIFIED', mot:'DVSA_VERIFIED', askingPrice:'LISTING_SOURCE', marketPrice:'NOT_AVAILABLE', batterySpec:'LISTING_SOURCE', batteryHealth:'NOT_MEASURED' }
     },
     market:{ available:false, reason:'No permanent zero-cost independent UK market-comparison source is connected, so EV Scan is not claiming above/below-market value.' },
     battery:{ capacityKwh:listing.batteryCapacityKwh, ratedOrListedRangeMiles:listing.rangeMiles, stateOfHealthMeasured:false, note:'A listing cannot remotely measure battery State of Health. EV Scan does not invent a SoH percentage without measured evidence.' },
@@ -232,3 +243,4 @@ export default {
     return maybeEnhanceHomepage(response,url);
   }
 };
+

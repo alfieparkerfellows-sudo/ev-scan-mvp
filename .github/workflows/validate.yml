@@ -44,6 +44,9 @@ jobs:
           node --check seo-models.js
           node --check seo-intent.js
           node --check home-seo.js
+          node --check tests/listing-live.test.cjs
+      - name: Test listing scan request lifecycle
+        run: node tests/listing-live.test.cjs
       - name: Check required files
         run: |
           test -f index.html
@@ -193,3 +196,4 @@ jobs:
           grep -q '"/cars/\*"' wrangler.jsonc
           grep -q '"/compare/\*"' wrangler.jsonc
           grep -q '"/best/\*"' wrangler.jsonc
+
