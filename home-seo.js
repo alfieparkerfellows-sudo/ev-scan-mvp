@@ -3,11 +3,11 @@ const SITE_URL = 'https://ev-scan-mvp.alfieparkerfellows.workers.dev';
 const FAQS = [
   {
     q: 'What is EV Scan?',
-    a: 'EV Scan is a free UK used-electric-car buying assistant. Paste a vehicle listing and we cross-check the advert against available vehicle, MOT and market evidence before releasing a simple buying report.'
+    a: 'EV Scan is a free UK used-electric-car buying assistant. Paste a supported vehicle listing or enter a UK registration and EV Scan checks the evidence it can verify before showing a result.'
   },
   {
     q: 'Is EV Scan free?',
-    a: 'Yes. The core EV Scan buying tools are intended to be free to use. We may earn commission from clearly labelled partner or affiliate links, but those relationships do not change Deal Scores or recommendations.'
+    a: 'Yes. The core EV Scan buying tools are intended to be free to use. If the free listing-search allowance is temporarily unavailable, EV Scan pauses link scans rather than charging you or reducing its evidence standard. Registration checks remain available when the official vehicle service is available.'
   },
   {
     q: 'Do I need an account to use EV Scan?',
@@ -15,15 +15,19 @@ const FAQS = [
   },
   {
     q: 'Can EV Scan check MOT history?',
-    a: 'EV Scan uses official DVSA MOT information as part of a live listing scan when the vehicle can be matched confidently to a registration. If that verification is unavailable, EV Scan does not release a partial buying report.'
+    a: 'Yes. EV Scan uses official DVSA MOT information when it can confidently identify the vehicle. Registration-only checks use this path directly, and supported listing scans also verify the advert against the official vehicle record.'
   },
   {
     q: 'Can EV Scan analyse car adverts?',
-    a: 'Yes, when EV Scan can access and independently match enough reliable data for the exact advert. If a marketplace or provider cannot be verified strongly enough, EV Scan refuses the scan rather than showing a partial or guessed report.'
+    a: 'EV Scan can analyse supported vehicle-listing pages when it can read enough reliable advert information and match the car to an official UK vehicle record. If the advert is inaccessible, incomplete or conflicting, EV Scan refuses the listing scan rather than showing a partial or guessed report.'
   },
   {
     q: 'Can EV Scan estimate battery health?',
-    a: 'EV Scan can explain battery specification and battery-related buying risks, but a listing link cannot remotely measure battery State of Health. EV Scan does not invent a SoH percentage without measured battery evidence.'
+    a: 'EV Scan can explain battery specifications and battery-related buying risks, but a listing link cannot remotely measure battery State of Health. EV Scan does not invent a SoH percentage without measured battery evidence.'
+  },
+  {
+    q: 'Does EV Scan compare the asking price with the market?',
+    a: 'Not in the current live scanner. EV Scan can show the asking price found in a supported advert, but it does not currently claim that a car is above or below market because no suitable permanent zero-cost independent market-comparison source is connected.'
   },
   {
     q: 'Does EV Scan estimate electric-car insurance?',
@@ -31,11 +35,11 @@ const FAQS = [
   },
   {
     q: 'How accurate is EV Scan?',
-    a: 'EV Scan uses a strict evidence gate. A live buying report is only released when the advert, vehicle identity, MOT information and market evidence can be matched strongly enough. If critical evidence is missing or conflicting, no report is generated.'
+    a: 'EV Scan uses a strict evidence gate for listing reports. A live listing report is only released when the advert and official vehicle identity can be matched strongly enough and every field required by that report is supported. If critical evidence is missing or conflicting, no listing report is generated.'
   },
   {
     q: 'Does advertising affect EV Scan recommendations?',
-    a: 'No. Advertising, affiliate commission or commercial partnerships must never improve a Deal Score, verdict or vehicle recommendation. Commercial links are kept separate from the buying analysis.'
+    a: 'No. Advertising, affiliate commission or commercial partnerships must never improve a verdict or vehicle recommendation. Commercial links are kept separate from the buying analysis.'
   }
 ];
 
@@ -57,7 +61,7 @@ export function renderHomeHead() {
         '@id': `${SITE_URL}/#website`,
         url: SITE_URL,
         name: 'EV Scan',
-        description: 'A beginner-friendly UK used-EV buying assistant that cross-checks a vehicle advert against available vehicle, MOT and market evidence before releasing a report.'
+        description: 'A beginner-friendly UK used-EV buying assistant with supported listing analysis, official MOT checks and strict evidence rules.'
       },
       {
         '@type': 'Organization',
@@ -83,11 +87,11 @@ export function renderHomeHead() {
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="EV Scan">
   <meta property="og:title" content="EV Scan — Check a Used Electric Car Before You Buy">
-  <meta property="og:description" content="Paste a used EV listing. EV Scan cross-checks the advert against available vehicle, MOT and market evidence and only releases a report when the data is reliable enough.">
+  <meta property="og:description" content="Paste a supported used-EV listing or enter a UK registration. EV Scan checks the advert and official vehicle evidence and refuses incomplete listing reports rather than guessing.">
   <meta property="og:url" content="${SITE_URL}/">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="EV Scan — Check a Used Electric Car Before You Buy">
-  <meta name="twitter:description" content="Beginner-friendly used EV buying reports with strict evidence checks, not guesses.">
+  <meta name="twitter:description" content="Beginner-friendly used EV checks with strict evidence rules, not guesses.">
   <link rel="stylesheet" href="/seo.css">
   <script type="application/ld+json">${schema}</script>`;
 }
