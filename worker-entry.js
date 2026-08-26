@@ -2,10 +2,7 @@ import baseWorker from './worker-providers.js';
 import { accountsConfigured, handleAccountRequest } from './account-api.js';
 import { ensureAccountSchema } from './account-schema.js';
 
-const SCAN_CACHE_VERSION = '0.8.3';
-const SCAN_CACHE_TTL_SECONDS = 30 * 60;
-const MARKETCHECK_ZERO_COST_SCAN_BUDGET = 900;
-const MARKETCHECK_BUDGET_KEY = 'marketcheck-starter-v1';
+const VERSION = '0.8.4';
 
 function withAccountDb(env = {}) {
   if (env.ACCOUNTS_DB) return env;
@@ -55,15 +52,6 @@ function retiredAutoTraderRoute() {
   }, 410);
 }
 
-function zeroCostMarketBudgetExhausted() {
-  return jsonResponse({
-    ok: false,
-    code: 'ZERO_COST_MARKET_BUDGET_EXHAUSTED',
-    message: 'EV Scan cannot complete the required market checks right now. No report was generated.',
-    retryable: false
-  }, 503);
-}
-
 async function accountReady(env = {}) {
   const accountEnv = withAccountDb(env);
   if (!accountsConfigured(accountEnv)) return { ready: false, env: accountEnv };
@@ -75,7 +63,7 @@ function alignScannerPromises(html = '') {
   return String(html)
     .replace(
       'Paste the listing. We’ll explain the price, battery, range, MOT history and the things worth asking before you go anywhere near the seller.',
-      'Paste the listing. We’ll cross-check the advert against available vehicle, MOT and market evidence — and only show a report when we can verify enough to trust it.'
+      'Paste the listing. We’ll cross-check the advert against available vehicle and MOT evidence — and only show a report when we can verify enough to trust it.'
     )
     .replace(
       'Demo mode is on for now — any valid-looking link will open the example report.',
@@ -83,21 +71,17 @@ function alignScannerPromises(html = '') {
     )
     .replace(
       'Price, battery confidence, realistic range, MOT patterns, model-specific risks and missing seller information.',
-      'Asking price, battery and range specifications, MOT patterns, model-specific risks and seller information — only when the evidence is strong enough.'
+      'Asking price, vehicle identity, MOT patterns, model-specific risks and seller information — only when the evidence is strong enough.'
     )
-    .replace('Battery confidence <b>High</b>', 'Battery spec <b>Verified</b>')
-    .replace('£1,120 below market</div>', 'Example: £1,120 below market</div>')
+    .replace('Battery confidence <b>High</b>', 'Evidence check <b>Strict</b>')
+    .replace('£1,120 below market</div>', 'Market pricing shown only when independently verified</div>')
     .replace(
       '<small>Good car, a few things still need confirming</small>',
       '<small>Example only · live reports must pass the evidence gate</small>'
     )
     .replace(
       '<article class="metric-card"><span>Battery confidence</span><strong>High</strong><small>Expected SoH 90–94% · estimated</small></article>',
-      '<article class="metric-card"><span>Battery specification</span><strong>77.4 kWh</strong><small>State of Health is not guessed from an advert</small></article>'
-    )
-    .replace(
-      '<article class="metric-card"><span>Typical UK range</span><strong>238 mi</strong><small>About 205 mi cold motorway</small></article>',
-      '<article class="metric-card"><span>EV range specification</span><strong>238 mi</strong><small>Provider-backed listed/rated figure</small></article>'
+      '<article class="metric-card"><span>Battery evidence</span><strong>Measured only</strong><small>State of Health is never guessed from an advert</small></article>'
     );
 }
 
@@ -117,136 +101,16 @@ async function injectAccountUi(response) {
   return new Response(html, { status: response.status, headers });
 }
 
-async function ensureRuntimeTables(db) {
-  if (!db?.prepare) return false;
-  try {
-    await db.prepare(`CREATE TABLE IF NOT EXISTS scan_cache (
-      cache_key TEXT PRIMARY KEY,
-      listing_url TEXT NOT NULL,
-      response_json TEXT NOT NULL,
-      created_at INTEGER NOT NULL,
-      expires_at INTEGER NOT NULL
-    )`).run();
-    await db.prepare(`CREATE TABLE IF NOT EXISTS provider_budgets (
-      budget_key TEXT PRIMARY KEY,
-      used INTEGER NOT NULL DEFAULT 0,
-      updated_at INTEGER NOT NULL
-    )`).run();
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-function canonicalListingUrl(value = '') {
-  try {
-    const url = new URL(String(value || '').trim());
-    if (!['http:', 'https:'].includes(url.protocol)) return '';
-    url.hash = '';
-    return url.toString();
-  } catch {
-    return '';
-  }
-}
-
-async function scanCacheKey(listingUrl) {
-  const input = new TextEncoder().encode(`${SCAN_CACHE_VERSION}:${listingUrl}`);
-  const digest = await crypto.subtle.digest('SHA-256', input);
-  return [...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2, '0')).join('');
-}
-
-async function scanRequestListingUrl(request) {
-  try {
-    const body = await request.clone().json();
-    if (!body || typeof body !== 'object' || Array.isArray(body)) return '';
-    return canonicalListingUrl(body.listingUrl);
-  } catch {
-    return '';
-  }
-}
-
-async function readCachedScan(env, listingUrl) {
-  const db = env.EVSCAN_DB;
-  if (!listingUrl || !(await ensureRuntimeTables(db))) return null;
-  try {
-    const key = await scanCacheKey(listingUrl);
-    const now = Math.floor(Date.now() / 1000);
-    const row = await db.prepare('SELECT response_json, created_at, expires_at FROM scan_cache WHERE cache_key = ?1 AND expires_at > ?2 LIMIT 1').bind(key, now).first();
-    if (!row?.response_json) return null;
-    const payload = JSON.parse(row.response_json);
-    if (!payload?.ok || payload?.quality?.passed !== true) return null;
-    payload.cache = { hit: true, ageSeconds: Math.max(0, now - Number(row.created_at || now)), ttlSeconds: SCAN_CACHE_TTL_SECONDS };
-    return payload;
-  } catch {
-    return null;
-  }
-}
-
-async function writeCachedScan(env, listingUrl, payload) {
-  const db = env.EVSCAN_DB;
-  if (!listingUrl || !payload?.ok || payload?.quality?.passed !== true || !(await ensureRuntimeTables(db))) return;
-  try {
-    const key = await scanCacheKey(listingUrl);
-    const now = Math.floor(Date.now() / 1000);
-    const expires = now + SCAN_CACHE_TTL_SECONDS;
-    const clean = { ...payload, cache: { hit: false, ttlSeconds: SCAN_CACHE_TTL_SECONDS } };
-    await db.prepare(`INSERT INTO scan_cache (cache_key, listing_url, response_json, created_at, expires_at)
-      VALUES (?1, ?2, ?3, ?4, ?5)
-      ON CONFLICT(cache_key) DO UPDATE SET listing_url = excluded.listing_url, response_json = excluded.response_json, created_at = excluded.created_at, expires_at = excluded.expires_at`)
-      .bind(key, listingUrl, JSON.stringify(clean), now, expires)
-      .run();
-    if (Math.random() < 0.03) {
-      await db.prepare('DELETE FROM scan_cache WHERE expires_at <= ?1').bind(now).run();
-    }
-  } catch {}
-}
-
-async function reserveMarketCheckZeroCostAttempt(env) {
-  if (!env.MARKETCHECK_API_KEY) return true;
-  const db = env.EVSCAN_DB;
-  if (!(await ensureRuntimeTables(db))) return false;
-  try {
-    const now = Math.floor(Date.now() / 1000);
-    await db.prepare('INSERT OR IGNORE INTO provider_budgets (budget_key, used, updated_at) VALUES (?1, 0, ?2)')
-      .bind(MARKETCHECK_BUDGET_KEY, now)
-      .run();
-    const result = await db.prepare(`UPDATE provider_budgets
-      SET used = used + 1, updated_at = ?2
-      WHERE budget_key = ?1 AND used < ?3`)
-      .bind(MARKETCHECK_BUDGET_KEY, now, MARKETCHECK_ZERO_COST_SCAN_BUDGET)
-      .run();
-    return Number(result?.meta?.changes || result?.changes || 0) > 0;
-  } catch {
-    return false;
-  }
-}
-
-async function readMarketCheckBudget(env) {
-  if (!env.MARKETCHECK_API_KEY || !env.EVSCAN_DB?.prepare) return null;
-  try {
-    await ensureRuntimeTables(env.EVSCAN_DB);
-    const row = await env.EVSCAN_DB.prepare('SELECT used FROM provider_budgets WHERE budget_key = ?1 LIMIT 1').bind(MARKETCHECK_BUDGET_KEY).first();
-    const used = Math.max(0, Number(row?.used || 0));
-    return { used, cap: MARKETCHECK_ZERO_COST_SCAN_BUDGET, remaining: Math.max(0, MARKETCHECK_ZERO_COST_SCAN_BUDGET - used) };
-  } catch {
-    return null;
-  }
-}
-
-function cachedScanResponse(payload) {
-  return jsonResponse(payload, 200);
-}
-
 async function augmentHealth(response, env) {
   try {
     const account = await accountReady(env);
-    const marketBudget = await readMarketCheckBudget(env);
     const data = await response.json();
-    data.version = SCAN_CACHE_VERSION;
+    data.version = VERSION;
     data.accountsConfigured = account.ready;
     data.zeroSpend = {
       enforced: true,
-      marketCheck: marketBudget
+      marketCheckDisabled: true,
+      paidFallbacksAllowed: false
     };
     data.capabilities = {
       ...(data.capabilities || {}),
@@ -259,8 +123,7 @@ async function augmentHealth(response, env) {
       accountThemes: account.ready,
       personalisedEvFinder: true,
       directAutoTraderApi: false,
-      verifiedScanCache: Boolean(env.EVSCAN_DB),
-      scanCacheTtlSeconds: SCAN_CACHE_TTL_SECONDS,
+      persistentProviderResponseCache: false,
       zeroSpendProtection: true
     };
     const headers = new Headers(response.headers);
@@ -284,28 +147,6 @@ export default {
     }
 
     if (url.pathname.startsWith('/api/autotrader/')) return retiredAutoTraderRoute();
-
-    if (url.pathname === '/api/scan' && request.method === 'POST') {
-      const listingUrl = await scanRequestListingUrl(request);
-      if (listingUrl) {
-        const cached = await readCachedScan(env, listingUrl);
-        if (cached) return cachedScanResponse(cached);
-        const budgetAvailable = await reserveMarketCheckZeroCostAttempt(env);
-        if (!budgetAvailable) return zeroCostMarketBudgetExhausted();
-      }
-      const scanResponse = await baseWorker.fetch(request, env, ctx);
-      if (listingUrl && scanResponse?.ok) {
-        try {
-          const payload = await scanResponse.clone().json();
-          if (payload?.ok && payload?.quality?.passed === true) {
-            const task = writeCachedScan(env, listingUrl, payload);
-            if (ctx?.waitUntil) ctx.waitUntil(task);
-            else await task;
-          }
-        } catch {}
-      }
-      return scanResponse;
-    }
 
     const response = await baseWorker.fetch(request, env, ctx);
     if (url.pathname === '/api/health') return augmentHealth(response, env);
