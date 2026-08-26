@@ -209,6 +209,24 @@ async function firecrawlProvider(env, listingUrl) {
   return { provider:'firecrawl', candidate:await aiExtract(env, `${markdown}\n${JSON.stringify(data?.metadata || {})}`, seed), rawChars:markdown.length };
 }
 
+async function jinaProvider(env, listingUrl) {
+  if (!env.JINA_API_KEY || !providerReady('jina')) return null;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 20_000);
+  let response;
+  try {
+    response = await fetch(`https://r.jina.ai/${listingUrl}`, {
+      signal:controller.signal,
+      headers:{ authorization:`Bearer ${env.JINA_API_KEY}`, accept:'text/plain', 'x-return-format':'markdown', 'x-timeout':'18' }
+    });
+  } finally { clearTimeout(timer); }
+  if (response.status === 429 || response.status === 402) { coolDown('jina', response, 900); throw Object.assign(new Error('JINA_QUOTA'), { status:response.status }); }
+  if (!response.ok) throw Object.assign(new Error(`JINA_${response.status}`), { status:response.status });
+  const markdown = await readBodyLimited(response);
+  const seed = basicListingFromSource(markdown, listingUrl, false);
+  return { provider:'jina-reader', candidate:await aiExtract(env, markdown, seed), rawChars:markdown.length };
+}
+
 async function browserProvider(env, listingUrl) {
   if (!env.BROWSER?.quickAction || !providerReady('cloudflare-browser')) return null;
   let result;
@@ -257,10 +275,10 @@ export function providerConfiguration(env = {}) {
   return {
     direct:true,
     firecrawl:Boolean(env.FIRECRAWL_API_KEY),
+    jina:Boolean(env.JINA_API_KEY),
     cloudflareBrowser:Boolean(env.BROWSER?.quickAction),
     workersAi:Boolean(env.AI?.run),
     marketcheck:false,
-    jina:false,
     reefAutotrader:false
   };
 }
@@ -278,6 +296,7 @@ export async function resolveListing(env = {}, listingUrl = '') {
   const chain = [
     ['direct', () => directProvider(env, parsed.toString())],
     ['firecrawl', () => firecrawlProvider(env, parsed.toString())],
+    ['jina-reader', () => jinaProvider(env, parsed.toString())],
     ['cloudflare-browser', () => browserProvider(env, parsed.toString())]
   ];
   for (const [name, fn] of chain) {
@@ -294,3 +313,4 @@ export async function resolveListing(env = {}, listingUrl = '') {
   if (!coreEnough(candidate)) return { ok:false, code:'LISTING_NOT_RESOLVED', message:'EV Scan could not read enough reliable information from that advert to analyse it safely. No report was generated.', candidate, trace };
   return { ok:true, listingUrl:parsed.toString(), candidate, trace };
 }
+
