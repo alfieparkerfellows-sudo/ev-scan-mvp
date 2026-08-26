@@ -27,6 +27,8 @@ HEADER = """// Generated from UK Department for Transport vehicle licensing tabl
 """
 
 RUNTIME = r"""
+const CONTRADICTORY_POWERTRAIN = /\b(?:PHEV|MHEV|HYBRID[0-9]*|E HYBRID)\b/i;
+
 function normalise(value = '') {
   return String(value || '').toUpperCase().replace(/[^A-Z0-9]+/g,' ').trim();
 }
@@ -62,6 +64,7 @@ export function lookupUkEvCatalogue({ make = '', model = '', year = null } = {})
   for (const row of ROWS) {
     const [rowMake, genModel, derivative, years] = row;
     if (normalise(rowMake) !== makeKey) continue;
+    if (CONTRADICTORY_POWERTRAIN.test(normalise(`${genModel} ${derivative}`))) continue;
     if (!compatibleName(modelKey, genModel) && !compatibleName(modelKey, derivative)) continue;
     if (Number.isFinite(yearNumber) && Array.isArray(years) && years.length && !years.includes(yearNumber)) continue;
     candidates.push({ make:rowMake, genModel, model:derivative, manufactureYears:years });
@@ -121,12 +124,17 @@ def main() -> None:
     ).reset_index()
 
     rows = [[row.Make,row.GenModel,row.Model,row.years] for row in catalogue.itertuples(index=False)]
+    contradictory = catalogue[
+        catalogue["GenModel"].str.contains(r"\b(?:PHEV|MHEV|HYBRID[0-9]*|E[- ]HYBRID)\b", case=False, regex=True, na=False)
+        | catalogue["Model"].str.contains(r"\b(?:PHEV|MHEV|HYBRID[0-9]*|E[- ]HYBRID)\b", case=False, regex=True, na=False)
+    ]
     stats = {
         "variants": len(rows),
         "makes": int(catalogue["Make"].nunique()),
         "withYearEvidence": int(sum(bool(years) for years in catalogue["years"])),
         "sourceBatteryElectricRows": int((fuel["Fuel"] == "Battery electric").sum()),
         "sourceBatteryElectricCarRows": int(((fuel["BodyType"] == "Cars") & (fuel["Fuel"] == "Battery electric")).sum()),
+        "quarantinedPowertrainNameConflicts": int(len(contradictory)),
     }
 
     output = (
