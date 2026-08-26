@@ -165,6 +165,8 @@ jobs:
           grep -q "registrationStillAvailable" worker-providers.js
           grep -q "baseWorker.fetch(request,env,ctx)" worker-providers.js
           grep -q "FIRECRAWL_API_KEY" listing-providers.js
+          grep -q "JINA_API_KEY" listing-providers.js
+          grep -q "r.jina.ai" listing-providers.js
           grep -q "api.firecrawl.dev/v2/team/credit-usage" listing-providers.js
           grep -q "env.BROWSER.quickAction" listing-providers.js
           grep -q "cloudflare-browser" listing-providers.js
@@ -174,8 +176,6 @@ jobs:
           grep -q '"binding": "BROWSER"' wrangler.jsonc
           ! grep -q "MARKETCHECK_API_KEY" listing-providers.js
           ! grep -q "api.marketcheck.com" listing-providers.js
-          ! grep -q "JINA_API_KEY" listing-providers.js
-          ! grep -q "r.jina.ai" listing-providers.js
           ! grep -q "REEF_API_KEY" listing-providers.js
       - name: Validate fail-closed report promises
         run: |
