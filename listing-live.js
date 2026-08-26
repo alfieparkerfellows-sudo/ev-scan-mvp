@@ -4,7 +4,10 @@
   const money = (value) => Number.isFinite(Number(value)) ? new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP',maximumFractionDigits:0}).format(Number(value)) : 'Unavailable';
   const number = (value) => Number.isFinite(Number(value)) ? Number(value).toLocaleString('en-GB') : 'Unavailable';
   const safeUrl = (value) => { try { const url = new URL(String(value || '')); return ['http:','https:'].includes(url.protocol) ? url.toString() : ''; } catch { return ''; } };
+  const LISTING_SCAN_TIMEOUT_MS = 30000;
   let listingStatus = { loaded:false, available:false, message:'Checking listing-link availability…' };
+  let activeScan = null;
+  let pendingListingUrl = '';
 
   const style = document.createElement('style');
   style.textContent = `
@@ -33,6 +36,8 @@
     if (!help) return;
     help.textContent = message;
     help.classList.toggle('error',Boolean(error));
+    help.setAttribute('role',error ? 'alert' : 'status');
+    help.setAttribute('aria-live',error ? 'assertive' : 'polite');
   }
   function normaliseInput() {
     [$('#listing-url'),$('#rescan-url')].filter(Boolean).forEach((input) => {
@@ -82,6 +87,7 @@
     const report = $('#report-view'), shell = $('.app-shell');
     if (!report || !shell) throw new Error('REPORT_VIEW_MISSING');
     const listing = payload.listing || {}, confidence = payload.scoring?.decisionConfidence || {}, battery = payload.battery || {}, mot = payload.mot || {};
+    const registrationEvidence = payload.verification?.registrationSource === 'user' ? 'Registration supplied by you · DVSA verified' : 'DVSA verified';
     const image = safeUrl((listing.images || [])[0]), sourceUrl = safeUrl(listing.sourceUrl);
     const providers = (payload.verification?.extractionProviders || []).map((item) => `<span class="live-chip">${escapeHtml(item)}</span>`).join('');
     const modelChecks = payload.modelContext?.checks?.length ? `<section class="live-panel live-section"><h2>Model-specific checks</h2><p>${escapeHtml(payload.modelContext.summary || '')}</p><ul class="live-list">${questionList(payload.modelContext.checks)}</ul></section>` : '';
@@ -91,38 +97,66 @@
       <section class="live-report-grid"><article class="live-panel live-hero-photo"><div class="live-verified">STRICT CHECK PASSED</div>${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(payload.vehicleName || 'Scanned EV')}">` : '<div class="live-photo-fallback">Vehicle photo verified from the advert.</div>'}</article>
       <article class="live-panel live-summary"><div class="live-eyebrow">Live verified scan</div><h1>${escapeHtml(payload.vehicleName || 'Used EV')}</h1><div class="live-meta">${escapeHtml(listing.registration || '')} · ${number(listing.mileage)} miles · ${escapeHtml(listing.fuelType || 'Electric')}${listing.dealerName ? ` · ${escapeHtml(listing.dealerName)}` : ''}</div><div class="live-price"><div><span>Advert asking price</span><strong>${money(listing.price)}</strong></div><div><span>Market comparison</span><strong>Not claimed</strong></div></div><div class="live-score-row"><div class="live-score"><small>Decision confidence</small><b>${escapeHtml(confidence.score ?? '—')}%</b><small>Released only after the strict evidence gate</small></div></div><p class="live-verdict">${escapeHtml(payload.verdict || '')}</p></article></section>
       <section class="live-metrics"><article class="live-panel live-metric"><h3>Battery specification</h3><strong>${escapeHtml(battery.capacityKwh)} kWh</strong><p>Advert-backed specification. Battery State of Health is not guessed.</p></article><article class="live-panel live-metric"><h3>EV range specification</h3><strong>${number(battery.ratedOrListedRangeMiles)} mi</strong><p>Listed/rated figure from the available data.</p></article><article class="live-panel live-metric"><h3>MOT pattern</h3><strong>${escapeHtml(mot.score ?? '—')}/100</strong><p>${escapeHtml(mot.summary || '')}</p></article></section>
-      <section class="live-report-grid live-section"><article class="live-panel"><h2>Why EV Scan released this report</h2><div class="live-evidence">${providers}<span class="live-chip">DVSA verified</span><span class="live-chip estimate">No unverified market score</span><span class="live-chip estimate">Battery SoH not measured</span></div><p>The advert was matched to a UK registration and checked against the official vehicle/MOT record. Unsupported conclusions are deliberately left out.</p><p class="live-note">${escapeHtml(battery.note || '')}</p></article><article class="live-panel"><h2>Questions worth asking the seller</h2><ul class="live-list">${questionList(payload.sellerQuestions)}</ul></article></section>
+      <section class="live-report-grid live-section"><article class="live-panel"><h2>Why EV Scan released this report</h2><div class="live-evidence">${providers}<span class="live-chip">${escapeHtml(registrationEvidence)}</span><span class="live-chip estimate">No unverified market score</span><span class="live-chip estimate">Battery SoH not measured</span></div><p>The advert details and supplied registration matched the official vehicle/MOT identity closely enough to pass the strict evidence check. Unsupported conclusions are deliberately left out.</p><p class="live-note">${escapeHtml(battery.note || '')}</p></article><article class="live-panel"><h2>Questions worth asking the seller</h2><ul class="live-list">${questionList(payload.sellerQuestions)}</ul></article></section>
       <section class="live-panel live-section"><h2>Verified MOT history</h2>${motRows(payload.motTests)}</section>${modelChecks}<section class="live-panel live-section"><h2>What this scan still cannot prove remotely</h2><ul class="live-list">${questionList(payload.limitations)}</ul></section>
     </main>`;
     shell.hidden = true; report.hidden = false; hideOverlay(); document.body.classList.remove('modal-open'); window.scrollTo({top:0,behavior:'auto'});
   }
 
-  async function runLiveScan(value) {
+  async function runLiveScan(value, suppliedRegistration = '') {
     const raw = String(value || '').trim();
     if (!looksLikeUrl(raw)) { setHelp('Enter a valid UK registration or paste the full vehicle listing link.',true); return; }
     const status = listingStatus.loaded ? listingStatus : await refreshListingStatus();
     if (!status.available) { setHelp(status.message,true); return; }
     const listingUrl = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+    activeScan?.controller.abort();
+    const controller = new AbortController();
+    const scan = { controller, timedOut:false };
+    activeScan = scan;
+    const timeout = setTimeout(() => { scan.timedOut = true; controller.abort(); },LISTING_SCAN_TIMEOUT_MS);
     setHelp('Checking the listing against available verification sources…'); showOverlay();
     try {
-      const response = await fetch('/api/scan',{ method:'POST', headers:{'content-type':'application/json',accept:'application/json'}, body:JSON.stringify({ listingUrl }) });
+      const requestBody = { listingUrl };
+      if (looksLikeRegistration(suppliedRegistration)) requestBody.registration = String(suppliedRegistration).toUpperCase().replace(/[^A-Z0-9]/g,'');
+      const response = await fetch('/api/scan',{ method:'POST', headers:{'content-type':'application/json',accept:'application/json'}, body:JSON.stringify(requestBody), signal:controller.signal });
       const payload = await response.json().catch(() => ({}));
       if (!response.ok || !payload?.ok) {
-        hideOverlay();
         if (payload?.listingStatus) listingStatus = { loaded:true, ...payload.listingStatus };
+        if (payload?.code === 'REGISTRATION_REQUIRED') {
+          pendingListingUrl = listingUrl;
+          const input = [$('#listing-url'),$('#rescan-url')].find((item) => item && String(item.value || '').trim() === raw) || $('#listing-url');
+          if (input) { input.value = ''; input.placeholder = 'Enter this car’s UK registration…'; input.focus(); }
+          setHelp(payload.message,true);
+          return;
+        }
         setHelp(payload?.message || 'EV Scan could not verify this listing strongly enough to produce a reliable report. No report was generated.',true);
         return;
       }
+      pendingListingUrl = '';
       if (payload?.listingStatus) listingStatus = { loaded:true, ...payload.listingStatus };
       renderLiveReport(payload);
-    } catch { hideOverlay(); setHelp('EV Scan could not complete all listing verification checks right now. No report was generated. UK registration checks are still available.',true); }
+    } catch (error) {
+      if (activeScan === scan) {
+        if (scan.timedOut) setHelp('This listing took too long to verify. No report was generated. Please try again, use another listing, or check the UK registration instead.',true);
+        else if (error?.name === 'AbortError') setHelp('The listing check was cancelled. No report was generated.',true);
+        else setHelp('EV Scan could not complete all listing verification checks right now. No report was generated. Please try again or check the UK registration instead.',true);
+      }
+    } finally {
+      clearTimeout(timeout);
+      if (activeScan === scan) { activeScan = null; hideOverlay(); }
+    }
   }
+
+  window.addEventListener('pagehide',() => activeScan?.controller.abort());
 
   document.addEventListener('submit',(event) => {
     const form = event.target;
     if (!(form instanceof HTMLFormElement) || !['scan-form','rescan-form'].includes(form.id)) return;
     const input = form.id === 'scan-form' ? $('#listing-url') : $('#rescan-url');
     const value = input?.value || '';
+    if (pendingListingUrl && looksLikeRegistration(value) && !looksLikeUrl(value)) {
+      event.preventDefault(); event.stopImmediatePropagation(); runLiveScan(pendingListingUrl,value); return;
+    }
     if (looksLikeRegistration(value) && !looksLikeUrl(value)) return; // Let live.js handle registration-only checks.
     event.preventDefault(); event.stopImmediatePropagation(); runLiveScan(value);
   },true);
@@ -136,3 +170,4 @@
   refreshListingStatus().finally(normaliseInput);
   window.addEventListener('load',() => { normaliseInput(); refreshListingStatus(); },{once:true});
 })();
+
