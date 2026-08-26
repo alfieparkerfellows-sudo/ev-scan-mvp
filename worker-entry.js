@@ -2,7 +2,7 @@ import baseWorker from './worker-providers.js';
 import { accountsConfigured, handleAccountRequest } from './account-api.js';
 import { ensureAccountSchema } from './account-schema.js';
 
-const VERSION = '0.9.0';
+const VERSION = '0.9.1';
 
 function withAccountDb(env = {}) {
   if (env.ACCOUNTS_DB) return env;
@@ -35,7 +35,14 @@ function alignScannerPromises(html = '') {
     .replace('Battery confidence <b>High</b>','Evidence check <b>Strict</b>')
     .replace('£1,120 below market</div>','Market pricing shown only when independently verified</div>')
     .replace('<small>Good car, a few things still need confirming</small>','<small>Example only · live reports must pass the evidence gate</small>')
-    .replace('<article class="metric-card"><span>Battery confidence</span><strong>High</strong><small>Expected SoH 90–94% · estimated</small></article>','<article class="metric-card"><span>Battery evidence</span><strong>Measured only</strong><small>State of Health is never guessed from an advert</small></article>');
+    .replace('<article class="metric-card"><span>Battery confidence</span><strong>High</strong><small>Expected SoH 90–94% · estimated</small></article>','<article class="metric-card"><span>Battery evidence</span><strong>Measured only</strong><small>State of Health is never guessed from an advert</small></article>')
+    .replace('<div class="eyebrow">Built for normal buyers</div>','<div class="eyebrow">Design example · not current live output</div>')
+    .replace('Open full demo report','Open design demo')
+    .replace('<small class="good">below comparable cars</small>','<small>illustrative future market field</small>')
+    .replace('<article class="metric-card"><span>Typical UK range</span><strong>238 mi</strong><small>About 205 mi cold motorway</small></article>','<article class="metric-card"><span>Range evidence</span><strong>Advert/spec data</strong><small>Live reports only show supported figures</small></article>')
+    .replace('<p>Advertising and partner links will never change a Deal Score or recommendation. Estimated data is labelled as estimated, seller claims are labelled as seller claims, and unknowns stay unknown until there’s evidence.</p>','<p>Advertising and partner links will never change a report or recommendation. Unsupported claims are left out, and a listing report is refused when the evidence is not strong enough.</p>')
+    .replace('<div class="section-heading split-heading">','<div class="section-heading split-heading">',1)
+    .replace('<div class="preview-dashboard">','<p class="live-note" style="margin-bottom:16px">This is a visual design mock-up. Fields such as market valuation, Deal Score and estimated battery health are not part of the current live listing report unless a suitable verified source is connected.</p><div class="preview-dashboard">');
 }
 
 async function injectAccountUi(response) {
