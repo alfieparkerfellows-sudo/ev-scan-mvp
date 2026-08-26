@@ -152,17 +152,36 @@ jobs:
           grep -q 'Why it fits' finder-v2.js
           grep -q 'What to watch' finder-v2.js
           grep -q '@media(max-width:680px)' finder-v2.css
-      - name: Validate provider stack
+      - name: Validate zero-spend provider stack
         run: |
-          grep -q "worker-providers.js" worker-entry.js
-          grep -q "strictEvidenceGate" worker-providers.js
-          grep -q "failClosedScanning" worker-providers.js
-          grep -q "MARKETCHECK_API_KEY" listing-providers.js
+          grep -q "getFirecrawlUsage" worker-providers.js
+          grep -q "strictQualityGate" worker-providers.js
+          grep -q "fail-closed" worker-providers.js
+          grep -q "LISTING_CREDITS_EXHAUSTED" worker-providers.js
+          grep -q "/api/listing-status" worker-providers.js
+          grep -q "registrationStillAvailable" worker-providers.js
+          grep -q "baseWorker.fetch(request,env,ctx)" worker-providers.js
           grep -q "FIRECRAWL_API_KEY" listing-providers.js
-          grep -q "JINA_API_KEY" listing-providers.js
-          grep -q "REEF_AUTOTRADER_ENABLED" listing-providers.js
-          grep -q "listing-live.js" worker-providers.js
+          grep -q "api.firecrawl.dev/v2/team/credit-usage" listing-providers.js
+          grep -q "env.BROWSER.quickAction" listing-providers.js
+          grep -q "cloudflare-browser" listing-providers.js
+          grep -q "looksLikeRegistration" listing-live.js
+          grep -q "Let live.js handle registration-only checks" listing-live.js
           grep -q '"binding": "AI"' wrangler.jsonc
+          grep -q '"binding": "BROWSER"' wrangler.jsonc
+          ! grep -q "MARKETCHECK_API_KEY" listing-providers.js
+          ! grep -q "api.marketcheck.com" listing-providers.js
+          ! grep -q "JINA_API_KEY" listing-providers.js
+          ! grep -q "r.jina.ai" listing-providers.js
+          ! grep -q "REEF_API_KEY" listing-providers.js
+      - name: Validate fail-closed report promises
+        run: |
+          grep -q "deal:null" worker-providers.js
+          grep -q "marketPricing:false" worker-providers.js
+          grep -q "Battery State of Health" worker-providers.js
+          grep -q "quality?.passed !== true" listing-live.js
+          grep -q "Market comparison</span><strong>Not claimed" listing-live.js
+          grep -q "No report was generated" listing-providers.js
       - name: Validate Wrangler JSONC basics
         run: |
           grep -q '"main": "./worker-entry.js"' wrangler.jsonc
