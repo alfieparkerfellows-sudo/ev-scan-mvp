@@ -107,19 +107,26 @@ function metaContent(html, key) {
 function basicListingFromSource(source = '', url = '', isHtml = false) {
   const raw = String(source || '');
   const clean = isHtml ? stripHtml(raw) : raw.replace(/\s+/g,' ');
+  const markdownField = (label) => {
+    if (isHtml) return '';
+    const escaped = label.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    return text(raw.match(new RegExp(`(?:^|\\n)${escaped}\\s*\\n+\\s*([^\\n]+)`,'im'))?.[1]);
+  };
   const heading = isHtml ? decodeEntities(raw.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || metaContent(raw,'og:title')) : text(raw.split('\n').find((line) => line.trim().length > 8) || '');
   const description = isHtml ? (metaContent(raw,'og:description') || metaContent(raw,'description') || clean.slice(0,1500)) : clean.slice(0,1500);
-  const priceText = clean.match(/£\s?([0-9]{1,3}(?:,[0-9]{3})+(?:\.[0-9]{2})?|[0-9]{4,6})\b/i)?.[1];
-  const mileageText = clean.match(/\b([0-9]{1,3}(?:,[0-9]{3})+|[0-9]{4,6})\s*(?:miles|mile|mi)\b/i)?.[1];
+  const priceText = markdownField('Price').match(/£\s?([0-9,.]+)/)?.[1] || clean.match(/£\s?([0-9]{1,3}(?:,[0-9]{3})+(?:\.[0-9]{2})?|[0-9]{4,6})\b/i)?.[1];
+  const mileageText = markdownField('Mileage').match(/([0-9,]+)/)?.[1] || clean.match(/\b([0-9]{1,3}(?:,[0-9]{3})+|[0-9]{4,6})\s*(?:miles|mile|mi)\b/i)?.[1];
   const regMatch = clean.match(/\b([A-Z]{2}\s?\d{2}\s?[A-Z]{3}|[A-Z]\d{1,3}\s?[A-Z]{3}|[A-Z]{3}\s?\d{1,3}[A-Z]|[A-Z]{3}\s?\d{1,3})\b/i)?.[1];
-  const yearMatch = `${heading} ${clean.slice(0,3000)}`.match(/\b(20(?:0[8-9]|1\d|2[0-6]))\b/);
+  const yearMatch = markdownField('Year').match(/\b(20(?:0[8-9]|1\d|2[0-7]))\b/) || `${heading} ${clean.slice(0,3000)}`.match(/\b(20(?:0[8-9]|1\d|2[0-7]))\b/);
   const image = isHtml ? (metaContent(raw,'og:image') || metaContent(raw,'twitter:image')) : '';
   return {
     sourceUrl:url, heading:heading || null, description:description || null,
+    make:markdownField('Manufacturer') || null, model:markdownField('Model') || null,
     registration:cleanRegistration(regMatch), year:yearMatch ? Number(yearMatch[1]) : null,
     mileage:mileageText ? Number(mileageText.replaceAll(',','')) : null,
     price:priceText ? Number(priceText.replaceAll(',','')) : null,
-    isElectric:/\b(electric|battery electric|BEV|EV)\b/i.test(clean), images:image ? [image] : []
+    fuelType:markdownField('Fuel Type') || markdownField('Fuel') || null,
+    isElectric:/\b(electric|electricity|battery electric|BEV|EV)\b/i.test(clean), images:image ? [image] : []
   };
 }
 function parseJsonLoose(value) {
