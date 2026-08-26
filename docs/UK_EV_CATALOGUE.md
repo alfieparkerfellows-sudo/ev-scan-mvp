@@ -17,6 +17,7 @@ The 26 August 2026 source files produce:
 - 1,768 unique battery-electric car variants.
 - 138 makes.
 - 1,628 variants with an exact `YearManufacture` record in VEH0124.
+- 7 source rows quarantined from matching because their model names explicitly contradict the `Battery electric` classification with terms such as PHEV, MHEV, HYBRID or E-HYBRID.
 
 The earlier temporary build reported 1,579 variants with manufacture-year evidence. Rebuilding directly from the uploaded source CSVs gives 1,628 exact make + generic-model + model matches. EV Scan uses the reproducible result from the source files rather than preserving the earlier session's lower count.
 
@@ -30,7 +31,8 @@ It **must not**:
 - invent battery capacity, usable battery, WLTP range or real-world range;
 - select a trim/derivative when several catalogue candidates match;
 - release a listing report by itself;
-- be presented as proof that a particular registration has a particular derivative.
+- be presented as proof that a particular registration has a particular derivative;
+- use a source row whose own model name contradicts its battery-electric classification.
 
 A lookup can return multiple candidates. `exact: true` is only returned when the make/model/year filter leaves one catalogue record.
 
