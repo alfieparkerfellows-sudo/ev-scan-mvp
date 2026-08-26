@@ -22,17 +22,43 @@
     }
   }
 
+  function setFlag(element, label, state = 'waiting') {
+    if (!element) return;
+    element.innerHTML = `<i class="status-dot ${state === 'bad' ? 'is-bad' : state === 'waiting' ? 'is-waiting' : ''}"></i>${label}`;
+  }
+
+  function listingLabel(status = {}) {
+    if (!status.configured) return 'Listing links · not connected';
+    if (!status.statusKnown) return 'Listing links · status unknown';
+    const remaining = Number(status.remainingCredits);
+    if (!Number.isFinite(remaining)) return 'Listing links · checking';
+    const reset = status.resetDate ? ` · ${status.resetDate}` : '';
+    return `Link credits · ${remaining.toLocaleString('en-GB')} left${reset}`;
+  }
+
   $('#preview-dashboard')?.addEventListener('click', preview);
 
-  fetch('/api/health', { headers:{ accept:'application/json' } })
+  fetch('/api/health', { headers:{ accept:'application/json' }, cache:'no-store' })
     .then(response => response.json())
     .then(data => {
       const flags = $('#health-flags');
-      if (!flags) return;
-      const items = flags.children;
-      if (items[0]) items[0].querySelector('i').className = `status-dot ${data.liveMotConfigured ? '' : 'is-bad'}`;
-      if (items[1]) items[1].querySelector('i').className = `status-dot ${data.autoTraderConfigured ? '' : 'is-waiting'}`;
-      if (items[2]) items[2].querySelector('i').className = 'status-dot is-waiting';
+      if (flags) {
+        const items = flags.children;
+        setFlag(items[0], 'DVSA', data.liveMotConfigured ? 'good' : 'bad');
+        const listing = data.listingStatus || {};
+        setFlag(items[1], listingLabel(listing), listing.available ? 'good' : listing.statusKnown ? 'bad' : 'waiting');
+        setFlag(items[2], 'Database', data.accountsConfigured ? 'good' : 'waiting');
+      }
+
+      const mini = $('#source-mini');
+      if (mini && data.listingStatus) {
+        const status = data.listingStatus;
+        mini.querySelector('.status-dot').className = `status-dot ${status.available ? '' : status.statusKnown ? 'is-bad' : 'is-waiting'}`;
+        mini.querySelector('b').textContent = 'Listing allowance';
+        mini.querySelector('small').textContent = status.available
+          ? `${Number(status.remainingCredits || 0).toLocaleString('en-GB')} credits left${status.resetDate ? ` · resets ${status.resetDate}` : ''}`
+          : status.message || 'Link scans paused; registration checks still available';
+      }
     })
     .catch(() => {});
 })();
