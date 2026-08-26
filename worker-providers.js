@@ -134,7 +134,11 @@ async function handleListingScan(request, env, ctx, body) {
       ok:false,
       code:resolution.code || 'SCAN_NOT_RELIABLE',
       message:restricted ? resolution.message : (resolution.message || 'EV Scan could not verify this listing strongly enough to show a reliable report.'),
-      diagnostics:{ missingFields, providers:(resolution.trace || []).map((item) => ({ provider:item.provider, ok:Boolean(item.ok), skipped:Boolean(item.skipped), error:item.error || null })) },
+      diagnostics:{
+        missingFields,
+        candidateSummary:{ make:candidate.make || null, model:candidate.model || null, year:finite(candidate.year), price:finite(candidate.price), mileage:finite(candidate.mileage), batteryCapacityKwh:finite(candidate.batteryCapacityKwh), rangeMiles:finite(candidate.rangeMiles), imageCount:Array.isArray(candidate.images) ? candidate.images.length : 0 },
+        providers:(resolution.trace || []).map((item) => ({ provider:item.provider, ok:Boolean(item.ok), skipped:Boolean(item.skipped), error:item.error || null }))
+      },
       registrationStillAvailable:true
     }, restricted ? 422 : 422);
   }
